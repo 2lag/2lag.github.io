@@ -5,6 +5,26 @@
 <link type="text/css" rel="stylesheet" id="dark-mode-general-link">
 <style lang="en" type="text/css" id="dark-mode-custom-style"></style>
 <style lang="en" type="text/css" id="dark-mode-native-style"></style>
+<style>
+  * {
+  box-sizing: border-box;
+}
+  .column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+  .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+  @media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+</style>
 <head>
   <title>@autostrafe</title>
   <meta charset="UTF-8">
@@ -12,6 +32,8 @@
   <meta property="og:title" content="@autostrafe">
 </head>
 <body>
+  <div class="row">
+  <div class="column">
   <div class="window" style="margin: 32px; width: 250px">
     <div class="title-bar">
       <div class="title-bar-text" style="font-size: 18px">my links !</div>
@@ -26,6 +48,22 @@
         <a href="https://steamcommunity.com/id/skyIight" class="title-bar-text" style="color:black;font-size: 13px">steam</a> <br> <br>
         <a href="https://www.youtube.com/c/daybreaks" class="title-bar-text" style="color:black;font-size: 13px">youtube</a>
       </div>
+  </div>
+  </div>
+    <div class="column">
+      <div class="window" style="margin: 32px; width: 250px">
+    <div class="title-bar">
+      <div class="title-bar-text" style="font-size: 18px">my links !</div>
+        <div class="title-bar-controls">
+          <button aria-label="Help"></button><button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p class="title-bar-text" style="color:black;font-size: 13px"> site still under construction be patient ~_~ </p>
+      </div>
+  </div>
+  </div>
+    </div>
   </div>
 </body>
 </html>
