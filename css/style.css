@@ -1,0 +1,335 @@
+@import('https://fonts.googleapis.com/icon?family=Fira+Mono');
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,400italic);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,400italic);
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+@import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	outline: none;
+}
+html, body, .tiles .tile .element {
+	height: 100%;
+	overflow: hidden;
+}
+body {
+	margin: 0;
+	font-family: 'Open Sans', Arial, sans-serif;
+}
+.element  {
+	background-color : #f1f1f1;
+	padding: 10px 20px;
+	-moz-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+-webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+-o-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+filter:progid:DXImageTransform.Microsoft.Shadow(color=#rgba(0, 0, 0, 0.1), Direction=180, Strength=2);
+	position: relative;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 600;
+	margin: 0;
+	line-height: 1;
+}
+img, video, iframe {
+	max-height: 100%;
+	max-width: 100%;
+}
+input, textarea {
+	outline: none;
+	-moz-resize: none;
+	resize: none;
+	font-family: inherit;
+}
+ul, li, ol {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+a {
+	color: inherit;
+	text-decoration: none;
+}
+.pointer {
+	cursor: pointer;
+}
+.top>* {
+	display: inline-block;
+	vertical-align: top;
+}
+.middle>* {
+	display: inline-block;
+	vertical-align: middle;
+}
+.bottom>* {
+	display: inline-block;
+	vertical-align: bottom;
+}
+.center {
+	text-align: center;
+}
+.tier {
+	width: 33.33%;
+}
+.doubletier {
+	width: 66.66%;
+}
+.demiw, .demi, .half {
+	width: 50%;
+}
+.demih {
+	height: 50%;
+}
+.htier {
+	height: 33.33%;
+}
+.hdoubletier {
+	height: 66.66%;
+}
+.quarter {
+	width: 25%;
+}
+.triple-quarter {
+	width: 75%;
+}
+.taille {
+	height: 100%;
+}
+.width960 {
+	width: 960px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.width1020 {
+	width: 1020px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.width660 {
+	width: 660px;
+	max-width: 100%;
+}
+.noselect {
+	-webkit-touch-callout: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.floatleft {
+	float: left;
+}
+.floatright {
+	float: right;
+}
+table
+{
+    border-collapse: collapse; /* Les bordures du tableau seront collÃ©es (plus joli) */
+}
+.icon-middle, .icon-middle + * {
+    display: inline-block;
+    vertical-align: middle;
+}
+.icon-middle + * {
+    margin-left: 5px;
+}
+.min-40 {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.note {
+	font-color: #ccc;
+	font-style: italic;
+}
+.note.important {
+	color: red;
+}
+input.nostyle, button.nostyle, textarea.nostyle {
+	border: 0;
+	padding: 0;
+	background: transparent;
+	background: none;
+	font-size: inherit;
+	text-transform: uppercase;
+	color: inherit;
+}
+.tiles .tile, .tiles > * > .tile {
+	color: white;
+	padding-bottom: 20px;
+}
+.tiles .tile .title {
+	font-weight: 700;
+	font-weight: 600;
+}
+.tiles .tile .desc {
+	font-size: .8em;
+}
+.quadruple > *:first-child, .triple-2-1 >*:first-child, .triple-1-1-1 .tier:first-child {
+	padding-right: 10px;
+	padding-left: 0;
+}
+.quadruple > *:last-child, .triple-2-1 > *:last-child, .triple-1-1-1 .tier:last-child {
+	padding-right: 0;
+	padding-left: 10px;
+}
+.quadruple > *, .triple-1-1-1 .tier:nth-child(2) {
+	padding-right: 10px;
+	padding-left: 10px;
+}
+@media screen and (max-width: 1020px) {
+	.desktop {
+		display: none;
+	}
+	.demiw {
+		width: 100%;
+	}
+}
+@media screen and (min-width: 1020px) {
+	.mobile {
+		display: none;
+	}
+}
+.none {
+	display: none;
+}
+
+body {
+	background: url(../files/bg.gif);
+	background-position: center;
+	background-size: cover;
+	color: white;
+}
+#homepage {
+	height: 100%;
+	text-align: center;
+	padding: 50px;
+	z-index: 100;
+}
+#terminal {
+	min-height: 350px;
+	width: 650px;
+	max-width: 100%;
+	max-height: 100%;
+	background: rgba(29, 31, 32, 0.85);
+	border-radius: .3rem;
+	box-shadow: 0 20px 60px 10px rgba(0, 0, 0, 0.5);
+	position: relative;
+}
+#terminal-header {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	height: 30px;
+	line-height: 30px;
+	background-color: rgba(29, 31, 32, 1.0);
+}
+#controls {
+	float: right;
+	margin-right: 8px;
+}
+#content {
+	font-family: 'Fira Mono', monospace;
+	text-align: left;
+	font-size: 0.8rem;
+	position: absolute;
+	top: 30px;
+	left: 13px;
+	right: 13px;
+	bottom: 0;
+	overflow: auto;
+}
+.green { color: #9ADF3A; }
+.yellow { color: #FFDE38; }
+.red { color: #00e1ff; }
+.blue { color: #0400ff; }
+.pink { color: #ffc7eb}
+
+#content > div:last-child {
+	margin-bottom: 20px;
+}
+#content form { display: inline; }
+#content input {
+	text-transform: initial;
+	display:table-cell;
+	width:100%;
+}
+#content > div, #content p {
+	margin: 10px 0;
+}
+#content b {
+	opacity: .3;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 255);
+}
+
+::-moz-selection {
+  background: rgba(255, 255, 255, 255);
+}
+
+#copyright {
+	font-family: 'Fira Mono', monospace;
+	font-size: 0.75rem;
+	max-width:100%;
+    max-height:100%;
+    overflow:auto;
+	position: fixed;
+	left: 50%;
+	bottom: 0;
+	transform: translate(-50%, -50%);
+	margin: 0 auto;
+	z-index: -18;
+}
+
+#enterSite {
+    position: fixed;
+    padding: 0px;
+    margin: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+}
+
+
+#enterSite button {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    color: rgb(0, 217, 255);
+    font-size: 48px;
+    letter-spacing: 4px;
+    padding-top: 4px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 4px;
+    transition: 0.4s;
+    box-shadow: 0px 0px 0px rgba(25, 42, 86, 0.2);
+    background-color: transparent;
+    border: 3px solid rgb(0, 217, 255);
+}
+#enterSite button:hover {
+    background-color: rgba(0, 217, 255, 0.2);
+    box-shadow: 0px 0px 200px rgb(0, 217, 255);
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+#video-background {
+	background-position: center;
+	background-size: cover;
+	color: white;
+}
