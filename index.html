@@ -17,6 +17,20 @@
     <link rel="stylesheet" href="css\style.css">
     <link rel="stylesheet" href="css\font-awesome.min.css">
 	<audio loop="true" id="music" src="https://github.com/2lag/2lag.github.io/blob/main/pokemon%20cerulean%20city.mp3?raw=true" type="audio/mpeg"></audio>
+    <script>
+	    var counterContainer = document.querySelector(".website-counter");
+	    var resetButton = document.querySelector("#reset");
+	    var visitCount = localStorage.getItem("page_view");
+	    // Check if page_view entry is present
+	    if (visitCount) {
+	      visitCount = Number(visitCount) + 1;
+	      localStorage.setItem("page_view", visitCount);
+	    } else {
+	      visitCount = 1;
+	      localStorage.setItem("page_view", 1);
+	    }
+	    counterContainer.innerHTML = visitCount;
+    </script>
   </head>
   <script>
 function opensesame() {
@@ -102,20 +116,6 @@ startTime()
     <script src="js\script.js?lastupdate=1600261758"></script>
     <script src="js/AnimatedTitle.js"></script>
     <script src="js\rain.js"></script>
-    <script>
-	    var counterContainer = document.querySelector(".website-counter");
-	    var resetButton = document.querySelector("#reset");
-	    var visitCount = localStorage.getItem("page_view");
-	    // Check if page_view entry is present
-	    if (visitCount) {
-	      visitCount = Number(visitCount) + 1;
-	      localStorage.setItem("page_view", visitCount);
-	    } else {
-	      visitCount = 1;
-	      localStorage.setItem("page_view", 1);
-	    }
-	    counterContainer.innerHTML = visitCount;
-    </script>
     <script>var visits = visitCount;var visitorIP = "";var visitorCountry = "";var visitorCountryCode = "";var lastCountry0 = "";var lastCountry1 = "";var lastCountry2 = "";var lastCountry3 = "";var lastCountry4 = "";var lastUpdate = "6/20/2022";var upTime = "116d 2hr 36m 14s";</script>
   </body>
 </html>
