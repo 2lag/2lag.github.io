@@ -173,7 +173,7 @@ $('form').on('submit', function(e) {
 						res = '[ <span class="red">ERROR</span> ] You\'re already logged as Visitor!';
 					} else if (loginArray[2] === "root") {
 						res = 'su: Authentication failure';
-						if (typeof loginArray[4] !== "undefined" && MD5(loginArray[4]) === "8db96a12f8df8fea16e4eef54d280feb") {
+						if (typeof loginArray[4] !== "undefined" && MD5(loginArray[4]) === "c4ca4238a0b923820dcc509a6f75849b") {
 							root = 1;
 							res = '';
 						}
