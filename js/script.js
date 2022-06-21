@@ -60,7 +60,7 @@ const commands = {
 	visitors: 
 	{
 		cmd: 'visitors',
-		res: 'Total Visits: <span class="red">' + visits + '</span>'
+		res: 'Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img>'
 	},
 	help: 
 	{
