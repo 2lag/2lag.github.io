@@ -110,39 +110,11 @@ $('#content').niceScroll({
 	railpadding: { top: 0, left: 0, right: 0, bottom: 10 }
 });
 
-//var mCommand = document.getElementById("tCommand");
-
 function GetAge(dateString) 
 {
   var birthday = +new Date(dateString);
   return ~~((Date.now() - birthday) / (31557600000));
 }
-
-/*function AddFriend(Name, Description)
-{
-	var mReturn = '# <span class="red"><a href="#" onclick="mCommand.value = \'friend ' + Name.toLowerCase() + '\'"><u>' + Name + '</u></a></span> - ' + Description + '.<br>';
-	return mReturn;
-}*/
-
-/*function InfoFriend(Name, RealName, Bday, Country, Steam, Web)
-{
-	var mReturn = 'Information:<br># <span class="red">Nick:</span> ' + Name;
-	if (RealName !== undefined)
-		mReturn += '<br># <span class="red">Real Name:</span> ' + RealName;
-	if (Bday !== undefined)
-	{
-		var bDate = new Date(Bday);
-		mReturn += '<br># <span class="red">Born: </span>' + sMonth[bDate.getMonth()] + ' ' + bDate.getDate() + ' ' + bDate.getFullYear() + ' <span class="red">(Age: ' + GetAge(Bday) + ')</span>';
-	}
-	if (Country !== undefined)
-		mReturn += '<br># <span class="red">Country:</span> ' + Country;
-	mReturn += '<br><br>Links:<br>'
-	if (Steam !== undefined)
-		mReturn += '# <span class="red"><a href="https://steamcommunity.com/profiles/' + Steam + '" target="_blank"><u>Steam</u></a></span><br>';
-	if (Web !== undefined)
-		mReturn += '# <span class="red"><a href="' + Web + '" target="_blank"><u>Web</u></a></span><br>';
-	return mReturn;
-}*/
 
 $('form').on('submit', function(e) {
 	e.preventDefault();
@@ -235,26 +207,7 @@ $('form').on('submit', function(e) {
 						res: '<div><p>[ <span class="red">2lag</span> ] Usage: music [play/stop/link]</p></div>'
 					});
 				}
-			} /*else if (vInput.startsWith("friend")) {
-				if (vInput === "friend joffrey") {
-					launchCommandAsVisitor({
-						cmd: vInput,
-						res: '<div><p>' + InfoFriend("Joffrey", "George", "2001-10-11", "Slovakia", "76561198282756062") + '</p></div>'
-					});
-				} else if (vInput === "friend list") {
-					var friends = "";
-					friends += AddFriend("Joffrey", "For being funny and helpful friend");
-					launchCommandAsVisitor({
-						cmd: vInput,
-						res: '<div><p>' + friends + '</p></div>'
-					});
-				} else {
-					launchCommandAsVisitor({
-						cmd: vInput,
-						res: '<div><p>[ <span class="red">2lag</span> ] Usage: friend [name/list]</p></div>'
-					});
-				}
-			}*/ else if (vInput.startsWith("insta")) {
+			} else if (vInput.startsWith("insta")) {
 				var vLink = $('input').val().substring(6);
 				if (vLink.includes("instagram.com/p/")) {
 					window.open(vLink + "media?size=l", '_blank').focus();
