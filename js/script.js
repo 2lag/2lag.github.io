@@ -50,7 +50,7 @@ const commands = {
 	aboutme:  
 	{
 		cmd: 'aboutme',
-		res: 'About Me:<br># <span class="red">Real Name:</span> Aiden H<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Recently graduated student from Dallas College online with an<br>Associate\'s degree in Software Development. Work experience<br>in IT and retail, plus educational and personal experience<br>with programming of all sorts (front-end, back-end, etc).<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C++, PY, JAVA, PROCESSING, SOLIDITY.<br></span><br><span class="red">Languages:</span><br>* English - <span class="red">Native</span><br>* Spanish - <span class="red">Basic</span><br>* Japanese - <span class="red">Beginner</span><br>'
+		res: 'About Me:<br># <span class="red">Real Name:</span> Aiden H<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Recently graduated student, with an<br>Associate\'s degree in Software Development. Work experience<br>in IT and retail, plus educational and personal experience<br>with programming of all sorts (front-end, back-end, etc).<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C++, PY, JAVA, PROCESSING, SOLIDITY.<br></span><br><span class="red">Languages:</span><br>* English - <span class="red">Native</span><br>* Spanish - <span class="red">Basic</span><br>* Japanese - <span class="red">Beginner</span><br>'
 	},
 	links: 
 	{
