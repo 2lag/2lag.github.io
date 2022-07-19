@@ -1,4 +1,4 @@
-var rev = "fwd";
+var rev = "bwd";
 function titlebar(val){
     var msg  = "2lag A.K.A day";
     var res = " ";
