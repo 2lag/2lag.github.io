@@ -4,7 +4,7 @@ function titlebar(val){
     var res = " ";
     var speed = 250;
     var pos = val;
-    var le = msg.length;
+    var le = msg.length - 1;
     if(rev == "fwd"){
         if(pos < le){
             pos = pos+1;
