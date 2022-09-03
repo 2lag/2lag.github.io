@@ -27,6 +27,7 @@ var pMusicPlaying = 0;
 
 var pJessie = document.getElementById("breakingbad");
 pJessie.volume = 0.4; //same thing.. .5->.4
+pJessie.loop = false;
 pJessie.load();
 var pJessiePlaying = !document.getElementById("breakingbad").ended;
 
@@ -170,13 +171,6 @@ $('form').on('submit', function(e) {
 					launchCommandAsVisitor({
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie playing!</p></div>'
-					});
-					setTimeout(() => {  console.log("waiting"); }, 7000);
-					pJessie.pause();
-					pJessie.currentTime = 0;
-					launchCommandAsVisitor({
-						cmd: vInput,
-						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie stopped!</p></div>'
 					});
 				}
 			} else if (vInput.startsWith("music")) {
