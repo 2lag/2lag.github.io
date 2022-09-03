@@ -171,10 +171,7 @@ $('form').on('submit', function(e) {
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie playing!</p></div>'
 					});
-					if(pJessiePlaying)
-					{
-						setTimeout(() => {  console.log("waiting"); }, 7000);
-					}
+					setTimeout(() => {  console.log("waiting"); }, 7000);
 					pJessie.pause();
 					pJessie.currentTime = 0;
 					launchCommandAsVisitor({
