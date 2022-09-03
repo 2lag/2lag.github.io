@@ -174,7 +174,7 @@ $('form').on('submit', function(e) {
 					});
 					while(!pJessie.ended() && pJessiePlaying == 1)
 					{
-						await new Promise(resolve => setTimeout(resolve, 1000));
+						setTimeout(() => {  console.log("waiting"); }, 1000);
 					}
 					pJessie.pause();
 					pJessie.currentTime = 0;
