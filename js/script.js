@@ -28,7 +28,6 @@ var pMusicPlaying = 0;
 var pJessie = document.getElementById("breakingbad");
 pJessie.volume = 0.4; //same thing.. .5->.4
 pJessie.loop = false;
-pJessie.load();
 var pJessiePlaying = !document.getElementById("breakingbad").ended;
 
 var sMonth = ["January","February","March","April","May","June","July","August","September","October","November","December",] //i think we all know the months of the year
@@ -161,6 +160,7 @@ $('form').on('submit', function(e) {
 					});
 				}
 			} else if (vInput === "jessie") {
+				pJessie.load();
 				if(pJessiePlaying) {
 					launchCommandAsVisitor({
 							cmd: vInput,
