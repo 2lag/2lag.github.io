@@ -28,7 +28,7 @@ var pMusicPlaying = 0;
 var pJessie = document.getElementById("breakingbad");
 pJessie.volume = 0.4; //same thing.. .5->.4
 pJessie.load();
-var pJessiePlaying = 0;
+var pJessiePlaying = !document.getElementById("breakingbad").ended;
 
 var sMonth = ["January","February","March","April","May","June","July","August","September","October","November","December",] //i think we all know the months of the year
 const commands = {
@@ -160,25 +160,23 @@ $('form').on('submit', function(e) {
 					});
 				}
 			} else if (vInput === "jessie") {
-				if(pJessiePlaying == 1) {
+				if(pJessiePlaying) {
 					launchCommandAsVisitor({
 							cmd: vInput,
 							res: '<div><p>[ <span class="red">ERROR</span> ] Jessie is already playing!</p></div>'
 					});
 				} else {
 					pJessie.play();
-					pJessiePlaying = 1;
 					launchCommandAsVisitor({
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie playing!</p></div>'
 					});
-					while(!pJessie.ended && pJessiePlaying == 1)
+					if(pJessiePlaying)
 					{
-						setTimeout(() => {  console.log("waiting"); }, 1000);
+						setTimeout(() => {  console.log("waiting"); }, 7000);
 					}
 					pJessie.pause();
 					pJessie.currentTime = 0;
-					pJessiePlaying = 0;
 					launchCommandAsVisitor({
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie stopped!</p></div>'
