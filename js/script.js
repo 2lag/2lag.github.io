@@ -26,7 +26,7 @@ pMusic.load();
 var pMusicPlaying = 0;
 
 var pJessie = document.getElementById("breakingbad");
-pJessie.volume = 0.5;
+pJessie.volume = 0.4; //same thing.. .5->.4
 pJessie.load();
 var pJessiePlaying = 0;
 
@@ -172,7 +172,7 @@ $('form').on('submit', function(e) {
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie playing!</p></div>'
 					});
-					while(!pJessie.ended() && pJessiePlaying == 1)
+					while(!pJessie.ended && pJessiePlaying == 1)
 					{
 						setTimeout(() => {  console.log("waiting"); }, 1000);
 					}
