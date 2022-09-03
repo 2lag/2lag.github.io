@@ -159,7 +159,7 @@ $('form').on('submit', function(e) {
 						res: '<div><p>' + res + '</p></div>'
 					});
 				}
-			} else if (vInput. === "jessie") {
+			} else if (vInput === "jessie") {
 				if(pJessiePlaying == 1) {
 					launchCommandAsVisitor({
 							cmd: vInput,
