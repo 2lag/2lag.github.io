@@ -172,7 +172,7 @@ $('form').on('submit', function(e) {
 						cmd: vInput,
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Jessie playing!</p></div>'
 					});
-					while(!pJessie.ended())
+					while(!pJessie.ended() && pJessiePlaying == 1)
 					{
 						await new Promise(resolve => setTimeout(resolve, 1000));
 					}
