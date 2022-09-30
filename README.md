@@ -4,3 +4,4 @@
 * * [Docs](https://mattboldt.github.io/typed.js/docs/)
 * Add "projects" command
 * * List all completed and WIP projects
+* Add [this](https://youtube.com/shorts/VTw2cUVFl1c?feature=share) to top of window
