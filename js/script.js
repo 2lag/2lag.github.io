@@ -7,13 +7,14 @@ $(function()
 		{
 			if (objEvent.shiftKey) 
 			{
-				if (objEvent.keyCode == 73 || objEvent.keyCode == 74) return false; // Disable CTRL + SHIFT + I / J
+				if (objEvent.keyCode == 73 || objEvent.keyCode == 74 || objEvent.keyCode == 67) return false; // Disable CTRL + SHIFT + I / J / C
 			} 
 			else 
 			{
 				if (objEvent.keyCode == 65 || objEvent.keyCode == 85) return false;// Disable CTRL + A / U
 			}
-        }
+        	}
+		if (objEvent.keyCode == 123) return false;// Disable F12
 	});
 });
 //^ blocking keys because if you wanna see the source just come here ?_? i'm just trying to keep my site looking pretty
