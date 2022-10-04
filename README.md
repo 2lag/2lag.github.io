@@ -1,7 +1,6 @@
 # [2lag.github.io](https://2lag.github.io/)
 ### To-Do:
-* Include [typed.js](https://github.com/mattboldt/typed.js/)
-* * [Docs](https://mattboldt.github.io/typed.js/docs/)
+* Include [typwriter.js]([https://github.com/mattboldt/typed.js/](https://github.com/tameemsafi/typewriterjs))
 * Add "projects" command
 * * List all completed and WIP projects
 * * * Processing projects <a> link
