@@ -27,20 +27,25 @@
             return false;
         }
  
-        // disable I key
+        // disable CTRL+Shift+I combo
         if(e.ctrlKey && e.shiftKey && e.keyCode == 73){
             return false;
         }
  
-        // disable J key
+        // disable CTRL+Shift+J combo
         if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {
             return false;
         }
  
-        // disable U key
+        // disable CTRL+U combo
         if(e.ctrlKey && e.keyCode == 85) {
             return false;
         }
+	
+	//disable CTRL+Shift+C
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 67) {
+	    return false;
+	}
     }
 </script>
 <div id="bgwrapper"></div>
