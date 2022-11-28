@@ -78,7 +78,7 @@ function OnlyRoot(command) {
 function launchCommandAsRoot(command) 
 {
 	var res = '';
-	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br></span>NOTE : <span class="red">v2.0</span> is in the works as of 11.06.22<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img><span class="red">' + '</span><br>Terminal Updated: <span class="red">' + lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
+	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br></span>NOTE : <span class="red">v2.0</span> is in the works as of 11.06.22<br>(Finishing touches going on as of 11.28.22)<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img><span class="red">' + '</span><br>Terminal Updated: <span class="red">' + lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
 	else
 	{
 		window.alert("Nice try to changing \'root\' variable to 1");
