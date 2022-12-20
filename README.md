@@ -1,7 +1,6 @@
 # to-do
 
 * scrap v2
-* 
 * download this source
 * * make more detailed breakdown of to-do
 * put terminal window into unclosable [win7]((https://khang-nd.github.io/7.css/)) cmdprompt-styled window (black bg and [this font](https://en.wikipedia.org/wiki/Terminal_(typeface)))
