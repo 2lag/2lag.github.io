@@ -1,4 +1,6 @@
-# to-do
+# source for [2lag.day](https://2lag.day)
+
+## to-do
 
 * scrap v2
 * download this source
