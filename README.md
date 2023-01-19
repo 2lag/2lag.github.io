@@ -5,7 +5,6 @@
 * scrap v2
 * download this source
 * * make more detailed breakdown of to-do
-* put terminal window into unclosable,undraggable,unresizable [win7]((https://khang-nd.github.io/7.css/)) cmd-style window (black bg and [this font](https://en.wikipedia.org/wiki/Terminal_(typeface)))
 * update links cmd with new domains
 * add projects command that opens new draggable/resizable/closable window w nested tabs for different kinds of projects
 * * similar to toggle js on nohat.tv, but all in 1 instead of separate
