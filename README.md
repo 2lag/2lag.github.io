@@ -6,4 +6,8 @@
 * * similar to toggle js on nohat.tv, but all in 1 instead of separate
 * * add so when closed, sends output txt send console saying (Projects closed.) or something
 * stats cmd will output current site stats
+* * commits
+* * page size
+* * last update
+* * total characters
 * ... ?
