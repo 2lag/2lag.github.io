@@ -1,3 +1,4 @@
+let lastUpdate = "02.06.2023 (MM.DD.YYYY)"
 var enableKeys = false;
 $(function()
 {
@@ -52,15 +53,15 @@ const commands = {
 		cmd: 'links',
 		res: 'Links:<br># <span class="red"><a href="https://www.depop.com/boingboingbounce/" target="_blank">depop</a></span><br># <span class="red"><a href="https://discord.gg/ZRK2VbKtXJ" target="_blank">discord</a></span><br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/2lag" target="_blank">instagram</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@nohat-tv" target="_blank">nohat youtube</a></span><br># <span class="red"><a href="https://ogu.gg/deathnote" target="_blank">ogusers</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">youtube</a></span>'
 	},
-	visitors: 
+	stats: 
 	{
-		cmd: 'visitors',
-		res: 'Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img>'
+		cmd: 'stats',
+		res: 'Total commits: <span class="red">263</span><br>Repo size: <span class="red">27.5 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
 	},
 	help: 
 	{
 		cmd: 'help',
-		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">screenfetch</span> - Fetches system information in the terminal.<br># <span class="red">links</span> - Other socials.<br># <span class="red">visitors</span> - How many times people visited this site.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
+		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">screenfetch</span> - Fetches system information in the terminal.<br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
 	}
 }
 
@@ -78,7 +79,7 @@ function OnlyRoot(command) {
 function launchCommandAsRoot(command) 
 {
 	var res = '';
-	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img><span class="red">' + '</span><br>Terminal Updated: <span class="red">02.01.23 (MM/DD/YY)</span><br><br><b>Type \'help\' for more details on the commands</b>'
+	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img><span class="red">' + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
 	else
 	{
 		window.alert("Nice try to changing \'root\' variable to 1");
