@@ -9,4 +9,5 @@
 * * software: gauganbot/pgui/dailies/psych.vip
 * * hardware: pwnagotchix2/pitop/portahak
 * 2. add so when closed, sends output txt send console saying (Projects closed.) or something
-2. ... profit?
+2. update [hitcounter](https://www.hitwebcounter.com/webcounter.php) if old one broke
+3. ... profit?
