@@ -10,4 +10,5 @@
 * * hardware: pwnagotchix2/pitop/portahak
 * 2. add so when closed, sends output txt send console saying (Projects closed.) or something
 2. update [hitcounter](https://www.hitwebcounter.com/webcounter.php) with [this](https://www.youtube.com/watch?v=WTHrtiMEjk0) because for some reason it stopped working and i lost count
-3. ... profit?
+3. stop procrastinating
+4. ... profit?
