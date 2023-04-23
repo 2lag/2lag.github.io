@@ -62,7 +62,7 @@ const commands = {
 	help: 
 	{
 		cmd: 'help',
-		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">screenfetch</span> - Fetches system information in the terminal.<br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
+		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
 	}
 }
 
@@ -230,15 +230,6 @@ $('form').on('submit', function(e) {
 				launchCommandAsVisitor({
 						cmd: '****',
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Developer Mode: Activated!</p></div>'
-					});
-			} else if (vInput === "screenfetch") {
-				const OSVer = 'x86_64';
-				const Kernel = 'x86_64 Linux 5.8.14-amd64';
-				const Shell = 'bash 5.0.18';
-				const Disk = '1TB';
-				launchCommandAsVisitor({
-						cmd: $('input').val(),
-						res: '&#x2002&#x2002SSSSSSSSSSSSSSS&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002<span class="red">visitor@2lag</span><br>&#x2002S:::::::::::::::S&#x2002&#x2002&#x2002&#x2002&#x2002<span class="red">OS:</span> Arch Linux ' + OSVer + '<br>S:::::SSSSSS::::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Kernel:</span> ' + Kernel + '<br>SSSSSSS&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Uptime:</span> ' + upTime + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Shell:</span> ' + Shell + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Disk:</span> ' + Disk + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002SSSS::::S<br>&#x2002&#x2002&#x2002&#x2002&#x2002SSSSS::::::SS<br>&#x2002&#x2002&#x2002&#x2002SS::::::::SSS<br>&#x2002&#x2002S:::::SSSSSS<br>S:::::S<br>S:::::S<br>S:::::S&#x2002&#x2002&#x2002&#x2002&#x2002SSSSSSS<br>S:::::SSSSSS::::::S<br>SS:::::::::::::::S<br>&#x2002SSSSSSSSSSSSSSS</p></div>'
 					});
 			} else if (vInput.trim() !== "") {
 				launchCommandAsVisitor(commands[vInput]);
