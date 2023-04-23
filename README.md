@@ -3,7 +3,7 @@
 ## to-do
 
 1. stop procrastinating
-2. fix aboutme & remove screenfetch, replace with projects command that opens new draggable/resizable/toggleable window w nested tabs for different kinds of projects
+2. fix aboutme, add projects command that opens new overlay window w nested tabs for different projects
 * 1. similar to wins on nohat.tv/2lagv2, but all in 1 instead of separate
 * 2. also, same styling as main cmd win
 * * web: nohat.tv/kus.ooo/2lag.day/almightyhuey.github.io/psych.vip
