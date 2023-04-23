@@ -47,7 +47,7 @@ const commands = {
 	aboutme:  
 	{
 		cmd: 'aboutme',
-		res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Recently graduated student with an Associate\'s of<br>Applied Science in Software Development. Work experience<br>in IT and retail, plus educational and personal exposure<br>with programming of all sorts (web apps, smart contracts,<br>application development, etc.)<br></span><br># <span class="red">Skills:</span> Programming, Graphic Design, Video Editing, 3D Modeling.<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C++, C#, PYTHON, JAVA, PROCESSING, SOLIDITY.<br></span><br>'
+		res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web applications, smart contracts, Windows/Linux applications, etc.)<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C++, C#, PYTHON, JAVA, PROCESSING, SOLIDITY.<br></span><br># <span class="red">Extraneous Skills:</span> Programming, Graphic Design, Video Editing, 3D Modeling.<br></span><br>'
 	},
 	links: 
 	{
