@@ -167,15 +167,15 @@ input.nostyle, button.nostyle, textarea.nostyle {
 }
 
 .button.green {
-  background: #4f6e4f;
+  background: #66e166;
 }
 
 .button.yellow {
-  background: #939476;
+  background: #e1e166;
 }
 
 .button.red {
-  background: #593a3b;
+  background: #e16666;
 }
 
 .tiles .tile, .tiles > * > .tile {
@@ -219,7 +219,8 @@ input.nostyle, button.nostyle, textarea.nostyle {
 }
 
 body {
-	background: url(../files/bg6.gif);
+	background: url(../files/bg5.gif);
+	background-color: black;
 	background-position: center;
 	background-size: cover;
 	color: white;

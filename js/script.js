@@ -47,12 +47,12 @@ const commands = {
 	aboutme:  
 	{
 		cmd: 'aboutme',
-		res: 'About Me:<br># <span class="red">Name:</span> Aiden H<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Recently graduated student with an Associate\'s of<br>Applied Science in Software Development. Work experience<br>in IT and retail, plus educational and personal exposure<br>with programming of all sorts (web apps, smart contracts,<br>application development, etc.)<br></span><br># <span class="red">Skills:</span> Programming, Graphic Design, Video Editing, 3D Modeling.<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C++, C#, PYTHON, JAVA, PROCESSING, SOLIDITY.<br></span><br><span class="red">Languages:</span><br>* English - <span class="red">Native</span><br>* Hebrew - <span class="red">Intermediate</span><br>* Spanish - <span class="red">Basic</span><br>* Japanese - <span class="red">Beginner</span><br>'
+		res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C/C++, PYTHON, JAVA, PROCESSING, SOLIDITY.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic Design, Video Editing, 3D Modeling.<br></span><br>'
 	},
 	links: 
 	{
 		cmd: 'links',
-		res: 'Links:<br># <span class="red"><a href="https://www.depop.com/boingboingbounce/" target="_blank">depop</a></span><br># <span class="red"><a href="https://discord.gg/ZRK2VbKtXJ" target="_blank">discord</a></span><br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/2lag" target="_blank">instagram</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="http://nohat.tv" target="_blank">nohat.tv</a></span><br># <span class="red"><a href="https://www.youtube.com/@nohat-tv" target="_blank">nohat youtube</a></span><br># <span class="red"><a href="https://ogu.gg/deathnote" target="_blank">ogusers</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">youtube</a></span>'
+		res: 'Links:<br># <span class="red"><a href="https://discord.gg/ZRK2VbKtXJ" target="_blank">discord</a></span><br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="http://nohat.tv" target="_blank">nohat.tv</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">youtube</a></span>'
 	},
 	stats: 
 	{
@@ -62,7 +62,7 @@ const commands = {
 	help: 
 	{
 		cmd: 'help',
-		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">screenfetch</span> - Fetches system information in the terminal.<br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
+		res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jessie</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
 	}
 }
 
@@ -230,15 +230,6 @@ $('form').on('submit', function(e) {
 				launchCommandAsVisitor({
 						cmd: '****',
 						res: '<div><p>[ <span class="green">SUCCESS</span> ] Developer Mode: Activated!</p></div>'
-					});
-			} else if (vInput === "screenfetch") {
-				const OSVer = 'x86_64';
-				const Kernel = 'x86_64 Linux 5.8.14-amd64';
-				const Shell = 'bash 5.0.18';
-				const Disk = '1TB';
-				launchCommandAsVisitor({
-						cmd: $('input').val(),
-						res: '&#x2002&#x2002SSSSSSSSSSSSSSS&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002<span class="red">visitor@2lag</span><br>&#x2002S:::::::::::::::S&#x2002&#x2002&#x2002&#x2002&#x2002<span class="red">OS:</span> Arch Linux ' + OSVer + '<br>S:::::SSSSSS::::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Kernel:</span> ' + Kernel + '<br>SSSSSSS&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Uptime:</span> ' + upTime + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Shell:</span> ' + Shell + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002S:::::S&#x2002&#x2002&#x2002&#x2002<span class="red">Disk:</span> ' + Disk + '<br>&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002&#x2002SSSS::::S<br>&#x2002&#x2002&#x2002&#x2002&#x2002SSSSS::::::SS<br>&#x2002&#x2002&#x2002&#x2002SS::::::::SSS<br>&#x2002&#x2002S:::::SSSSSS<br>S:::::S<br>S:::::S<br>S:::::S&#x2002&#x2002&#x2002&#x2002&#x2002SSSSSSS<br>S:::::SSSSSS::::::S<br>SS:::::::::::::::S<br>&#x2002SSSSSSSSSSSSSSS</p></div>'
 					});
 			} else if (vInput.trim() !== "") {
 				launchCommandAsVisitor(commands[vInput]);
