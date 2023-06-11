@@ -1,5 +1,5 @@
-let lastUpdate = "02.06.2023 (MM.DD.YYYY)"
-let commits = "264"
+let lastUpdate = "06.11.2023 (MM.DD.YYYY)"
+let commits = "298"
 var enableKeys = false;
 $(function()
 {
