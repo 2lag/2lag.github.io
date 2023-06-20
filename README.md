@@ -3,7 +3,8 @@
 ## to-do
 
 1. recode/rename site
-2. add projects command that opens new overlay window w nested tabs for different projects
+2. [impl](https://medium.com/@miguelznunez/how-to-count-the-number-of-visits-on-your-website-with-html-css-javascript-and-the-count-api-2f99b42b5990)
+3. add projects command that opens new overlay window w nested tabs for different projects
 * 1. similar to wins on nohat.tv/2lagv2, but all in 1 instead of separate
 * 2. also, same styling as main cmd win
 * * web: nohat.tv/kus.ooo/2lag.day/almightyhuey.github.io/psych.vip
