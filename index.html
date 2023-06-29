@@ -17,36 +17,32 @@
     <audio loop="false" id="breakingbad" src="https://github.com/2lag/2lag.github.io/blob/main/waltuh.mp3?raw=true" type="audio/mpeg"></audio>
   </head>
 <script>
-    // disable right click
-    document.addEventListener('contextmenu', event => event.preventDefault());
+// disable right click
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.onkeydown = function (e) {
+  // disable F12 key
+  if(e.keyCode == 123) {
+    return false;
+  }
+  // disable CTRL+Shift+I combo
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 73){
+    return false;
+  }
+  // disable CTRL+Shift+J combo
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+    return false;
+  }
  
-    document.onkeydown = function (e) {
- 
-        // disable F12 key
-        if(e.keyCode == 123) {
-            return false;
-        }
- 
-        // disable CTRL+Shift+I combo
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 73){
-            return false;
-        }
- 
-        // disable CTRL+Shift+J combo
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-            return false;
-        }
- 
-        // disable CTRL+U combo
-        if(e.ctrlKey && e.keyCode == 85) {
-            return false;
-        }
+  // disable CTRL+U combo
+  if(e.ctrlKey && e.keyCode == 85) {
+    return false;
+  }
 	
 	//disable CTRL+Shift+C
 	if(e.ctrlKey && e.shiftKey && e.keyCode == 67) {
 	    return false;
 	}
-    }
+}
 </script>
 <div id="bgwrapper"></div>
   <body class="back-row-toggle splat-toggle">
