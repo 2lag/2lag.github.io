@@ -1,5 +1,5 @@
-let lastUpdate = "06.28.2023 (MM.DD.YYYY)"
-let commits = "308"
+let lastUpdate = "07.03.2023 (MM.DD.YYYY)"
+let commits = "309"
 var enableKeys = false;
 $(function()
 {
@@ -57,7 +57,7 @@ const commands = {
 	stats: 
 	{
 		cmd: 'stats',
-		res: 'Total commits: <span class="red">'+commits+'</span><br>Repo size: <span class="red">27.5 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
+		res: 'Total commits: <span class="red">'+commits+'</span><br>Repo size: <span class="red">27.4 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
 	},
 	help: 
 	{
