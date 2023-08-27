@@ -1,5 +1,5 @@
 let lastUpdate = "08.26.2023 (MM.DD.YYYY)"
-let commits = "318"
+let commits = "320"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $(function() {
@@ -50,7 +50,7 @@ const commands = {
   },
   stats: {
     cmd: 'stats',
-    res: 'Total commits: <span class="red">' + commits + '</span><br>Repo size: <span class="red">27.4 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
+    res: 'Total commits: <span class="red">' + commits + '</span><br>Repo size: <span class="red">6.67 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
   },
   help: {
     cmd: 'help',
