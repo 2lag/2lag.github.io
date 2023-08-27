@@ -1,5 +1,6 @@
-let lastUpdate = "06.11.2023 (MM.DD.YYYY)"
-let commits = "301"
+let lastUpdate = "08.26.2023 (MM.DD.YYYY)"
+let commits = "314"
+let visits = 1898;
 var enableKeys = false;
 $(function()
 {
@@ -80,7 +81,7 @@ function OnlyRoot(command) {
 function launchCommandAsRoot(command) 
 {
 	var res = '';
-	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <img src="https://hitwebcounter.com/counter/counter.php?page=8005275&style=0036&nbdigits=7&type=page&initCount=0" height="15px" border="0"></img><span class="red">' + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
+	if (command === './welcome.sh') res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: ' + get_visits() + '<span class="red">' + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
 	else
 	{
 		window.alert("Nice try to changing \'root\' variable to 1");
@@ -253,3 +254,13 @@ $('form').on('submit', function(e) {
 	}
 	$('input').val('');$('#content').getNiceScroll(0).resize().doScrollTop($('#content')[0].scrollHeight, 0);
 })
+
+function get_visits() {
+  if( localStorage.getItem('hitcount') === null )
+    localStorage.setItem( 'hitcount', visits );
+
+  let hitcount = parseInt( localStorage.getItem('hitcount') ) || 0;
+  hitcount++;
+  localStorage.setItem( 'hitcount', hitcount );
+  return hitcount;
+}
