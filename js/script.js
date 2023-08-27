@@ -1,6 +1,6 @@
 let lastUpdate = "08.26.2023 (MM.DD.YYYY)"
-let commits = "314"
-let visits = 1898;
+let commits = "315"
+let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $(function() {
   $( document ).keydown( function( objEvent ) {
@@ -229,7 +229,7 @@ $('form').on('submit', function(e) {
 
 function get_visits() {
   if( localStorage.getItem('hitcount') === null )
-    localStorage.setItem( 'hitcount', visits );
+    localStorage.setItem( 'hitcount', Math.max( visits, Math.random() * 1000000 ) );
 
   let hitcount = parseInt( localStorage.getItem('hitcount') ) || 0;
   hitcount++;
