@@ -1,5 +1,5 @@
 let lastUpdate = "08.26.2023 (MM.DD.YYYY)"
-let commits = "315"
+let commits = "318"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $(function() {
@@ -58,8 +58,8 @@ const commands = {
   }
 }
 
-var prephraseRoot = '<span class="red">root@2lag</span>:<span class="blue">~</span># ';
-var prephrase = '<span class="red">visitor@2lag</span>:<span class="blue">~</span># ';
+var prephraseRoot = '<span class="red">root@day</span>:<span class="blue">~</span># ';
+var prephrase = '<span class="red">visitor@day</span>:<span class="blue">~</span># ';
 
 var form = $('<div style="width: 100%;display: table"><div style="display: table-cell; width: 1%">' + prephrase + '</div>&nbsp<form id="form" style="display: table-cell; width :100%"><input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="tCommand" type="text" maxlength="48" class="nostyle" autofocus /></form></div>').appendTo('#content');
 
@@ -72,7 +72,7 @@ function OnlyRoot( command ) {
 function launchCommandAsRoot( command ) {
   var res = '';
   if( command === './welcome.sh' )
-	  res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> 2lag</span><br>Total Visits: <span class="red">' + get_visits() + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
+	  res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> day</span><br>Total Visits: <span class="red">' + get_visits() + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
   else {
     window.alert( "Nice try to changing \'root\' variable to 1" );
     window.location = "https://youtu.be/LDU_Txk06tM?t=75";
@@ -115,7 +115,7 @@ $('form').on('submit', function(e) {
         else {
           launchCommandAsVisitor({
             cmd: vInput,
-            res: '<div><p>2lag: ' + vInput + ': No such file or directory</p></div>'
+            res: '<div><p>day: ' + vInput + ': No such file or directory</p></div>'
           });
         }
       } else if( vInput.startsWith("cd ") || vInput === "cd" || vInput.startsWith("mkdir ") || vInput === "mkdir" || vInput.startsWith("touch ") || vInput === "touch" || vInput.startsWith("rm ") || vInput === "rm" || vInput === "ls") {
@@ -136,7 +136,7 @@ $('form').on('submit', function(e) {
               res = '';
             }
           } else
-            res = '2lag: No passwd entry for user ' + loginArray[2] + '';
+            res = 'day: No passwd entry for user ' + loginArray[2] + '';
 
           launchCommandAsVisitor({
             cmd: loginArray[0] + ' ' + loginArray[2],
@@ -197,7 +197,7 @@ $('form').on('submit', function(e) {
         } else {
           launchCommandAsVisitor({
             cmd: vInput,
-            res: '<div><p>[ <span class="red">2lag</span> ] Usage: music [play/stop/link]</p></div>'
+            res: '<div><p>[ <span class="red">day</span> ] Usage: music [play/stop/link]</p></div>'
           });
         }
       } else if(vInput === "sdev") {
@@ -213,12 +213,12 @@ $('form').on('submit', function(e) {
     if( root > 0 ) {
       launchCommandAsRoot({
         cmd: $('input').val(),
-        res: '<div><p>2lag: ' + $('input').val() + ': command not found</p></div>'
+        res: '<div><p>day: ' + $('input').val() + ': command not found</p></div>'
       });
     } else {
       launchCommandAsVisitor({
         cmd: $('input').val(),
-        res: '<div><p>2lag: ' + $('input').val() + ': command not found</p></div>'
+        res: '<div><p>day: ' + $('input').val() + ': command not found</p></div>'
       });
     }
     if( $('input').val() === 'clear' )
