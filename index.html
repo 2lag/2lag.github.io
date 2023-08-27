@@ -2,10 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
     <meta name="theme-color" content="#00e1ff">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="viewport" content="width=device-width,user-scalable=no">
@@ -17,71 +13,56 @@
     <audio loop="false" id="breakingbad" src="https://github.com/2lag/2lag.github.io/blob/main/waltuh.mp3?raw=true" type="audio/mpeg"></audio>
   </head>
 <script>
-    // disable right click
-    document.addEventListener('contextmenu', event => event.preventDefault());
+document.addEventListener( 'contextmenu', event => event.preventDefault() );
+document.onkeydown = function(e) {
+  if( e.keyCode == 123 )
+    return false; // disable F12 key
+
+  if( e.ctrlKey && e.shiftKey && e.keyCode == 73 )
+    return false; // disable CTRL+Shift+I combo
+  
+  if( e.ctrlKey && e.shiftKey && e.keyCode == 74 )
+    return false; // disable CTRL+Shift+J combo
  
-    document.onkeydown = function (e) {
- 
-        // disable F12 key
-        if(e.keyCode == 123) {
-            return false;
-        }
- 
-        // disable CTRL+Shift+I combo
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 73){
-            return false;
-        }
- 
-        // disable CTRL+Shift+J combo
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-            return false;
-        }
- 
-        // disable CTRL+U combo
-        if(e.ctrlKey && e.keyCode == 85) {
-            return false;
-        }
-	
-	//disable CTRL+Shift+C
-	if(e.ctrlKey && e.shiftKey && e.keyCode == 67) {
-	    return false;
-	}
-    }
+  if( e.ctrlKey && e.keyCode == 85 )
+    return false; // disable CTRL+U combo
+  
+  if( e.ctrlKey && e.shiftKey && e.keyCode == 67 )
+      return false; //disable CTRL+Shift+C
+}
 </script>
 <div id="bgwrapper"></div>
   <body class="back-row-toggle splat-toggle">
-	<div class="rain front-row"></div>
+  <div class="rain front-row"></div>
     <div id="homepage" class="middle">
       <div id="terminal">
         <div id="terminal-header">
           <div>
             <div id="controls">
-		<div class="button green"></div>
-		<div class="button yellow"></div>
-		<a href="#" onclick="window.close();"><div class="button red"></div></a>
+              <div class="button green"></div>
+              <div class="button yellow"></div>
+              <a href="#" onclick="window.close();"><div class="button red"></div></a>
             </div>
-		<div style="margin: 0 auto; width: 100px;">2lag.exe</div>
+            <div style="margin: 0 auto; width: 100px;">2lag.exe</div>
           </div>
         </div>
         <div id="content">
-			<noscript>
-				<br>
-				<div>
-				<span class="red">root@2lag</span>:<span class="blue">~</span># ./nojs.sh
-					<p>Please enable JavaScript to use this site.</p>
-				</div>
-			</noscript>
-		</div>
+          <noscript><br>
+            <div>
+              <span class="red">root@2lag</span>:<span class="blue">~</span># ./nojs.sh
+              <p>Please enable JavaScript to use this site.</p>
+            </div>
+          </noscript>
+        </div>
       </div>
       <span class="taille"></span>
     </div>
-	<div id="copyright">
-		<script>
-			function Year(number) { return (number < 1000) ? number + 1900 : number; }
-			document.write('© '+Year(new Date().getYear())+' 2lag');
-		</script>
-  </div>
-    <script>var upTime = "18d 0hr 17m 38s";</script>
+    <div id="copyright">
+      <script>
+        function Year( number ) { return ( number < 1000 ) ? number + 1900 : number; }
+        document.write( '© '+Year( new Date().getYear() )+' day' );
+      </script>
+    </div>
     <script src="js\jquery.min.js"></script>
     <script src="js\jquery.nicescroll.min.js"></script>
     <script src="js\script.js"></script>
