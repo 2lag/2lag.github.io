@@ -2,7 +2,7 @@ let lastUpdate = "08.26.2023 (MM.DD.YYYY)"
 let commits = "320"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
-$(function() {
+$( function() {
   $( document ).keydown( function( objEvent ) {
     if( objEvent.ctrlKey && !enableKeys ) {
       if( objEvent.shiftKey ) {
@@ -36,12 +36,12 @@ const commands = {
     cmd: 'fillercmd',
     res: 'filler'
   },
-  filler2: {
-    cmd: 'fillercmd2',
-    res: 'MORE FILLER BECAUSE IM LACKING CREATIVITY RIGHT NOW t-t'
+  work: {
+    cmd: 'work',
+    res: 'Websites:<br># <span class="red"><a href="https://2lag.day/" target="_blank">2lag.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://mon3yt3am.github.io/" target="_blank">snap.red</a></span> - tech consulting company<br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/type" target="_blank">Type</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite<br>'
   },
-  aboutme: {
-    cmd: 'aboutme',
+  about: {
+    cmd: 'about',
     res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> HTML, CSS, JS, C/C++, PYTHON, JAVA, PROCESSING, SOLIDITY.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic Design, Video Editing, 3D Modeling.<br></span><br>'
   },
   links: {
@@ -54,7 +54,7 @@ const commands = {
   },
   help: {
     cmd: 'help',
-    res: 'Available commands:<br><br># <span class="red">aboutme</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">links</span> - Other socials.<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">jesse</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9'
+    res: 'Available commands:<br># <span class="red">about</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">jesse</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9<br># <span class="red">links</span> - Other socials.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">work</span> - See the stuff I create!'
   }
 }
 
