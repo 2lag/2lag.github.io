@@ -1,4 +1,4 @@
-# source for [2lag.day](https://2lag.day)
+# source for [kuso.day](https://kuso.day)
 
 ## to-do
 1. get new domain
