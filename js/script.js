@@ -1,5 +1,5 @@
-let lastUpdate = "08.27.2023 (MM.DD.YYYY)"
-let commits = "324"
+let lastUpdate = "10.10.2023 (MM.DD.YYYY)"
+let commits = "328"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -38,7 +38,7 @@ const commands = {
   },
   work: {
     cmd: 'work',
-    res: 'Websites:<br># <span class="red"><a href="https://2lag.day/" target="_blank">2lag.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://mon3yt3am.github.io/" target="_blank">snap.red</a></span> - tech consulting company<br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/type" target="_blank">Type</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite<br>'
+    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://mon3yt3am.github.io/" target="_blank">snap.red</a></span> - tech consulting company<br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
   },
   about: {
     cmd: 'about',
