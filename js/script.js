@@ -1,5 +1,5 @@
 let lastUpdate = "12.26.2023 (MM.DD.YYYY)"
-let commits = "330"
+let commits = "331"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -38,7 +38,7 @@ const commands = {
   },
   work: {
     cmd: 'work',
-    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
+    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
   },
   about: {
     cmd: 'about',
@@ -46,7 +46,7 @@ const commands = {
   },
   links: {
     cmd: 'links',
-    res: 'Links:<br># <span class="red"><a href="https://discord.gg/3EQCmqz3Va" target="_blank">discord server</a></span><br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="http://nohat.tv" target="_blank">nohat.tv</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span>'
+    res: 'Links:<br># <span class="red"><a href="https://discord.gg/3EQCmqz3Va" target="_blank">discord server</a></span><br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span>'
   },
   stats: {
     cmd: 'stats',
