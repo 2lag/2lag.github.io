@@ -72,7 +72,7 @@ function OnlyRoot( command ) {
 function launchCommandAsRoot( command ) {
   var res = '';
   if( command === './welcome.sh' )
-	  res = 'Welcome to <span class="red">my website</span>!<br><br>Made By:</span><span class="red"> day</span><br>Total Visits: <span class="red">' + get_visits() + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
+	  res = 'Welcome to <span class="red">my website</span>!<br><br>Total Visits: <span class="red">' + get_visits() + '</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><br><b>Type \'help\' for more details on the commands</b>'
   else {
     window.alert( "Nice try to changing \'root\' variable to 1" );
     window.location = "https://youtu.be/LDU_Txk06tM?t=75";
