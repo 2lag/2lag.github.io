@@ -29,6 +29,9 @@ document.onkeydown = function(e) {
   
   if( e.ctrlKey && e.shiftKey && e.keyCode == 74 )
     return false; // disable CTRL+Shift+J combo
+
+  if( e.ctrlKey && e.shiftKey && e.keyCode == 75 )
+    return false; // disable CTRL+Shift+K combo
  
   if( e.ctrlKey && e.keyCode == 85 )
     return false; // disable CTRL+U combo
