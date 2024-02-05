@@ -38,7 +38,7 @@ const commands = {
   },
   work: {
     cmd: 'work',
-    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor (WIP)<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
+    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
   },
   about: {
     cmd: 'about',
