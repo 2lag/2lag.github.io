@@ -1,5 +1,5 @@
-let lastUpdate = "01.01.2024 (MM.DD.YYYY) | HAPPY NEW YEAR!"
-let commits = "333"
+let lastUpdate = "02.05.2024 (MM.DD.YYYY)"
+let commits = "339"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
