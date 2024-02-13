@@ -50,7 +50,7 @@ const commands = {
   },
   stats: {
     cmd: 'stats',
-    res: 'Total commits: <span class="red">' + commits + '</span><br>Repo size: <span class="red">6.67 mb</span><br>Last update: <span class="red">' + lastUpdate.substring( 0, 11 ) + '</span>'
+    res: 'Total commits: <span class="red">' + commits + '</span><br>Repo size: <span class="red">13.7 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
   },
   help: {
     cmd: 'help',
