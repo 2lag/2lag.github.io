@@ -227,4 +227,13 @@ body {
 #content > div, #content p { margin: 10px 0; }
 #content b { opacity: .3; }
 
+#pfp {
+  top: 7%;
+  left: 50%;
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  transform: translateX( -50% );
+}
+
 ::selection, ::-moz-selection { background: rgba( 255, 255, 255, 255 ); }
