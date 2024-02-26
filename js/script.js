@@ -1,5 +1,5 @@
-let lastUpdate = "02.21.24 (MM.DD.YYYY)"
-let commits = "347"
+let lastUpdate = "02.26.24 (MM.DD.YYYY)"
+let commits = "348"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -42,7 +42,7 @@ const commands = {
   },
   about: {
     cmd: 'about',
-    res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, React, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic Design, Video Editing, 3D Modeling.<br></span><br>'
+    res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, React(Native), PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling.<br></span><br>'
   },
   links: {
     cmd: 'links',
@@ -54,7 +54,7 @@ const commands = {
   },
   help: {
     cmd: 'help',
-    res: 'Available commands:<br># <span class="red">about</span> - Some information about me.<br># <span class="red">clear</span> - Clears console. <br># <span class="red">jesse</span> - Yoyoyo 148 3 to the 3 to the 6 to the 9<br># <span class="red">links</span> - Other socials.<br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">work</span> - See the stuff I create!'
+    res: 'Available commands:<br># <span class="red">about</span> - Who I am/what I do. <br># <span class="red">clear</span> - Clears console. <br># <span class="red">jesse</span> - Yo yo yo 148 3 to the 3 to the 6 to the 9 <br># <span class="red">links</span> - Where to find me. <br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">work</span> - See the stuff I create!'
   }
 }
 
