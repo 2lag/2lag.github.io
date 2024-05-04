@@ -97,7 +97,7 @@ const commands = {
   },
   links: {
     cmd: 'links',
-    res: 'Links:<br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span>'
+    res: 'Links:<br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/kuso.day/" target="_blank">inst🤢gr🤢m</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span>'
   },
   stats: {
     cmd: 'stats',
