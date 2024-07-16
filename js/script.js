@@ -1,5 +1,5 @@
-let lastUpdate = "05.04.24"
-let commits = "351"
+let lastUpdate = "07.16.24"
+let commits = "352"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -93,11 +93,11 @@ const commands = {
   },
   about: {
     cmd: 'about',
-    res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, React(Native), PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling.<br></span><br>'
+    res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, Electron, React(Native), Bash/Batch, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling.<br></span><br>'
   },
   links: {
     cmd: 'links',
-    res: 'Links:<br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/kuso.day/" target="_blank">inst🤢gr🤢m</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span>'
+    res: 'Links:<br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/kuso.day/" target="_blank">instagram</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br># <span class="red"><a href="https://x.com/kusoday" target="_blank">X (Twitter)</a></span>'
   },
   stats: {
     cmd: 'stats',
@@ -123,7 +123,7 @@ function OnlyRoot( command ) {
 function launchCommandAsRoot( command ) {
   var res = '';
   if( command === './welcome.sh' )
-	  res = 'Welcome to <span class="red">my website</span>!<br><br>Total Visits: <span class="red">' + get_visits() + '</span><br>MOTD : <span class="red">FREE JULIAN ASSANGE</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><b>Type \'help\' for more details on the commands</b>'
+	  res = 'Welcome to <span class="red">my website</span>!<br><br>Total Visits: <span class="red">' + get_visits() + '</span><br>MOTD : <span class="red">he is free lol</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><b>Type \'help\' for more details on the commands</b>'
   else {
     window.alert( "Nice try to changing \'root\' variable to 1" );
     window.location = "https://youtu.be/LDU_Txk06tM?t=75";
