@@ -170,11 +170,28 @@ body {
   color: white;
 }
 #homepage {
-  height: 100%;
   text-align: center;
   padding: 50px;
+  height: 100%;
   z-index: 100;
 }
+
+#terminal::before {
+  background-image: url('../files/terry.gif');
+  transform: translateX( -50% );
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: hue-rotate( 69deg );
+  background-size: cover;
+  position: absolute;
+  display: block;
+  height: 144px;
+  width: 100px;
+  content: '';
+  top: -144px;
+  left: 50%;
+}
+
 #terminal {
   min-height: 350px;
   width: 650px;
