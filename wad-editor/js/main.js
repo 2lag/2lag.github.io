@@ -8,8 +8,8 @@
  *
  * -Joe */
 
-import { createApp } from '/js/petite-vue.module.js'
-import { dataURLtoFile, buildWad, displayImg, retrieveTexture, getWadHeader, getWadEntries, isValidWad,  ERRORS } from '/js/helpers.js'
+import { createApp } from './petite-vue.module.js'
+import { dataURLtoFile, buildWad, displayImg, retrieveTexture, getWadHeader, getWadEntries, isValidWad,  ERRORS } from './helpers.js'
 
 
 

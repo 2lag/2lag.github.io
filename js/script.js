@@ -1,5 +1,5 @@
 let lastUpdate = "02.27.25"
-let commits = "360"
+let commits = "361"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {

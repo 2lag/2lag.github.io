@@ -19,9 +19,9 @@
     <meta property="og:description" content="Waditor helps you create, modify, and export Half-Life WAD3 (.wad) files online in the browser.">
     <meta property="og:type" content="website">
 
-    <script src="js/windicss.js" defer init></script>
-    <script type="module" src="js/main.js"></script>
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script src="./js/windicss.js" defer init></script>
+    <script type="module" src="./js/main.js"></script>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     
   </head>
 
@@ -157,7 +157,7 @@
                 hidden
               />
               <button
-                :disabled="interfaceDisabled || !uploaded"
+                :disabled="interfaceDisabled"
                 class="self-end h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="merge_wad.click()"
                 type="button"
@@ -287,7 +287,7 @@
 		</p>
       </div>
     </div>
-    <script src="/js/jszip.min.js"></script>
-    <script src="/js/FileSaver.min.js"></script>
+    <script src="./js/jszip.min.js"></script>
+    <script src="./js/FileSaver.min.js"></script>
   </body>
 </html>
