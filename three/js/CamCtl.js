@@ -314,7 +314,41 @@ document.addEventListener( "DOMContentLoaded", ( ) => {
   back_btn.addEventListener( "mouseup", ( ) => simulateKeyEvent( "keyup", "s", 83 ) );
   fwd_btn.addEventListener( "mouseup", ( ) => simulateKeyEvent( "keyup", "w", 87 ) );
 
+  right_btn.addEventListener( "touchstart", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keydown", "d", 68 );
+  });
+  left_btn.addEventListener( "touchstart", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keydown", "a", 65 );
+  });
+  back_btn.addEventListener( "touchstart", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keydown", "s", 83 );
+  });
+  fwd_btn.addEventListener( "touchstart", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keydown", "w", 87 );
+  });
+  right_btn.addEventListener( "touchend", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keyup", "d", 68 );
+  });
+  left_btn.addEventListener( "touchend", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keyup", "a", 65 );
+  });
+  back_btn.addEventListener( "touchend", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keyup", "s", 83 );
+  });
+  fwd_btn.addEventListener( "touchend", ( e ) => {
+    e.preventDefault( );
+    simulateKeyEvent( "keyup", "w", 87 );
+  });
+
   joystick_bound.addEventListener( 'touchstart', handleStart, false );
+  joystick_bound.addEventListener( 'touchcancel', handleEnd, false );
   joystick_bound.addEventListener( 'touchmove', handleMove, false );
   joystick_bound.addEventListener( 'touchend', handleEnd, false );
 

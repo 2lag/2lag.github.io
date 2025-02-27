@@ -262,6 +262,7 @@ label:active {
 
 #joystick {
   background-color: var( --goldsrc-dark );
+  will-change: transform;
   border-radius: 50%;
   height: 50%;
   width: 50%;
