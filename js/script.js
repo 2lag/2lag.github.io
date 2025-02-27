@@ -1,5 +1,5 @@
 let lastUpdate = "02.27.25"
-let commits = "359"
+let commits = "360"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -143,6 +143,7 @@ Hardware:<br>
 # <span class="red">map</span> - Check out some Valve/Quake maps!<br>
 # <span class="red">music</span> - Usage: music [play/stop/link]<br>
 # <span class="red">stats</span> - Website statistics.<br>
+# <span class="red">wad</span> - Work with some WAD3s.<br>
 # <span class="red">work</span> - See the stuff I create!<br>
 # <span class="red">contact</span> - Best way to contact me<br>`
   }
@@ -292,6 +293,8 @@ $('form').on('submit', function(e) {
         }
       } else if( vInput === "map" ) {
         window.location.href = "three/index.html"
+      } else if( vInput === "wad" ) {
+        window.location.href = "wad-editor/index.html"
       } else if( vInput === "sdev" ) {
         enableKeys = true;
         launchCommandAsVisitor({
