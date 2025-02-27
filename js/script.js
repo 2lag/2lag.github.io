@@ -1,5 +1,5 @@
-let lastUpdate = "01.23.25"
-let commits = "356"
+let lastUpdate = "02.26.25"
+let commits = "357"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -34,78 +34,117 @@ var sMonth = [ "January","February","March","April","May","June","July","August"
 const commands = {
   contact: {
     cmd: 'contact',
-    res: '<span class="red">-----BEGIN PGP PUBLIC KEY BLOCK-----<br><br>' +
-    'mQINBGX7TewBEADEXQcTW7SPvQE0PPSTQUDzJwvoQa9ot2AKZK9FEkVYRd2mhcPJ<br>' +
-    'dzxylQjRxKCYuqWl9ZGoAht0DPy/QABNIh7ZYC+R6bXteMXRokkL2ASgkXt0YRPE<br>' +
-    'QSYlDMNpoqHh1N+KVhl45mhqMM54SbrOS9BIlro1Fh7HvZSwzXOgDEx/AAY6F7Q8<br>' +
-    'hqzR6K/aWARmy0NqsKwFtw8Eh1Uj5KR/h6KwOeenVUkOLs9RhQC1k1H62R3uCXBh<br>' +
-    '2m5Ars9VjEeNFFZ/0H4t/etjTueanMgeN4j9jtzgds+wiO1v8BBQ9U5EiGj1QQ4S<br>' +
-    'Nvi5XK/OWTZJH1rnmogBuIO/lvcmCUIKhGUKsB8RYvio+itrBeVRdSs0rZDuDZD+<br>' +
-    'CDcMOY7c8PwbZaTIwb6aguQwuWq0yGPtrSWLQ/BhBQW/xjOJ+eL8l+VJf+ji26Nz<br>' +
-    'nagM0Yi0gUsLqa0PGjZIDEtcRjO3ouCT6JGtHwt0tAz37/LQEHoV6WhQAXs6o88y<br>' +
-    'kaEeWTIgEk0QC52aXB901fuQy0PoZL8v96hInmPZWUkGqu51avU/QpzTWF6Xtjys<br>' +
-    'Iebkqalggvl/SEpWM0yfBBxbWXGOaCR9S8MJ4/IdE75zXer0eqL7U7pJu9y2Lwqj<br>' +
-    'QjwsR9R6IXA4E62Cy2zOTVG70Pk3knSV6l2fYhI+zBuh2QzqxjfO3JZQfwARAQAB<br>' +
-    'tCVkYXkgPGRheUBuYXRpb25hbC5zaGl0cG9zdGluZy5hZ2VuY3k+iQJXBBMBCABB<br>' +
-    'FiEElTJNJ0+zMz6y8Vjcry/DdM+8tE4FAmX7TewCGwMFCQlobKQFCwkIBwICIgIG<br>' +
-    'FQoJCAsCBBYCAwECHgcCF4AACgkQry/DdM+8tE7bYw//UgeHA4cqv8vbTQwUfJug<br>' +
-    'Q1KdpVevzTBtyvCNCdIONcR5c4umc56EhV6m0l95Vnh0jVwh/Db4nlZnm6TfOs1i<br>' +
-    'vV1Gri0M338a3/w/gsUIJGgxMuFK8CFT4gbNDwRDQa5kAFI5j5v3FNKGqZ+OUQGX<br>' +
-    'sKhXBPzf2ac/tFGsPCSiS6w4l2b8gVhYOEz4xahpwEMN8rJ8zV4bV6LubZiVATfR<br>' +
-    'VZzR148LGUSXvWKZ+xx4mBsZt20R5zX8WmhZ2mq0RBAf7Slf+KDmuU4UcuU6lVwI<br>' +
-    'Jh9CgPAw10juT8AonYfZtXZ9yD0JCaaG9zHbqJWhEyQHEUP3HSxbgzg5qRhQOpoO<br>' +
-    'cjk/GYeHc1S1bfINVJDGWJhD1stEstv2hpMeadz6g5cusvt6HqbsHnNueG1MJWcK<br>' +
-    'Z6wRhkqsWZ6oLOGt1TtGWWQPfk6FlrudYTtDn6YeHjdqnl7ZeKD3xwEw4PBsqiHk<br>' +
-    'gC3Yfd7lt0W+A4IMmi7VWDflPGuDXsilLkfMk5dOFdtY8Eopa1SySHYrsMzscdbz<br>' +
-    'PjcTw4H9X1Lfe0UOth9F5L6AtEOGbDllRVMs2tytydgpWhPvdQRJqa9dljAsfJfH<br>' +
-    'mfCjYKFqOWP7XXnzbmpHhnk+bUWU4qPdjspVvcRhyaCOshmggyXnX3de4Ytc57QT<br>' +
-    'K2Ag74n9yroIJcSdC6s32Eq5Ag0EZftN7AEQAMymKSIdBCQIiDMRHRDKPiZF+p1h<br>' +
-    'xTcJlbSij8ua3ZcoZx9Gx0x02VrHu3sSvd2e7uFHMjANjNHEXM9ESUolRYnYVP3f<br>' +
-    'yq4/SXi9vnLt7mdR2jhSOcFZrkimgvnjZgWpfbPQ0iVWYYRjxq0YVUD+ReOXtLQZ<br>' +
-    'pvK5EERIU4wYilTQ9c6YIB4M+6e1/tOAB64XWDup858+ZKUjbcQ/AHKkbqyAVO9v<br>' +
-    'XHkxmS+oGnqCUxyoFmig9dBAMjcoOMlY/wZGUJ6m+bxvQwQp9liJ09GC3J9YpG7d<br>' +
-    '4rzuOjepo1mSBuPlLMa1j+4gszu3iTMpHF9kQnvbTo5VmNuAoovqRIwhduTumQMg<br>' +
-    'VgLTDQLxCm8TCU1CruoN59eBHmfmWE1ugIl9i0igs4bnbzDPV6xjt+C7mV2qeCfz<br>' +
-    'ow0nLzjUto6lgzMkut/dhAyHUWemjkDQvvTK1/j1VK7M2A3V1RL3JOEv30wttIem<br>' +
-    'tQQSddCSgg9aX/euhtTeEnpq23JULOcZGAc5aSQeqhkVanpZEos0eTCqkOnwIcaM<br>' +
-    '0C7c8v9sVPouULQ+ADTq7jZ/0nEmV4AM6lAYP43CSwU1+IWdsDod1VyuOt/VTsWn<br>' +
-    'PHqrodiOsGtgsDcHD75gGaZLBO4avDMNP+/f4xRzbmTGBy3aN9eozf/6XgMCalmq<br>' +
-    'UARdIje0IbCjSEYzABEBAAGJAjwEGAEIACYWIQSVMk0nT7MzPrLxWNyvL8N0z7y0<br>' +
-    'TgUCZftN7AIbDAUJCWhspAAKCRCvL8N0z7y0TkY0D/4w4IiMWAd3eZxDOYvQ87dq<br>' +
-    'QVURqo9WifG7VpIOew8NOckFTQrmJzcbETfL80cJcEJcpZ9q7JKeVZFVehjk6uh+<br>' +
-    'ketBYMwHcxBsNF415j6Bb5945GUGUBR/O4Y3xoCLXKFuFyVI0vboIFccOz3qSqHa<br>' +
-    'Oi5jGxV/PCbMXn1eppWbYwRRwixAfdRHHCEuQdXUM8yKMQUwXCSzPBdVDl9gohas<br>' +
-    'IfrWuTWbCjTk63U25byeDH7TitvxPZvu60HYX6ZVVIoBPd4tGXQ6Jx3c0ulOrTaA<br>' +
-    '+BagYF6P/AwUWkYZxmpmVpB23PqluOCvXgjshSbxO5+oVOmk2PV8c2ltRZZYybuN<br>' +
-    'sRmbGE3vN08YTTbxw2dLxDERTm7WzPSbdzmDXzA4TSydH7bgQgQj+LRT/P703cEY<br>' +
-    'gRTh0saZZnMgs3575YOMFNxPfVTghBLnRxezsQ63YmPCsFD3ATt3Stw86XiCWQOl<br>' +
-    'OcL51LX0CIghVk49xsh5kAUNPaeOdQEEo3HuPuRAJvWb3Tc3Ed2KA0XDaQ22d3CD<br>' +
-    'SJ4fBxjIPec3WxL71bFmk72JDQ80zpuGVQu0VMViLKOeAjlvOrD3s8m3nnQ0gzwz<br>' +
-    'oOOsE0pc/2cO4ckkAPl6xQsRNqmAUyV0Lpby5gO6+ndsY6z9YFOAA+AAd9dOlHAv<br>' +
-    '9u570b58sk6DUMT1z8nGLQ==<br>' +
-    '=F3NZ<br>' +
-    '-----END PGP PUBLIC KEY BLOCK-----</span><br>' +
-    'Email: <span class="red">day@national.shitposting.agency</span>'
+    res: `<span class="red">-----BEGIN PGP PUBLIC KEY BLOCK-----<br><br>
+mQINBGX7TewBEADEXQcTW7SPvQE0PPSTQUDzJwvoQa9ot2AKZK9FEkVYRd2mhcPJ<br>
+dzxylQjRxKCYuqWl9ZGoAht0DPy/QABNIh7ZYC+R6bXteMXRokkL2ASgkXt0YRPE<br>
+QSYlDMNpoqHh1N+KVhl45mhqMM54SbrOS9BIlro1Fh7HvZSwzXOgDEx/AAY6F7Q8<br>
+hqzR6K/aWARmy0NqsKwFtw8Eh1Uj5KR/h6KwOeenVUkOLs9RhQC1k1H62R3uCXBh<br>
+2m5Ars9VjEeNFFZ/0H4t/etjTueanMgeN4j9jtzgds+wiO1v8BBQ9U5EiGj1QQ4S<br>
+Nvi5XK/OWTZJH1rnmogBuIO/lvcmCUIKhGUKsB8RYvio+itrBeVRdSs0rZDuDZD+<br>
+CDcMOY7c8PwbZaTIwb6aguQwuWq0yGPtrSWLQ/BhBQW/xjOJ+eL8l+VJf+ji26Nz<br>
+nagM0Yi0gUsLqa0PGjZIDEtcRjO3ouCT6JGtHwt0tAz37/LQEHoV6WhQAXs6o88y<br>
+kaEeWTIgEk0QC52aXB901fuQy0PoZL8v96hInmPZWUkGqu51avU/QpzTWF6Xtjys<br>
+Iebkqalggvl/SEpWM0yfBBxbWXGOaCR9S8MJ4/IdE75zXer0eqL7U7pJu9y2Lwqj<br>
+QjwsR9R6IXA4E62Cy2zOTVG70Pk3knSV6l2fYhI+zBuh2QzqxjfO3JZQfwARAQAB<br>
+tCVkYXkgPGRheUBuYXRpb25hbC5zaGl0cG9zdGluZy5hZ2VuY3k+iQJXBBMBCABB<br>
+FiEElTJNJ0+zMz6y8Vjcry/DdM+8tE4FAmX7TewCGwMFCQlobKQFCwkIBwICIgIG<br>
+FQoJCAsCBBYCAwECHgcCF4AACgkQry/DdM+8tE7bYw//UgeHA4cqv8vbTQwUfJug<br>
+Q1KdpVevzTBtyvCNCdIONcR5c4umc56EhV6m0l95Vnh0jVwh/Db4nlZnm6TfOs1i<br>
+vV1Gri0M338a3/w/gsUIJGgxMuFK8CFT4gbNDwRDQa5kAFI5j5v3FNKGqZ+OUQGX<br>
+sKhXBPzf2ac/tFGsPCSiS6w4l2b8gVhYOEz4xahpwEMN8rJ8zV4bV6LubZiVATfR<br>
+VZzR148LGUSXvWKZ+xx4mBsZt20R5zX8WmhZ2mq0RBAf7Slf+KDmuU4UcuU6lVwI<br>
+Jh9CgPAw10juT8AonYfZtXZ9yD0JCaaG9zHbqJWhEyQHEUP3HSxbgzg5qRhQOpoO<br>
+cjk/GYeHc1S1bfINVJDGWJhD1stEstv2hpMeadz6g5cusvt6HqbsHnNueG1MJWcK<br>
+Z6wRhkqsWZ6oLOGt1TtGWWQPfk6FlrudYTtDn6YeHjdqnl7ZeKD3xwEw4PBsqiHk<br>
+gC3Yfd7lt0W+A4IMmi7VWDflPGuDXsilLkfMk5dOFdtY8Eopa1SySHYrsMzscdbz<br>
+PjcTw4H9X1Lfe0UOth9F5L6AtEOGbDllRVMs2tytydgpWhPvdQRJqa9dljAsfJfH<br>
+mfCjYKFqOWP7XXnzbmpHhnk+bUWU4qPdjspVvcRhyaCOshmggyXnX3de4Ytc57QT<br>
+K2Ag74n9yroIJcSdC6s32Eq5Ag0EZftN7AEQAMymKSIdBCQIiDMRHRDKPiZF+p1h<br>
+xTcJlbSij8ua3ZcoZx9Gx0x02VrHu3sSvd2e7uFHMjANjNHEXM9ESUolRYnYVP3f<br>
+yq4/SXi9vnLt7mdR2jhSOcFZrkimgvnjZgWpfbPQ0iVWYYRjxq0YVUD+ReOXtLQZ<br>
+pvK5EERIU4wYilTQ9c6YIB4M+6e1/tOAB64XWDup858+ZKUjbcQ/AHKkbqyAVO9v<br>
+XHkxmS+oGnqCUxyoFmig9dBAMjcoOMlY/wZGUJ6m+bxvQwQp9liJ09GC3J9YpG7d<br>
+4rzuOjepo1mSBuPlLMa1j+4gszu3iTMpHF9kQnvbTo5VmNuAoovqRIwhduTumQMg<br>
+VgLTDQLxCm8TCU1CruoN59eBHmfmWE1ugIl9i0igs4bnbzDPV6xjt+C7mV2qeCfz<br>
+ow0nLzjUto6lgzMkut/dhAyHUWemjkDQvvTK1/j1VK7M2A3V1RL3JOEv30wttIem<br>
+tQQSddCSgg9aX/euhtTeEnpq23JULOcZGAc5aSQeqhkVanpZEos0eTCqkOnwIcaM<br>
+0C7c8v9sVPouULQ+ADTq7jZ/0nEmV4AM6lAYP43CSwU1+IWdsDod1VyuOt/VTsWn<br>
+PHqrodiOsGtgsDcHD75gGaZLBO4avDMNP+/f4xRzbmTGBy3aN9eozf/6XgMCalmq<br>
+UARdIje0IbCjSEYzABEBAAGJAjwEGAEIACYWIQSVMk0nT7MzPrLxWNyvL8N0z7y0<br>
+TgUCZftN7AIbDAUJCWhspAAKCRCvL8N0z7y0TkY0D/4w4IiMWAd3eZxDOYvQ87dq<br>
+QVURqo9WifG7VpIOew8NOckFTQrmJzcbETfL80cJcEJcpZ9q7JKeVZFVehjk6uh+<br>
+ketBYMwHcxBsNF415j6Bb5945GUGUBR/O4Y3xoCLXKFuFyVI0vboIFccOz3qSqHa<br>
+Oi5jGxV/PCbMXn1eppWbYwRRwixAfdRHHCEuQdXUM8yKMQUwXCSzPBdVDl9gohas<br>
+IfrWuTWbCjTk63U25byeDH7TitvxPZvu60HYX6ZVVIoBPd4tGXQ6Jx3c0ulOrTaA<br>
++BagYF6P/AwUWkYZxmpmVpB23PqluOCvXgjshSbxO5+oVOmk2PV8c2ltRZZYybuN<br>
+sRmbGE3vN08YTTbxw2dLxDERTm7WzPSbdzmDXzA4TSydH7bgQgQj+LRT/P703cEY<br>
+gRTh0saZZnMgs3575YOMFNxPfVTghBLnRxezsQ63YmPCsFD3ATt3Stw86XiCWQOl<br>
+OcL51LX0CIghVk49xsh5kAUNPaeOdQEEo3HuPuRAJvWb3Tc3Ed2KA0XDaQ22d3CD<br>
+SJ4fBxjIPec3WxL71bFmk72JDQ80zpuGVQu0VMViLKOeAjlvOrD3s8m3nnQ0gzwz<br>
+oOOsE0pc/2cO4ckkAPl6xQsRNqmAUyV0Lpby5gO6+ndsY6z9YFOAA+AAd9dOlHAv<br>
+9u570b58sk6DUMT1z8nGLQ==<br>
+=F3NZ<br>
+-----END PGP PUBLIC KEY BLOCK-----</span><br>
+Email: <span class="red">day@national.shitposting.agency</span>`
   },
   work: {
     cmd: 'work',
-    res: 'Websites:<br># <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br># <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br># <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br><br>Software:<br># <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br># <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor<br><br>Hardware:<br># <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>'
+    res: `Websites:<br>
+# <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br>
+# <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br>
+# <span class="red"><a href="https://axonbox.net" target="_blank">axonbox</a></span> - LLM Hosting w/ OpenAPI compatible API<br>
+# <span class="red"><a href="https://github.com/2lag/three" target="_blank">MapJS</a></span> - Quake/Valve .MAP Viewer<br>
+# <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br>
+<br>
+Software:<br>
+# <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br>
+# <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor<br>
+<br>
+Hardware:<br>
+# <span class="red">PortaHak</span> - Portable Raspberry Pi hacking suite (WIP)<br>`
   },
   about: {
     cmd: 'about',
-    res: 'About Me:<br># <span class="red">Name:</span> Aiden<br># <span class="red">Born:</span> ' + sMonth["2"] + ' 2002 <span class="red">(Age: ' + GetAge("2002-03-21") + ')</span><br># <span class="red">Country:</span> United States<br><br><span class="red">Bio:</span><br><span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br># <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, Electron, React(Native), Bash/Batch, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br># <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling.<br></span><br>'
+    res: `About Me:<br>
+# <span class="red">Name:</span> Aiden<br>
+# <span class="red">Born:</span> 2002 <span class="red">( ${ GetAge("2002-03-21") } )</span><br>
+# <span class="red">Country:</span> United States<br>
+<br>
+<span class="red">Bio:</span><br>
+<span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br>
+# <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, Electron, React(Native), Bash/Batch, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br>
+# <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling, auto mechanic.<br></span><br>
+# <span class="red">Languages:</span> English, Spanish, Polish ( WIP ), Japanese ( WIP - Kanji ).<br>`
   },
   links: {
     cmd: 'links',
-    res: 'Links:<br># <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br># <span class="red"><a href="https://instagram.com/kuso.day/" target="_blank">instagram</a></span><br># <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br># <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br># <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br># <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br># <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br># <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br># <span class="red"><a href="https://x.com/kusoday" target="_blank">x/twitter</a></span>'
+    res: `Links:<br>
+# <span class="red"><a href="https://github.com/2lag/" target="_blank">github</a></span><br>
+# <span class="red"><a href="https://instagram.com/kuso.day/" target="_blank">instagram</a></span><br>
+# <span class="red"><a href="https://kus.ooo/" target="_blank">kus.ooo</a></span><br>
+# <span class="red"><a href="https://youtube.com/@kusoclan" target="_blank">kuso youtube</a></span><br>
+# <span class="red"><a href="https://www.youtube.com/@spasm" target="_blank">my youtube</a></span><br>
+# <span class="red"><a href="https://soundcloud.com/author/likes" target="_blank">soundcloud</a></span><br>
+# <span class="red"><a href="https://steamcommunity.com/id/bosozoku" target="_blank">steam</a></span><br>
+# <span class="red"><a href="https://steamcommunity.com/tradeoffer/new/?partner=318481185&token=QAUufAgd" target="_blank">steam trade link</a></span><br>
+# <span class="red"><a href="https://x.com/kusoday" target="_blank">x/twitter</a></span>`
   },
   stats: {
     cmd: 'stats',
-    res: 'Total commits: <span class="red">' + commits + '</span><br>Repo size: <span class="red">13.7 mb</span><br>Last update: <span class="red">' + lastUpdate + '</span>'
+    res: `Total commits: <span class="red">${ commits }</span><br>Last update: <span class="red">${ lastUpdate }</span>`
   },
   help: {
     cmd: 'help',
-    res: 'Available commands:<br># <span class="red">about</span> - Who I am/what I do. <br># <span class="red">clear</span> - Clears console. <br># <span class="red">jesse</span> - Yo yo yo 148 3 to the 3 to the 6 to the 9 <br># <span class="red">links</span> - Where to find me. <br># <span class="red">music</span> - Usage: music [play/stop/link]<br># <span class="red">stats</span> - Website statistics.<br># <span class="red">work</span> - See the stuff I create!<br># <span class="red">contact</span> - Best way to contact me<br>'
+    res: `Available commands:<br>
+# <span class="red">about</span> - Who I am/what I do. <br>
+# <span class="red">clear</span> - Clears console. <br>
+# <span class="red">jesse</span> - Yo yo yo 148 3 to the 3 to the 6 to the 9 <br>
+# <span class="red">links</span> - Where to find me. <br>
+# <span class="red">map</span> - Check out some Valve/Quake maps!<br>
+# <span class="red">music</span> - Usage: music [play/stop/link]<br>
+# <span class="red">stats</span> - Website statistics.<br>
+# <span class="red">work</span> - See the stuff I create!<br>
+# <span class="red">contact</span> - Best way to contact me<br>`
   }
 }
 
@@ -251,7 +290,9 @@ $('form').on('submit', function(e) {
             res: '<div><p>[ <span class="red">day</span> ] Usage: music [play/stop/link]</p></div>'
           });
         }
-      } else if(vInput === "sdev") {
+      } else if( vInput === "map" ) {
+        window.location.href = "three/index.html"
+      } else if( vInput === "sdev" ) {
         enableKeys = true;
         launchCommandAsVisitor({
             cmd: '****',

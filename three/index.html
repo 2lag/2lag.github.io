@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>MapJS</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/goldsrc.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.171.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.171.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="keybinds">
+      wasd | move<br>
+      space | up<br>
+      ctrl | down<br>
+      shift | go fast<br>
+      mouse | look<br>
+      f | fullscreen<hr>
+      on-screen controls
+    </div>
+
+    <progress max="100" value="0" id="progress"></progress>
+    <div id="error"></div>
+
+    <div id="side_collapsible_section"></div>
+    <button type="button" id="side_collapsible_btn">+</button>
+
+    <button type="button" id="bottom_collapsible_btn">+</button>
+    <div id="bottom_collapsible_section">
+      <div><input type="checkbox" id="wireframe">Wireframe 'X'</div>
+      
+      <div>
+        <input type="file" id="map" accept=".map" name="mapfilename" hidden>
+        <label for="map">Choose MAP</label>
+        <select id="map_picker">
+          <option value="files/valve/c1a0.map">c1a0 (Goldsrc)</option>
+          <option value="files/quake/dm1.map">dm1 (Quake 1)</option>
+          <option>File Upload</option>
+        </select>
+        <span id="map_name"></span>
+      </div>
+
+      <div id="fps">
+        <span id="tagline">made by <a href="https://kuso.day" target="_blank">day</a></span>
+      </div>
+      
+      <div>
+        <input type="file" id="wad" accept=".wad" name="wadfilename" hidden>
+        <label for="wad">Choose WAD</label>
+        <span id="wad_name"></span>
+      </div>
+
+      <div><input type="checkbox" id="mobile">On Screen Controls</div>
+    </div>
+
+    <div id="ctl_container">
+      <div id="btn_container">
+        <button id="left_btn">
+          <img draggable="false" src="images/scroll_left.png" />
+        </button>
+        <div>
+          <button id="fwd_btn">
+            <img draggable="false" src="images/scroll_up.png" />
+          </button>
+          <button id="back_btn">
+            <img draggable="false" src="images/scroll_down.png" />
+          </button>
+        </div>
+        <button id="right_btn">
+          <img draggable="false" src="images/scroll_right.png" />
+        </button>
+      </div>
+
+      <div id="joystick_container">
+        <div id="joystick_outer">
+          <div id="joystick"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var script = document.createElement('script');
+    script.onload = ( ) => {
+      var stats = new Stats( );
+      document.getElementById( 'fps' ).prepend( stats.dom );
+      requestAnimationFrame(
+        function loop( ) {
+          stats.update( );
+          requestAnimationFrame( loop );
+        }
+      );
+    };
+    script.src = 'https://mrdoob.github.io/stats.js/build/stats.min.js';
+    document.head.appendChild( script );
+  </script>
+  <script type="module" src="main.js"></script>
+</html>
