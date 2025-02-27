@@ -305,7 +305,7 @@ createApp({
 					).data
 
 				// Create web worker to handle the intense image processing routines
-				let textureWorker = new Worker('/js/create_texture.js')
+				let textureWorker = new Worker('./js/create_texture.js')
 
 				// Worker output letiable
 				let texture
