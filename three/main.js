@@ -595,7 +595,7 @@ async function mapFileChange( e ) {
       throw new Error( "No map found" );
 
     map_data = await file.text( );
-    const wad_name = extractFirstWadName( );
+    let wad_name = extractFirstWadName( );
 
     if ( !wad_name || !wad_name.endsWith( '.wad' ) )
       throw new Error( `WAD name not found in ${ file.name }` );
