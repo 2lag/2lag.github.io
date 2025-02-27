@@ -1,0 +1,277 @@
+body {
+  padding: 16px;
+  height: 100%;
+  display: block;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+#header {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+#title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+#subtitle {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+#screens {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 16px;
+}
+
+#upload-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#upload {
+  max-width: 100%;
+  padding: 40px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#new_wad_name {
+  transition: all 0.2s;
+  margin-right: 8px;
+  font-weight: 600;
+  max-width: 100%;
+  height: 32px;
+}
+
+#create-btn,
+#error-back-btn,
+#close-btn,
+#save-zip-btn,
+#save-wad-btn, 
+#add-texture-btn,
+#merge-wad-btn,
+#rename-btn,
+#delete-btn {
+  height: 32px;
+  margin: 5px;
+  font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+#create-btn:disabled,
+#error-back-btn:disabled,
+#close-btn:disabled,
+#save-zip-btn:disabled, 
+#save-wad-btn:disabled,
+#add-texture-btn:disabled,
+#merge-wad-btn:disabled,
+#rename-btn:disabled,
+#delete-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#error-title {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#error-message {
+  font-size: 16px;
+  margin: 32px 0;
+}
+
+#wad-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 0;
+}
+
+#file-header {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+#file-name-container {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+}
+
+#file-name {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#close-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+#divider {
+  margin-top: 0;
+  height: 1px;
+  width: 100%;
+}
+
+#action-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+#save-actions {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+#add-actions {
+  text-align: right;
+  align-self: flex-end;
+  display: flex;
+  gap: 8px;
+}
+
+#canvas-container {
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  width: 100%;
+}
+
+#texture-actions {
+  display: flex;
+  flex-direction: row;
+  margin: 8px;
+  justify-content: space-between;
+}
+
+#rename-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  text-align: left;
+  gap: 8px;
+}
+
+#rename-input {
+  transition: all 0.2s;
+  font-weight: 600;
+  max-width: 100%;
+  height: 32px;
+  width: 128px;
+}
+
+#delete-container {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+#viewport {
+  margin: 4px auto 8px auto;
+  display: block;
+}
+
+#texture-list-container {
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+#search-textures {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+#texture_list {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align: center;
+  appearance: none;
+  width: 100%;
+}
+
+#texture_list:focus {
+  outline: none;
+}
+
+#texture_list option {
+  padding: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: transparent;
+}
+
+#texture_list:focus option:checked,
+#texture_list option:checked,
+#texture_list option:hover:checked,
+#texture_list option:focus:checked,
+#texture_list option:active,
+#texture_list option:hover:active,
+#texture_list option:focus:active {
+  background-color: transparent !important;
+  color: yellow !important;
+}
+
+#no-textures-container {
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+#no-textures-message {
+  margin: 0;
+}
+
+#footer {
+  padding: 16px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+#footer p {
+  margin: 4px 0;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

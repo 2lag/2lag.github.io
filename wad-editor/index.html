@@ -19,33 +19,29 @@
     <meta property="og:description" content="Waditor helps you create, modify, and export Half-Life WAD3 (.wad) files online in the browser.">
     <meta property="og:type" content="website">
 
-    <script src="./js/windicss.js" defer init></script>
     <script type="module" src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/goldsrc.css">
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     
   </head>
 
-  <body class="bg-cool-gray-400 px-4 h-screen pt-4 block" hidden>
+  <body id="body" hidden>
     <!-- Main App -->
-    <div
-      id="app"
-      class="flex flex-col md:w-full sm:w-full lg:w-md xl:w-xl 2xl:w-2xl mx-auto !max-w-full rounded-t-xl bg-cool-gray-800 text-white tracking-tighter text-center shadow-lg"
-    >
+    <div id="app" class="box">
       <!-- Header -->
-      <div class="p-4 flex-col">
-        <p class="text-xl font-bold my-2">Waditor</p>
-        <p class="my-1 text-sm">
+      <div id="header">
+        <p id="title">Waditor</p>
+        <p id="subtitle">
           Create, modify, and export Half-Life (GoldSrc) WAD3 files.
         </p>
       </div>
       <!-- Screens -->
-      <div
-        class="flex-col flex-grow bg-gray-100 text-cool-gray-800 children:p-4 py-4"
-      >
+      <div id="screens">
         <!-- File Upload Zone Screen -->
-        <div v-if="!uploaded && !error">
-          <h5>
-            Drag & drop a Half-Life <span class="text-gray-600">WAD3</span
+        <div id="upload-screen" v-if="!uploaded && !error">
+          <h5 id="upload-instructions">
+            Drag & drop a Half-Life <span id="wad3-label">WAD3</span
             ><sup
               ><a
                 target="_blank"
@@ -62,22 +58,21 @@
             file or click to select it
           </h5>
           <input
+            class="box"
             id="upload"
             type="file"
             @input="onUpload"
-            class="max-w-full px-10 py-10 transparent bg-white rounded-lg shadow-lg"
           />
-          <h5>Or, create a new one</h5>
+          <h5 id="create-new-instructions">Or, create a new one</h5>
           <input
             type="text"
             id="new_wad_name"
             minlength="1"
             v-model="newFileName"
             autofocus
-            class="h-8 p-2 max-w-full rounded-lg font-semibold transition ring-2 ring-cool-gray-300 focus:outline-none focus:ring-cool-gray-800 focus:ring-inset"
           />
           <button
-            class="h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
+            id="create-btn"
             @click="createEmpty()"
             type="button"
           >
@@ -85,11 +80,11 @@
           </button>
         </div>
         <!-- Error Screen -->
-        <div v-if="error">
-          <p class="mt-0 text-lg font-bold">Error</p>
-          <p class="text-md my-8">{{error}}</p>
+        <div id="error-screen" v-if="error">
+          <p id="error-title">Error</p>
+          <p id="error-message">{{error}}</p>
           <button
-            class="h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
+            id="error-back-btn"
             @click="clearError()"
             type="button"
           >
@@ -97,15 +92,15 @@
           </button>
         </div>
         <!-- WAD Screen -->
-        <div v-if="uploaded && !error" class="flex flex-col space-y-3 pt-0">
-          <div class="flex flex-row space-x-2">
-            <p class="text-sm flex-col flex-grow text-left">
-              Selected File: <span class="font-bold text-md">{{fileName}}</span>
+        <div id="wad-screen" v-if="uploaded && !error">
+          <div id="file-header">
+            <p id="file-name-container">
+              Selected File: <span id="file-name">{{fileName}}</span>
             </p>
-            <div class="flex-col self-center">
+            <div id="close-btn-container">
               <button
+                id="close-btn"
                 :disabled="interfaceDisabled"
-                class="h-8 px-2 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="reset()"
                 type="button"
               >
@@ -113,27 +108,27 @@
               </button>
             </div>
           </div>
-          <hr class="border-b-2 h-1 w-full !mt-0 border-gray-300" />
-          <div class="flex flex-row">
-            <div class="self-start flex-col flex-grow text-left">
+          <hr id="divider" />
+          <div id="action-row">
+            <div id="save-actions">
               <button
+                id="save-zip-btn"
                 :disabled="interfaceDisabled"
-                class="h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="saveZip()"
                 type="button"
               >
                 Save ZIP
               </button>
               <button
+                id="save-wad-btn"
                 :disabled="interfaceDisabled"
-                class="h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="saveWad()"
                 type="button"
               >
                 Save WAD
               </button>
             </div>
-            <div class="text-right self-end">
+            <div id="add-actions">
               <input
                 id="add_img"
                 type="file"
@@ -142,8 +137,8 @@
                 hidden
               />
               <button
+                id="add-texture-btn"
                 :disabled="interfaceDisabled"
-                class="self-end h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="add_img.click()"
                 type="button"
               >
@@ -157,8 +152,8 @@
                 hidden
               />
               <button
+                id="merge-wad-btn"
                 :disabled="interfaceDisabled"
-                class="self-end h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                 @click="merge_wad.click()"
                 type="button"
               >
@@ -168,28 +163,27 @@
           </div>
           <!-- Canvas Display -->
           <div
-            class="rounded-lg bg-white shadow-lg p-2 w-full"
+            id="canvas-container"
             v-if="textures.length"
           >
-            <div class="flex flex-row m-2">
+            <div id="texture-actions">
               <!-- Renaming -->
-              <div class="flex-col flex-grow text-left">
+              <div id="rename-container">
                 <input
+                  id="rename-input"
                   :disabled="interfaceDisabled"
                   type="text"
                   name="rename"
-                  id="rename"
                   :placeholder="textures[selected]?.name"
                   maxlength="12"
                   minlength="1"
                   v-model="renameInput"
                   v-effect="$el.value = textures[selected]?.name"
                   autofocus
-                  class="h-8 p-2 w-32 max-w-full rounded-lg font-semibold transition ring-2 ring-cool-gray-300 focus:outline-none focus:ring-cool-gray-800 focus:ring-inset"
                 />
                 <button
+                  id="rename-btn"
                   :disabled="interfaceDisabled || renameInput == textures[selected]?.name || renameInput < 1 || renameInput > 12"
-                  class="self-end h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 enabled:hover:text-cool-gray-800"
                   @click="rename()"
                   type="button"
                 >
@@ -197,10 +191,10 @@
                 </button>
               </div>
               <!-- Deleting -->
-              <div class="flex-col text-right">
+              <div id="delete-container">
                 <button
+                  id="delete-btn"
                   :disabled="interfaceDisabled"
-                  class="h-8 px-3 font-semibold transition rounded-lg enabled:cursor-pointer bg-gray-300 focus:outline-none focus:ring-2 focus:ring-cool-gray-800 focus:ring-inset enabled:text-gray-800 hover:text-cool-gray-800"
                   @click="remove()"
                   type="button"
                 >
@@ -214,35 +208,33 @@
             width="20"
             height="20"
             id="viewport"
-            class="m-1 mt-2 mx-auto"
             style="image-rendering: pixelated"
           ></canvas>
           <!-- Texture List-->
           <div
-            class="rounded-lg bg-white shadow-lg flex-col"
+            id="texture-list-container"
             v-if="textures.length > 0"
           >
             <input
+              id="search-textures"
               :disabled="interfaceDisabled"
               type="search"
               name="search_textures"
               v-model="search"
-              class="w-full bg-white p-3 font-semibold my-2 focus:outline-none"
               placeholder="Search Textures"
               v-init="focus()"
             />
             <select
-              :disabled="interfaceDisabled"
               id="texture_list"
+              :disabled="interfaceDisabled"
               size="5"
-              @change="selected = $el.selectedIndex"
-              v-effect="$el.selectedIndex = selected"
-              class="w-full text-center children:p-4 children:font-semibold focus:outline-none"
+              @change="selectTexture($el.value)"
+              v-effect="$el.value = textures[selected]?.name"
             >
               <option
                 :value="entry.name"
                 :name="entry.name"
-                v-for="entry in getEntries()"
+                v-for="entry in getSortedEntries()"
                 :hidden="entry.name.toLowerCase().includes(search.toLowerCase().replace(' ', '').trim()) == false"
               >
                 {{entry.name}}
@@ -251,37 +243,37 @@
           </div>
           <!-- No texture -->
           <div
-            class="rounded-lg bg-white shadow-lg flex-col"
+            id="no-textures-container"
             v-if="!textures.length"
           >
-            <h3>No Textures.</h3>
+            <h3 id="no-textures-message">No Textures.</h3>
           </div>
         </div>
       </div>
       <!-- Footer -->
-      <div class="p-4 text-sm flex-col">
-        <p>
+      <div id="footer">
+        <p id="author">
           by
-          <a href="https://github.com/2lag" class="text-gray-300"
+          <a href="https://github.com/2lag" class="footer-link"
             >day @2lag</a
           >.
         </p>
-        <p>
+        <p id="forked-from-1">
           Forked from
-          <a href="https://github.com/rehhouari/wad-editor" class="text-gray-300"
+          <a href="https://github.com/rehhouari/wad-editor" class="footer-link"
             >Rehhouari's WAD editor</a
           >.
         </p>
-        <p>
+        <p id="forked-from-2">
           Which is forked from
-          <a href="https://github.com/josephfortune/wad-editor" class="text-gray-300"
+          <a href="https://github.com/josephfortune/wad-editor" class="footer-link"
             >Joe's WAD editor</a
           >.
         </p>
-        <p>
+        <p id="contribute">
 			<a
-			  href="https://github.com/rehhouari/wad-editor"
-			  class="text-gray-300 no-underline"
+			  href="https://github.com/2lag/wad-editor"
+			  class="footer-link"
 			  >Contribute on GitHub</a
 			>
 		</p>

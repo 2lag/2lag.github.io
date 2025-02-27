@@ -109,6 +109,23 @@ createApp({
 			.includes(this.search.toLowerCase().replace(' ', '').trim())
 			)
 	},
+
+	getSortedEntries() {
+		return [...this.textures]
+			.filter((v) =>
+				v.name
+				.toLowerCase()
+				.includes(this.search.toLowerCase().replace(' ', '').trim())
+			)
+			.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+	},
+
+	selectTexture(textureName) {
+		const index = this.textures.findIndex(tex => tex.name === textureName);
+		if (index !== -1) {
+			this.selected = index;
+		}
+	},
 	
 	displayTexture(canvas) {
 		let ctx = canvas.getContext('2d')
@@ -351,20 +368,14 @@ createApp({
 			}
 
 			let header = getWadHeader(mergeDataView)
-
-			let entries = getWadEntries(
-				mergeDataView,
-				header.dirOffset,
-				header.nEntries
-			)
-
+			let entries = getWadEntries(mergeDataView, header.dirOffset, header.nEntries)
+			
 			let newTexturesCount = 0
 			let duplicatesCount = 0
 			let duplicateNames = []
 
 			for (let i = 0; i < entries.length; ++i) {
 				let newTexture = retrieveTexture(mergeDataView, entries[i])
-
 				let isDuplicate = false
 
 				for (let j = 0; j < this.textures.length; ++j) {
@@ -384,10 +395,8 @@ createApp({
 			}
 
 			this.showStatus(`Merged WAD: Added ${newTexturesCount} new textures. Filtered ${duplicatesCount} duplicates.`)
-
-			if (duplicatesCount > 0)
-				console.log('Non-merged duplicates: ', duplicateNames)
-
+			if (duplicatesCount > 0) console.log('Non-merged duplicates: ', duplicateNames)
+			if (this.textures.length > 0) this.selected = 0
 			this.interfaceDisabled = false
 		}.bind(this)
 
