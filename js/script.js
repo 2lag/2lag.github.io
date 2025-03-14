@@ -1,5 +1,5 @@
-let lastUpdate = "02.27.25"
-let commits = "364"
+let lastUpdate = "03.14.25"
+let commits = "365"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -163,7 +163,7 @@ function OnlyRoot( command ) {
 function launchCommandAsRoot( command ) {
   var res = '';
   if( command === './welcome.sh' )
-	  res = 'Welcome to <span class="red">my website</span>!<br><br>Total Visits: <span class="red">' + get_visits() + '</span><br>MOTD : <span class="red">Free Pavel Durov.</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><b>Type \'help\' for more details on the commands</b>'
+	  res = 'Welcome to <span class="red">my website</span>!<br><br>Total Visits: <span class="red">' + get_visits() + '</span><br>MOTD : <span class="red">Free Pavel Durov & RIP Carl Lundström.</span><br>Terminal Updated: <span class="red">'+ lastUpdate +'</span><br><b>Type \'help\' for more details on the commands</b>'
   else {
     window.alert( "Nice try to changing \'root\' variable to 1" );
     window.location = "https://youtu.be/LDU_Txk06tM?t=75";
