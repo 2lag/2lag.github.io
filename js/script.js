@@ -1,5 +1,5 @@
-let lastUpdate = "03.14.25"
-let commits = "365"
+let lastUpdate = "04.04.25"
+let commits = "366"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 var enableKeys = false;
 $( function() {
@@ -93,8 +93,9 @@ Email: <span class="red">day@national.shitposting.agency</span>`
 # <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br>
 # <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br>
 # <span class="red"><a href="https://axonbox.net" target="_blank">axonbox</a></span> - LLM Hosting w/ OpenAPI compatible API<br>
-# <span class="red"><a href="https://github.com/2lag/three" target="_blank">MapJS</a></span> - Quake/Valve .MAP Viewer<br>
-# <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> offline </span><br>
+# <span class="red"><a href="https://kuso.day/three/index.html" target="_blank">MapJS</a></span> - Quake/Valve .MAP Viewer<br>
+# <span class="red"><a href="https://kuso.day/wad-editor/index.html" target="_blank">WadJS</a></span> - WAD3 Editor<br>
+# <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> < offline > </span><br>
 <br>
 Software:<br>
 # <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br>
@@ -140,10 +141,8 @@ Hardware:<br>
 # <span class="red">clear</span> - Clears console. <br>
 # <span class="red">jesse</span> - Yo yo yo 148 3 to the 3 to the 6 to the 9 <br>
 # <span class="red">links</span> - Where to find me. <br>
-# <span class="red">map</span> - Check out some Valve/Quake maps!<br>
 # <span class="red">music</span> - Usage: music [play/stop/link]<br>
 # <span class="red">stats</span> - Website statistics.<br>
-# <span class="red">wad</span> - Work with some WAD3s.<br>
 # <span class="red">work</span> - See the stuff I create!<br>
 # <span class="red">contact</span> - Best way to contact me<br>`
   }
@@ -291,10 +290,6 @@ $('form').on('submit', function(e) {
             res: '<div><p>[ <span class="red">day</span> ] Usage: music [play/stop/link]</p></div>'
           });
         }
-      } else if( vInput === "map" ) {
-        window.location.href = "three/index.html"
-      } else if( vInput === "wad" ) {
-        window.location.href = "wad-editor/index.html"
       } else if( vInput === "sdev" ) {
         enableKeys = true;
         launchCommandAsVisitor({
@@ -308,7 +303,7 @@ $('form').on('submit', function(e) {
     if( root > 0 ) {
       launchCommandAsRoot({
         cmd: $('input').val(),
-        res: '<div><p>day: ' + $('input').val() + ': command not found</p></div>'
+        res: '<div><p>admin: ' + $('input').val() + ': command not found</p></div>'
       });
     } else {
       launchCommandAsVisitor({
