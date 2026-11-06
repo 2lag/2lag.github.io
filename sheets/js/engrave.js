@@ -1,4 +1,5 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
+const KEY_CHANGE_INSET = 0.9;
 const LETTERS = "cdefgab";
 const PAGE_HEIGHT = 1123;
 const PAGE_MARGIN = 68;
@@ -338,8 +339,13 @@ function rightmostHeadOf( placed ) {
   return Math.max( 0, ...placed.heads.map( head => head.offset ) );
 }
 
-function writtenFifthsOf( sheet ) {
-  return SHOW_IN_C ? 0 : sheet.key.fifths;
+function writtenFifthsOf( sheet, measure_index ) {
+  if ( SHOW_IN_C )
+    return 0;
+  const start = measure_index * measureLengthOf( sheet.meter ) + EPSILON;
+  return sheet.keyChanges.findLast(
+    change => change.position <= start
+  ).fifths;
 }
 
 function markAccidentals( measure, fifths ) {
@@ -488,8 +494,8 @@ function prepareNote( placed, clef ) {
   placed.leading += graceWidthOf( placed );
 }
 
-function prepareMeasure( measure, clef, sheet ) {
-  markAccidentals( measure, writtenFifthsOf( sheet ) );
+function prepareMeasure( measure, index, clef, sheet ) {
+  markAccidentals( measure, writtenFifthsOf( sheet, index ) );
   measure.forEach( placed => {
     placed.steps = placed.pitches.map( pitch => staffStepOf( pitch, clef ) );
     placed.beamCount = BEAM_COUNTS[ placed.duration ] || 0;
@@ -526,7 +532,10 @@ function prepareStaves( sheet ) {
   return sheet.staves.map( staff => {
     staff.events.forEach( event => event.marks = [] );
     const measures = measuresOf( staff.events, measure_length, measure_count );
-    measures.forEach( measure => prepareMeasure( measure, staff.clef, sheet ) );
+    measures.forEach(
+      ( measure, index ) =>
+        prepareMeasure( measure, index, staff.clef, sheet )
+    );
     return { clef: staff.clef, measures, events: staff.events };
   });
 }
@@ -603,11 +612,43 @@ function timeSignatureWidthOf( meter ) {
   );
 }
 
-function headerWidthOf( sheet, is_first_system ) {
+function keptAccidentalsOf( from, to ) {
+  return Math.sign( from ) === Math.sign( to )
+    ? Math.min( Math.abs( from ), Math.abs( to ) )
+    : 0;
+}
+
+function keyChangeWidthOf( from, to ) {
+  const cancelled = Math.abs( from ) - keptAccidentalsOf( from, to );
+  const gap = cancelled && to ? 0.4 : 0;
+  return KEY_CHANGE_INSET + cancelled + gap + keySignatureWidthOf( to ) + 0.8;
+}
+
+function withKeyChange( layout, sheet ) {
+  if ( !layout.index )
+    return layout;
+  const from = writtenFifthsOf( sheet, layout.index - 1 );
+  const to = writtenFifthsOf( sheet, layout.index );
+  if ( from === to )
+    return layout;
+  layout.keyChange = { from, to, width: keyChangeWidthOf( from, to ) };
+  layout.opening += layout.keyChange.width;
+  return layout;
+}
+
+function dropKeyChange( layout ) {
+  if ( !layout.keyChange )
+    return;
+  layout.opening -= layout.keyChange.width;
+  layout.keyChange = null;
+}
+
+function headerWidthOf( sheet, measure_index, is_first_system ) {
   const time_signature = is_first_system
     ? timeSignatureWidthOf( sheet.meter ) + 1
     : 0;
-  const key_width = keySignatureWidthOf( writtenFifthsOf( sheet ) );
+  const fifths = writtenFifthsOf( sheet, measure_index );
+  const key_width = keySignatureWidthOf( fifths );
   return 1 + 2.75 + 1 + key_width + time_signature;
 }
 
@@ -615,12 +656,13 @@ function breakIntoSystems( measure_layouts, sheet ) {
   const line_width = ( PAGE_WIDTH - 2 * PAGE_MARGIN ) / SPACE;
   const systems = [];
   let current = null;
+  const widthOf = layout => layout.opening + layout.stretchable;
   measure_layouts.forEach( ( layout, index ) => {
-    const natural_width = layout.opening + layout.stretchable;
-    if ( current && current.used + natural_width > current.available )
+    if ( current && current.used + widthOf( layout ) > current.available )
       current = null;
     if ( !current ) {
-      const header = headerWidthOf( sheet, !systems.length );
+      dropKeyChange( layout );
+      const header = headerWidthOf( sheet, index, !systems.length );
       current = {
         header,
         available: line_width - header,
@@ -631,7 +673,7 @@ function breakIntoSystems( measure_layouts, sheet ) {
       systems.push( current );
     }
     current.measures.push( layout );
-    current.used += natural_width;
+    current.used += widthOf( layout );
   });
   systems.forEach( ( system, index ) => {
     const is_last = index === systems.length - 1;
@@ -742,14 +784,45 @@ function drawStaffLines( left, right, top, parent ) {
   }
 }
 
-function drawKeySignature( clef, fifths, x, top, parent ) {
-  const steps = fifths > 0 ? CLEFS[ clef ].sharpSteps : CLEFS[ clef ].flatSteps;
-  const glyph = ACCIDENTAL_GLYPHS[ Math.sign( fifths ) ];
-  const advance = fifths > 0 ? 1.1 : 1;
-  steps.slice( 0, Math.abs( fifths ) ).forEach(
+function drawAccidentalRow( steps, glyph, advance, x, top, parent ) {
+  steps.forEach(
     ( step, index ) => {
       const y = yOfStep( top, step );
       drawGlyph( glyph, x + index * advance * SPACE, y, parent );
+    }
+  );
+}
+
+function stepsOfKey( clef, fifths ) {
+  return fifths > 0
+    ? CLEFS[ clef ].sharpSteps
+    : CLEFS[ clef ].flatSteps;
+}
+
+function drawKeySignature( clef, fifths, x, top, parent ) {
+  drawAccidentalRow(
+    stepsOfKey( clef, fifths ).slice( 0, Math.abs( fifths ) ),
+    ACCIDENTAL_GLYPHS[ Math.sign( fifths ) ],
+    fifths > 0 ? 1.1 : 1,
+    x, top, parent
+  );
+}
+
+function drawKeyChange( change, x, system, staves, parent ) {
+  const kept = keptAccidentalsOf( change.from, change.to );
+  const cancelled = Math.abs( change.from ) - kept;
+  const naturals_x = x + KEY_CHANGE_INSET * SPACE;
+  const key_x = naturals_x + ( cancelled + ( cancelled ? 0.4 : 0 ) ) * SPACE;
+  staves.forEach(
+    ( staff, index ) => {
+      const top = system.y + system.staffTops[ index ];
+      drawAccidentalRow(
+        stepsOfKey( staff.clef, change.from ).slice( kept, kept + cancelled ),
+        ACCIDENTAL_GLYPHS[ 0 ],
+        1,
+        naturals_x, top, parent
+      );
+      drawKeySignature( staff.clef, change.to, key_x, top, parent );
     }
   );
 }
@@ -781,6 +854,7 @@ function drawTimeSignature( meter, x, top, parent ) {
 
 function drawSystemHeader( system, staves, sheet, is_first_system, parent ) {
   const left = PAGE_MARGIN;
+  const fifths = writtenFifthsOf( sheet, system.firstMeasureNumber - 1 );
   staves.forEach( ( staff, index ) => {
     const top = system.y + system.staffTops[ index ];
     const clef = CLEFS[ staff.clef ];
@@ -789,13 +863,13 @@ function drawSystemHeader( system, staves, sheet, is_first_system, parent ) {
     const key_x = left + ( 1 + clef.width + 1 ) * SPACE;
     drawKeySignature(
       staff.clef,
-      writtenFifthsOf( sheet ),
+      fifths,
       key_x,
       top,
       parent
     );
     if ( is_first_system ) {
-      const key_width = keySignatureWidthOf( writtenFifthsOf( sheet ) );
+      const key_width = keySignatureWidthOf( fifths );
       const time_x = key_x + ( key_width + 0.6 ) * SPACE;
       drawTimeSignature( sheet.meter, time_x, top, parent );
     }
@@ -1549,9 +1623,14 @@ function drawPage( page, page_index, staves, sheet, is_last_page ) {
       drawTempo( sheet, system, svg );
     system.measures.forEach( ( layout, index ) => {
       const previous = system.measures[ index - 1 ];
+      let x = PAGE_MARGIN + layout.x * SPACE;
+      if ( layout.keyChange ) {
+        drawKeyChange( layout.keyChange, x, system, staves, svg );
+        x += layout.keyChange.width * SPACE;
+      }
       if ( layout.repeatStart ) {
-        const x = PAGE_MARGIN + layout.x * SPACE;
-        drawRepeatStart( x, system, Boolean( previous?.repeatEnd ), svg );
+        const joins_end = !layout.keyChange && Boolean( previous?.repeatEnd );
+        drawRepeatStart( x, system, joins_end, svg );
       }
       drawMeasure( layout, system, staves, svg );
       const is_final = is_last_system && index === system.measures.length - 1;
@@ -1646,6 +1725,7 @@ function renderScore( sheet ) {
     const staff_measures = staves.map( staff => staff.measures[ index ] );
     const raw_layout = layoutMeasure( staff_measures, measure_length );
     const layout = { ...raw_layout, index };
+    withKeyChange( layout, sheet );
     return withRepeatSigns( layout, repeatSignsOf( sheet ), measure_length );
   });
   const systems = breakIntoSystems( layouts, sheet );

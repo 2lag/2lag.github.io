@@ -1,7 +1,7 @@
 let lastUpdate = "06.11.26"
 let enableKeys = false;
 let musicPlaying = 0;
-let commits = "369"
+let commits = "370"
 let visits = 1898; // count before it broke :( now we rng it lmfao
 let root = 0;
 

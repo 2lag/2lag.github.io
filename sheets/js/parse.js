@@ -95,11 +95,16 @@ function parsePitch( text ) {
   return { letter: match[ 2 ], alter, octave: Number( match[ 1 ] ) };
 }
 
-function applyKeyToNotes( staves, fifths ) {
+function applyKeyToNotes( staves, key_changes ) {
   staves.forEach(
-    staff =>
+    staff => {
+      let position = 0;
+      let change = 0;
       staff.events.forEach(
         event => {
+          while ( key_changes[ change + 1 ]?.position <= position + EPSILON )
+            change++;
+          const fifths = key_changes[ change ].fifths;
           const pitches = [
             ...event.pitches,
             ...( event.graces || [] )
@@ -107,9 +112,35 @@ function applyKeyToNotes( staves, fifths ) {
           for ( let i = 0; i < pitches.length; i++ )
             pitches[ i ].alter ??= keyAlterOf( pitches[ i ].letter, fifths );
           event.pitches.sort( ( a, b ) => midiOf( a ) - midiOf( b ) );
+          position += lengthOf( event );
         }
-      )
+      );
+    }
   );
+}
+
+function isKeyOnBarline( request, measure_length ) {
+  if ( isOnBarline( request.position, measure_length ) )
+    return true;
+  request.problem( "key changes go on a barline, between measures" );
+  return false;
+}
+
+function keyChangesOf( requests, measure_length ) {
+  const changes = [{ position: 0, fifths: 0 }];
+  requests.filter(
+    request => isKeyOnBarline( request, measure_length )
+  ).sort(
+    ( a, b ) => a.position - b.position
+  ).forEach(
+    ({ position, fifths }) => {
+      if ( Math.abs( changes.at( -1 ).position - position ) < EPSILON )
+        changes.pop();
+      if ( changes.at( -1 )?.fifths !== fifths )
+        changes.push({ position, fifths });
+    }
+  );
+  return changes;
 }
 
 function parseLength( text ) {
@@ -732,15 +763,16 @@ function applySetting( name, value, sheet, problem ) {
     else problem( "time signature looks like 4,4 or 6,8" );
     return;
   }
-  if ( name === "key" ) {
-    const fifths = keyFifthsOf( value );
-    if ( fifths === null )
-      problem( "unknown key" );
-    else
-      sheet.key = { fifths };
-    return;
-  }
   problem( "unknown setting", true );
+}
+
+function changeKey( value, sheet, staff, problem ) {
+  const fifths = keyFifthsOf( value );
+  if ( fifths === null )
+    return problem( "unknown key" );
+  if ( staff.group.depth > 0 )
+    return problem( "a key change can't go inside a ( )x2 group" );
+  sheet.keyChanges.push({ position: staff.position, fifths, problem });
 }
 
 function instrumentNamed( name, problem ) {
@@ -784,6 +816,7 @@ function makeSheet() {
     staves: [],
     repeats: [],
     problems: [],
+    keyChanges: [],
     key: { fifths: 0 },
     meter: { beats: 4, unit: 4 }
   };
@@ -848,6 +881,10 @@ function parseLine( raw_line, line_number, staves, sheet, state, report ) {
     ) ?? state.instrument;
     return;
   }
+  if ( name === "key" ) {
+    changeKey( value, sheet, state.current, problem );
+    return;
+  }
   if ( name !== "clef" && name !== "mclef" ) {
     applySetting( name, value, sheet, problem );
     return;
@@ -869,7 +906,9 @@ function finalizeStaves( sheet, staves, report ) {
     )
   );
   sheet.loop = loopOf( all_staves, report );
-  applyKeyToNotes( all_staves, sheet.key.fifths );
+  sheet.keyChanges = keyChangesOf( sheet.keyChanges, measure_length );
+  sheet.key = { fifths: sheet.keyChanges[ 0 ].fifths };
+  applyKeyToNotes( all_staves, sheet.keyChanges );
   const used_staves = all_staves.filter(
     staff => staff.events.length > 0
   );

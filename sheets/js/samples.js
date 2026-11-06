@@ -361,8 +361,9 @@ g5cs 5d4 5c8- 4b8- 4a8 4g8 4f4 ||
 4a4 5c4~ 5c8 4bn8- 5c8 5d8
 5f4> 5e4\\ 5d4/ {5c8 4b8 4a8}
 4g4. 4a8 [4e 4g 5c]2 ||
-5c8* 5css8* 5e8* 5f8* {5g8 5a8 5b8} 6c4>
-5d4\\ 5eb4/ [4a 5c 5f]2^
+key=g
+5d8* 5dss8* 5f8* 5g8* {5a8 5b8 6c8} 6d4>
+5e4\\ 5fn4/ [4b 5d 5g]2^
 
 clef=b
 instrument=trombone
@@ -372,8 +373,8 @@ instrument=trombone
 2d8 3a8 3f8 3a8 2g4 3g4
 2b4* 2a4* 2g4* 3c4*
 3c4 2e4 2f2 ||
-2d4 2a4 2g4 3c4
-3c4 3c4 [2f 3c 3f]2^`,
+2e4 2b4 2a4 3d4
+3d4 3d4 [2g 3d 3g]2^`,
 
   "Night Walk (Claude original)":
 `title=Night Walk
