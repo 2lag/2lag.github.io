@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1557c9" />
+      <stop offset="0.35" stop-color="#3f86e3" />
+      <stop offset="0.62" stop-color="#8fc0f1" />
+      <stop offset="0.7" stop-color="#c7e1f8" />
+    </linearGradient>
+    <linearGradient id="front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fd14f" />
+      <stop offset="0.18" stop-color="#5eae2c" />
+      <stop offset="0.6" stop-color="#3b8a1b" />
+      <stop offset="1" stop-color="#2a6d12" />
+    </linearGradient>
+    <linearGradient id="back" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fae55" />
+      <stop offset="1" stop-color="#3e7a2c" />
+    </linearGradient>
+    <radialGradient id="sunlit" cx="0.32" cy="0.58" r="0.45">
+      <stop offset="0" stop-color="#c8f27a" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#c8f27a" stop-opacity="0" />
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="14" />
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)" />
+  <g fill="#ffffff" opacity="0.88" filter="url(#soft)">
+    <ellipse cx="295" cy="161" rx="115" ry="42" />
+    <ellipse cx="154" cy="156" rx="77" ry="33" />
+    <ellipse cx="159" cy="184" rx="92" ry="23" />
+    <ellipse cx="174" cy="179" rx="118" ry="24" />
+    <ellipse cx="253" cy="157" rx="119" ry="23" />
+    <ellipse cx="193" cy="166" rx="72" ry="40" />
+    <ellipse cx="689" cy="127" rx="53" ry="29" />
+    <ellipse cx="551" cy="137" rx="58" ry="31" />
+    <ellipse cx="647" cy="111" rx="84" ry="25" />
+    <ellipse cx="686" cy="121" rx="85" ry="48" />
+    <ellipse cx="714" cy="113" rx="56" ry="40" />
+    <ellipse cx="686" cy="114" rx="73" ry="25" />
+    <ellipse cx="1170" cy="196" rx="152" ry="23" />
+    <ellipse cx="1206" cy="205" rx="143" ry="43" />
+    <ellipse cx="1162" cy="219" rx="120" ry="36" />
+    <ellipse cx="1189" cy="221" rx="126" ry="31" />
+    <ellipse cx="1017" cy="203" rx="111" ry="24" />
+    <ellipse cx="1184" cy="211" rx="147" ry="37" />
+    <ellipse cx="1377" cy="140" rx="73" ry="41" />
+    <ellipse cx="1308" cy="119" rx="87" ry="35" />
+    <ellipse cx="1332" cy="133" rx="64" ry="37" />
+    <ellipse cx="1397" cy="114" rx="97" ry="24" />
+    <ellipse cx="1485" cy="147" rx="91" ry="47" />
+    <ellipse cx="1499" cy="132" rx="76" ry="44" />
+    <ellipse cx="879" cy="343" rx="82" ry="47" />
+    <ellipse cx="906" cy="316" rx="50" ry="30" />
+    <ellipse cx="911" cy="316" rx="48" ry="45" />
+    <ellipse cx="969" cy="331" rx="86" ry="40" />
+    <ellipse cx="964" cy="340" rx="63" ry="44" />
+    <ellipse cx="888" cy="334" rx="46" ry="36" />
+    <ellipse cx="215" cy="372" rx="44" ry="37" />
+    <ellipse cx="140" cy="375" rx="55" ry="26" />
+    <ellipse cx="188" cy="387" rx="62" ry="37" />
+    <ellipse cx="145" cy="372" rx="65" ry="34" />
+    <ellipse cx="265" cy="379" rx="45" ry="48" />
+    <ellipse cx="235" cy="397" rx="54" ry="44" />
+    <ellipse cx="1306" cy="384" rx="93" ry="34" />
+    <ellipse cx="1259" cy="371" rx="55" ry="27" />
+    <ellipse cx="1238" cy="376" rx="92" ry="29" />
+    <ellipse cx="1203" cy="393" rx="87" ry="27" />
+    <ellipse cx="1267" cy="380" rx="50" ry="26" />
+    <ellipse cx="1307" cy="396" rx="73" ry="41" />
+  </g>
+  <path d="M700 640 C 980 590 1240 600 1600 560 L1600 1000 L700 1000 Z" fill="url(#back)" />
+  <path d="M0 640 C 260 560 520 520 820 560 C 1100 598 1360 690 1600 700 L1600 1000 L0 1000 Z" fill="url(#front)" />
+  <rect width="1600" height="1000" fill="url(#sunlit)" />
+</svg>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>sheets</title>
+
+  <link rel="preload" href="fonts/Bravura.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link id="ERA_STYLE" rel="stylesheet" href="css/web4.css" />
+  <link rel="stylesheet" href="css/print.css" />
+</head>
+<body>
+  <header id="HEADER">
+    <div id="BRAND">sheets</div>
+    <nav>
+      <button id="HELP_BUTTON" title="syntax help">?</button>
+      <div id="EXPORT_ITEM">
+        <button id="EXPORT_BUTTON" title="export">
+          <svg id="EXPORT_ICON" viewBox="0 0 24 24">
+            <path d="M12 3.5v11M7 10l5 5 5-5M4.5 16.5v3h15v-3" />
+          </svg>
+        </button>
+        <div id="EXPORT_MENU">
+          <button id="EXPORT_LINK">link</button>
+          <button id="EXPORT_STRUDEL">strudel.cc</button>
+          <button id="EXPORT_PDF">pdf</button>
+        </div>
+      </div>
+      <div id="LOOK_ITEM">
+        <button id="LOOK_BUTTON" title="look">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="8.5" />
+            <path d="M12 3.5a8.5 8.5 0 0 0 0 17z" />
+          </svg>
+        </button>
+        <div id="LOOK_MENU">
+          <button id="THEME_BUTTON">
+            <svg class="sunIcon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="4.2" />
+              <path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" />
+            </svg>
+            <svg class="moonIcon" viewBox="0 0 24 24">
+              <path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6z" />
+            </svg>
+          </button>
+          <button id="ERA_BUTTON">4.0</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <dialog id="HELP">
+    <h2>writing music</h2>
+    <label id="SAMPLE_ROW">
+      try a sample
+      <select id="SAMPLE_PICKER"></select>
+    </label>
+    <pre>
+title=Prelude               <i># shown above the music</i>
+author=you
+bpm=96                      <i># quarter notes per minute</i>
+ts=4,4                      <i># time signature</i>
+key=g                       <i># c g d f bb eb ..., minor: am dm</i>
+
+clef=t                      <i># following lines go to the treble staff</i>
+instrument=flute            <i># optional: this staff's sound</i>
+r8 4g8 4b8 5d8 5g4 5f8 5e8  <i># in key=g, 5f is F sharp</i>
+clef=b                      <i># following lines go to the bass staff</i>
+3g2 2d4. 2d8
+    </pre>
+    <table>
+      <tr><td><code>4c4</code></td><td>octave 4, C, quarter note (<code>4c</code> is middle C)</td></tr>
+      <tr><td><code>4cs8</code> <code>4bb8</code> <code>4fn8</code></td><td>force sharp, flat or natural, whatever the key</td></tr>
+      <tr><td><code>4fss8</code> <code>4ebb8</code></td><td>double sharp, double flat (B double flat is <code>4bbb8</code>)</td></tr>
+      <tr><td><code>1 2 4 8 16 32 64</code></td><td>whole, half, quarter, eighth, sixteenth, thirty-second, sixty-fourth</td></tr>
+      <tr><td><code>3g2.</code></td><td>dotted half note (<code>..</code> for double dot)</td></tr>
+      <tr><td><code>5e4~</code></td><td>tied into the next note</td></tr>
+      <tr><td><code>r4</code></td><td>quarter rest</td></tr>
+      <tr><td><code>[4c 4e 4g]2</code></td><td>chord</td></tr>
+      <tr><td><code>g5cs 5d4</code></td><td>grace note before the next note (several in a row make a run)</td></tr>
+      <tr><td><code>4c8- 4d8- 4e8</code></td><td>slur: each <code>-</code> joins a note to the next</td></tr>
+      <tr><td><code>4c4*</code> <code>4c4&gt;</code> <code>4c4_</code></td><td>staccato, accent, tenuto (combine them: <code>4c4*&gt;</code>)</td></tr>
+      <tr><td><code>4c2^</code></td><td>fermata: playback waits on it until you press ▶</td></tr>
+      <tr><td><code>5c4\</code> <code>5c4/</code></td><td>fall off the note, rise off the note</td></tr>
+      <tr><td><code>{4c8 4d8 4e8}</code></td><td>triplet (any count: 5 sixteenths make a quintuplet)</td></tr>
+      <tr><td><code>|</code> <code>||</code></td><td>start and end of a repeat, on a barline (nest by opening another <code>|</code> inside)</td></tr>
+      <tr><td><code>|||</code> <code>||||</code></td><td>loop forever: everything between them plays on repeat until you stop it</td></tr>
+      <tr><td><code>4c8x4</code> <code>(…)x2</code></td><td>write a note, chord, triplet or a whole <code>( )</code> group several times in a row (groups can span lines)</td></tr>
+      <tr><td><code>mclef=b</code></td><td>mute that staff (any one of its clef lines will do), to hear only the other</td></tr>
+      <tr><td><code># ...</code></td><td>comment</td></tr>
+    </table>
+    <p>
+      Instruments: piano, electric piano, organ, music box, vibraphone, soft pad, chiptune, violin, strings, cello, upright bass, guitar, harp, trumpet, muted trumpet, trombone, sax, flute, choir.
+      A staff without <code>instrument=</code> plays the sound picked in the sound menu (top right of the sheet).
+    </p>
+    <p>
+      Notes follow the key: in <code>key=f</code>, <code>4b4</code> is B flat, and changing the key re-pitches the whole sheet.
+      Add <code>s</code>, <code>b</code> or <code>n</code> to step outside the key for one note.
+      Notes that cross a barline are split and tied for you.
+    </p>
+    <button id="CLOSE_HELP_BUTTON">close</button>
+  </dialog>
+
+  <main id="WORKSPACE">
+    <section id="WRITING">
+      <div id="EDITOR_FRAME">
+        <div id="HIGHLIGHTS" aria-hidden="true"></div>
+        <textarea id="EDITOR" spellcheck="false">title=Prelude
+author=you
+bpm=96
+ts=4,4
+key=g
+
+clef=t
+r8 4g8 4b8 5d8 5g4 5f8 5e8
+5d4. 5c8 4b8 4a8 4g8 4f8
+[4g 4b 5d]2 5e8 5d16 5c16 4b8 4a8
+4g2. r4
+
+clef=b
+3g1
+2d2 3d2
+3g4 3b4 3c2
+3g2. r4
+        </textarea>
+      </div>
+      <div id="NOTE_HINT"></div>
+      <div id="PROBLEM_TIP"></div>
+    </section>
+
+    <div id="SPLITTER"></div>
+
+    <section id="OUTPUT" tabindex="-1">
+      <button id="SOUND_BUTTON" title="sound">
+        <svg id="SOUND_ICON" viewBox="0 0 24 24">
+          <path class="tracks" d="M6 4v16M12 4v16M18 4v16" />
+          <rect x="3.5" y="13" width="5" height="3.2" rx="1.2" />
+          <rect x="9.5" y="6.5" width="5" height="3.2" rx="1.2" />
+          <rect x="15.5" y="11" width="5" height="3.2" rx="1.2" />
+        </svg>
+      </button>
+      <div id="SOUND_PANEL">
+        <p id="SOUND_TITLE">Sound Properties</p>
+        <p id="SHEET_INSTRUMENTS"></p>
+        <label>
+          instrument
+          <select id="PRESET_PICKER"></select>
+        </label>
+        <label>
+          waveform
+          <select id="WAVEFORM_PICKER"></select>
+        </label>
+        <label>
+          body
+          <select id="BODY_PICKER"></select>
+        </label>
+        <div id="SOUND_SLIDER_LIST"></div>
+        <div id="SOUND_ACTIONS">
+          <button id="PREVIEW_BUTTON">try it</button>
+          <button id="RANDOM_BUTTON">random</button>
+          <button id="RESET_SOUND_BUTTON">reset</button>
+        </div>
+      </div>
+
+      <div id="SCORE"></div>
+
+      <div id="TRANSPORT">
+        <button id="PLAY_BUTTON">
+          <svg class="playIcon" viewBox="0 0 18 18">
+            <path d="M5 3v12l10-6z" />
+          </svg>
+          <span class="pauseIcon"></span>
+        </button>
+        <span id="CLOCK">0:00 / 0:00</span>
+        <input id="SEEKER" type="range" max="1000" />
+        <span id="SEEKER_THUMB"></span>
+        <button id="METRONOME_BUTTON" title="tempo counter">
+          <svg id="METRONOME_ICON" viewBox="0 0 24 24">
+            <path d="M7.6 20.5 10.2 3.5h3.6l2.6 17zM6 20.5h12M12 16.5l5.5-10" />
+            <circle cx="15.4" cy="10.3" r="1.5" />
+          </svg>
+        </button>
+        <button id="KEY_BUTTON" title="show every sharp and flat, as if in C">C</button>
+        <div class="popItem">
+          <button id="VOLUME_BUTTON">
+            <svg id="VOLUME_ICON" viewBox="0 0 24 24">
+              <path class="speaker" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+              <path class="waves" d="M15 9a4 4 0 0 1 0 6M17.5 6.5a7.5 7.5 0 0 1 0 11" />
+              <path class="silenced" d="M15.5 9.5l5 5M20.5 9.5l-5 5" />
+            </svg>
+          </button>
+          <div id="VOLUME_POPUP" class="popup">
+            <label id="VOLUME_CONTROL">
+              <span>volume</span>
+              <input id="VOLUME_SLIDER" type="range" />
+              <span id="VOLUME_READOUT">100%</span>
+            </label>
+          </div>
+        </div>
+        <div class="popItem">
+          <button id="SWING_BUTTON" title="swing">
+            <svg id="SWING_ICON" viewBox="0 0 24 24">
+              <path d="M4 9.5c3-5 10-6.5 15-2" />
+              <path d="M16.5 5.2l2.6 2.4-3.3 1.1" />
+              <rect x="3" y="13.5" width="10" height="4" rx="2" />
+              <rect x="15" y="13.5" width="5.5" height="4" rx="2" />
+            </svg>
+          </button>
+          <div id="SWING_POPUP" class="popup">
+            <label id="SWING_CONTROL">
+              <span>swing</span>
+              <input id="SWING_SLIDER" type="range" min="50" max="100" />
+              <span id="SWING_READOUT">off</span>
+            </label>
+          </div>
+        </div>
+        <button id="LISTEN_BUTTON">
+          <svg class="enterIcon" viewBox="0 0 24 24">
+            <path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7" />
+          </svg>
+          <svg class="leaveIcon" viewBox="0 0 24 24">
+            <path d="M20 10h-6V4M14 10l7-7M4 14h6v6M10 14l-7 7" />
+          </svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/parse.js"></script>
+  <script src="js/repeats.js"></script>
+  <script src="js/engrave.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/follow.js"></script>
+  <script src="js/play.js"></script>
+  <script src="js/metronome.js"></script>
+  <script src="js/playhead.js"></script>
+  <script src="js/seeker.js"></script>
+  <script src="js/swing.js"></script>
+  <script src="js/volume.js"></script>
+  <script src="js/popups.js"></script>
+  <script src="js/drag.js"></script>
+  <script src="js/keyofc.js"></script>
+  <script src="js/dropdowns.js"></script>
+  <script src="js/soundpanel.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/read.js"></script>
+  <script src="js/samples.js"></script>
+  <script src="js/hint.js"></script>
+  <script src="js/barmarks.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

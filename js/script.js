@@ -1,7 +1,25 @@
-let lastUpdate = "19.03.26"
-let commits = "368"
+let lastUpdate = "06.11.26"
+let enableKeys = false;
+let musicPlaying = 0;
+let commits = "369"
 let visits = 1898; // count before it broke :( now we rng it lmfao
-var enableKeys = false;
+let root = 0;
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
+
 $( function() {
   $( document ).keydown( function( objEvent ) {
     if( objEvent.ctrlKey && !enableKeys ) {
@@ -18,19 +36,14 @@ $( function() {
   });
 });
 
-var root = 0;
 var MD5 = function(d){result = M(V(Y(X(d),8*d.length)));return result.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
 
-var pMusic = document.getElementById( "music" );
-pMusic.volume = 0.25;
-pMusic.load();
-var pMusicPlaying = 0;
+music.volume = 0.25;
+music.load();
 
-var pJesse = document.getElementById( "breakingbad" );
-pJesse.volume = 0.4;
-pJesse.loop = false;
+breakingbad.volume = 0.4;
+breakingbad.loop = false;
 
-var sMonth = [ "January","February","March","April","May","June","July","August","September","October","November","December" ];
 const commands = {
   contact: {
     cmd: 'contact',
@@ -90,16 +103,45 @@ Email: <span class="red">day@national.shitposting.agency</span>`
   work: {
     cmd: 'work',
     res: `Websites:<br>
-# <span class="red"><a href="https://kuso.day/" target="_blank">kuso.day</a></span> - this one<br>
-# <span class="red"><a href="https://kus.ooo" target="_blank">kus.ooo</a></span> - kuso clan<br>
-# <span class="red"><a href="https://axonbox.net" target="_blank">axonbox</a></span> - LLM Hosting w/ OpenAPI compatible API<br>
-# <span class="red"><a href="https://kuso.day/three/index.html" target="_blank">MapJS</a></span> - Quake/Valve .MAP Viewer<br>
-# <span class="red"><a href="https://kuso.day/wad-editor/index.html" target="_blank">WadJS</a></span> - WAD3 Editor<br>
-# <span class="red"><a href="https://github.com/2lag/nohat.tv" target="_blank">nohat.tv </a></span>- old content group<span class="red"> < offline > </span><br>
+# <span class="red">
+    <a href="https://kuso.day/" target="_blank">
+    kuso.day
+    </a>
+  </span> - this one<br>
+# <span class="red">
+    <a href="https://kus.ooo" target="_blank">
+    kus.ooo
+    </a>
+  </span> - kuso clan<br>
+# <span class="red"> <!-- TODO: one day i will fix my dns, but not today -->
+    <a href="https://kuso.day/three/index.html" target="_blank">
+    MapJS
+    </a>
+  </span> - Quake/Valve .MAP Viewer<br>
+# <span class="red">
+    <a href="https://kuso.day/wad-editor/index.html" target="_blank">
+    WadJS
+    </a>
+  </span> - WAD3 Editor<br>
+# <span class="red">
+    <a href="https://kuso.day/sheets/index.html" target="_blank">
+    Sheets
+    </a>
+  </span> - Create and share sheet music from your browser.<br>
+# <span class="red">
+    <a href="https://git.networkheaven.net/axonbox.net/" target="_blank">
+    axonbox
+    </a>
+  </span> - <span class="red">ex-</span>LLM Hosting w/ OpenAPI compatible API<span class="red"> < offline > </span><br>
+# <span class="red">
+    <a href="https://github.com/2lag/nohat.tv" target="_blank">
+    nohat.tv
+    </a>
+  </span> - old content group<span class="red"> < offline > </span><br>
 <br>
 Software:<br>
 # <span class="red"><a href="https://github.com/2lag/CGUI" target="_blank">CGUI</a></span> - C++ Windows GUI base<br>
-# <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor w/ CGUI<br>
+# <span class="red"><a href="https://github.com/2lag/edit" target="_blank">Edit</a></span> - C++ Text Editor w/ CGUI base<br>
 # <span class="red"><a href="https://github.com/2lag/memview" target="_blank">Memview</a></span> - Cheat Engine for Linux<br>
 <br>
 Hardware:<br>
@@ -109,14 +151,19 @@ Hardware:<br>
     cmd: 'about',
     res: `About Me:<br>
 # <span class="red">Name:</span> Aiden<br>
-# <span class="red">Born:</span> 2002 <span class="red">( ${ GetAge("2002-03-21") } )</span><br>
+# <span class="red">Born:</span> 2002 <span class="red">( ${ GetAge("2002-03-14") } )</span><br>
 # <span class="red">Country:</span> United States<br>
 <br>
 <span class="red">Bio:</span><br>
-<span class="pink">Dedicated developer holding Associate\'s of Applied Science for software development. Diverse work experience in IT, retail, and freelance development, complemented with educational and personal exposure to programming of all forms including: websites/web apps, smart contracts, Windows/Linux apps, etc.<br></span><br>
-# <span class="red">Programming:</span> C/C++/C#, HTML, CSS, JavaScript, Electron, React(Native), Bash/Batch, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br>
-# <span class="red">Extraneous Skills:</span> Graphic design, video editing, 3D modeling, auto mechanic.<br></span><br>
-# <span class="red">Languages:</span> English, Spanish, Polish ( WIP ), Japanese ( WIP - Kanji ).<br>`
+<span class="pink">
+I have a Associate\'s of Applied Science for software development lying around somewhere, but that doesn't mean anything in the modern environment.
+With ${ GetAge("2018-01-01") } years in the workforce, I have unique and diverse talents when it comes to professional environments.
+My hobbies have branched into almost every field over the years, so I can pull out some esoteric knowledge from time to time.
+If you're curious what I'm capable of in a specific field, just ask!
+<br></span><br>
+# <span class="red">Programming:</span> C/C++/C#(Core & Framework), Electron, React(Native), Bash/Batch/PS, PHP, SourcePawn, Python, Processing, Java, Solidity.<br></span><br>
+# <span class="red">Current Extraneous Skills:</span> Bird/animal watching, music, graphic design, video editing, 3D modeling, driving, auto mechanic.<br></span><br>
+# <span class="red">Languages:</span> English, Spanish, Polish.<br>`
   },
   links: {
     cmd: 'links',
@@ -242,37 +289,37 @@ $('form').on('submit', function(e) {
           });
         }
       } else if( vInput === "jesse" ) {
-        pJesse.load();
-        pJesse.play();
+        breakingbad.load();
+        breakingbad.play();
         launchCommandAsVisitor({
           cmd: vInput,
           res: '<div><p>[ <span class="green">SUCCESS</span> ] Jesse playing!</p></div>'
         });
       } else if( vInput.startsWith("music") ) {
         if( vInput === "music play" ) {
-          if( pMusicPlaying == 1 ) {
+          if( musicPlaying == 1 ) {
             launchCommandAsVisitor({
               cmd: vInput,
               res: '<div><p>[ <span class="red">ERROR</span> ] Music is already playing!</p></div>'
             });
           } else {
-            pMusic.play();
-            pMusicPlaying = 1;
+            music.play();
+            musicPlaying = 1;
             launchCommandAsVisitor({
               cmd: vInput,
               res: '<div><p>[ <span class="green">SUCCESS</span> ] Music playing!</p></div>'
             });
           }
         } else if( vInput === "music stop" ) {
-          if( pMusicPlaying == 0 ) {
+          if( musicPlaying == 0 ) {
             launchCommandAsVisitor({
               cmd: vInput,
               res: '<div><p>[ <span class="red">ERROR</span> ] Music is already stopped!</p></div>'
             });
           } else {
-            pMusic.pause();
-            pMusic.currentTime = 0;
-            pMusicPlaying = 0;
+            music.pause();
+            music.currentTime = 0;
+            musicPlaying = 0;
             launchCommandAsVisitor({
               cmd: vInput,
               res: '<div><p>[ <span class="green">SUCCESS</span> ] Music stopped!</p></div>'

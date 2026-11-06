@@ -1,0 +1,577 @@
+:root {
+  --pressed: inset -1px -1px var( --light ), inset 1px 1px var( --dark ), inset -2px -2px var( --soft-light ), inset 2px 2px var( --shadow );
+  --raised: inset -1px -1px var( --dark ), inset 1px 1px var( --soft-light ), inset -2px -2px var( --shadow ), inset 2px 2px var( --light );
+  --sunken: inset -1px -1px var( --light ), inset 1px 1px var( --shadow ), inset -2px -2px var( --soft-light ), inset 2px 2px var( --dark );
+  --window: inset -1px -1px var( --dark ), inset 1px 1px var( --soft-light ), inset -2px -2px var( --shadow ), inset 2px 2px var( --light );
+  --ui: 12px Tahoma, "Microsoft Sans Serif", "MS Sans Serif", Arial, sans-serif;
+  --soft-light: #dfdfdf;
+  --title-from: #000080;
+  --select-ink: #ffffff;
+  --title-ink: #ffffff;
+  --field-ink: #000000;
+  --title-to: #1084d0;
+  --problem: #ff0000;
+  --shadow: #808080;
+  --select: #000080;
+  --marker: #b8d8ff;
+  --light: #ffffff;
+  --muted: #808080;
+  --field: #ffffff;
+  --face: #c0c0c0;
+  --dark: #000000;
+  --desk: #008080;
+  --link: #0000ff;
+  --ink: #000000;
+  --tip: #ffffe1;
+  --thumb: 11px;
+}
+
+body.dark {
+  --soft-light: #4a446c;
+  --title-from: #1b0b4f;
+  --select-ink: #ffffff;
+  --title-ink: #ffffff;
+  --field-ink: #ece8ff;
+  --title-to: #8a3fb8;
+  --problem: #ff7b9c;
+  --shadow: #17142a;
+  --select: #6c3fa8;
+  --marker: #44306e;
+  --light: #6c6596;
+  --muted: #a39dc8;
+  --field: #15131f;
+  --face: #2f2b45;
+  --dark: #05040c;
+  --desk: #070a24;
+  --link: #c3b4ff;
+  --ink: #ece8ff;
+  --tip: #262240;
+}
+
+body {
+  background: var( --face );
+  color: var( --ink );
+  font: var( --ui );
+}
+
+header {
+  background: linear-gradient( 90deg, var( --title-from ), var( --title-to ) );
+  color: var( --title-ink );
+  padding: 3px 3px 3px 6px;
+  margin: 3px 3px 0;
+}
+
+#BRAND {
+  font: bold 13px Tahoma, "Microsoft Sans Serif", Arial, sans-serif;
+}
+
+#BRAND::before {
+  content: "";
+}
+
+nav {
+  gap: 2px;
+}
+
+nav > button,
+#LOOK_BUTTON,
+#EXPORT_BUTTON {
+  font-weight: bold;
+  font-size: 13px;
+  height: 22px;
+  width: 24px;
+  padding: 0;
+}
+
+#EXPORT_ICON,
+#LOOK_BUTTON svg {
+  height: 13px;
+  width: 13px;
+}
+
+nav > button,
+#LOOK_BUTTON,
+#SOUND_BUTTON,
+#EXPORT_BUTTON,
+#LOOK_MENU button,
+#TRANSPORT button,
+#CLOSE_HELP_BUTTON,
+#SOUND_ACTIONS button {
+  font-family: Tahoma, "Microsoft Sans Serif", Arial, sans-serif;
+  box-shadow: var( --raised );
+  background: var( --face );
+  color: var( --ink );
+  border-radius: 0;
+  border: none;
+}
+
+nav > button:active,
+#LOOK_BUTTON:active,
+#SOUND_BUTTON:active,
+#EXPORT_BUTTON:active,
+#LOOK_MENU button:active,
+#TRANSPORT button:active,
+#CLOSE_HELP_BUTTON:active,
+#TRANSPORT #KEY_BUTTON.on,
+#TRANSPORT #SWING_BUTTON.on,
+#SOUND_ACTIONS button:active,
+#TRANSPORT #METRONOME_BUTTON.on,
+#LOOK_ITEM:has( #LOOK_MENU.open ) #LOOK_BUTTON,
+#EXPORT_ITEM:has( #EXPORT_MENU.open ) #EXPORT_BUTTON {
+  box-shadow: var( --pressed );
+}
+
+#TRANSPORT #KEY_BUTTON.on,
+#TRANSPORT #SWING_BUTTON.on,
+#TRANSPORT #METRONOME_BUTTON.on {
+  background: repeating-conic-gradient( var( --face ) 0 25%, var( --light ) 0 50% ) 0 0 / 2px 2px;
+}
+
+#LOOK_MENU,
+#EXPORT_MENU {
+  box-shadow: var( --window ), 2px 2px 0 rgba( 0, 0, 0, 0.35 );
+  background: var( --face );
+  padding: 3px;
+  top: 28px;
+}
+
+#EXPORT_MENU {
+  transform: none;
+  left: auto;
+  right: 0;
+}
+
+#EXPORT_MENU button {
+  background: transparent;
+  color: var( --ink );
+  padding: 4px 20px;
+  font: var( --ui );
+  border: none;
+}
+
+#EXPORT_MENU button:hover {
+  background: var( --select );
+  color: var( --select-ink );
+}
+
+#LOOK_MENU button {
+  font-size: 15px;
+  height: 26px;
+}
+
+#ERA_BUTTON {
+  font: bold 12px Tahoma, Arial, sans-serif;
+}
+
+#HELP {
+  box-shadow: var( --window );
+  background: var( --face );
+  padding: 3px 3px 12px;
+  color: var( --ink );
+  font: var( --ui );
+  border-radius: 0;
+  border: none;
+
+  line-height: 1.5;
+}
+
+#HELP > *:not( h2 ) {
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+#HELP::backdrop {
+  background: transparent;
+}
+
+#HELP h2 {
+  background: linear-gradient( 90deg, var( --title-from ), var( --title-to ) );
+  font: bold 13px Tahoma, Arial, sans-serif;
+  color: var( --title-ink );
+  margin: 0 0 12px;
+  padding: 3px 6px;
+}
+
+#HELP h2::before {
+  content: "";
+}
+
+#SAMPLE_ROW {
+  box-shadow: var( --sunken ), inset 0 0 0 3px var( --face );
+  border-radius: 0;
+  border: none;
+}
+
+#SAMPLE_PICKER,
+#SOUND_PANEL select {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  color: var( --field-ink );
+  font: var( --ui );
+  border-radius: 0;
+  border: none;
+}
+
+#HELP pre,
+#HELP code {
+  font: 12px "Courier New", Courier, monospace;
+}
+
+#HELP pre {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  color: var( --field-ink );
+}
+
+#HELP table {
+  margin-top: 8px;
+}
+
+#HELP i {
+  color: var( --muted );
+}
+
+#CLOSE_HELP_BUTTON {
+  padding: 4px 12px;
+  min-width: 75px;
+}
+
+#WRITING {
+  padding: 3px;
+}
+
+#EDITOR_FRAME {
+  box-shadow: var( --sunken );
+  background: var( --field );
+}
+
+#EDITOR,
+#HIGHLIGHTS {
+  font-family: "Courier New", Courier, monospace;
+  inset: 2px;
+}
+
+#EDITOR {
+  caret-color: var( --field-ink );
+  color: var( --field-ink );
+}
+
+#EDITOR::selection {
+  background: var( --select );
+  color: var( --select-ink );
+}
+
+#HIGHLIGHTS mark {
+  text-decoration: underline wavy var( --problem );
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  background: transparent;
+}
+
+#HIGHLIGHTS .playing {
+  background: var( --marker );
+}
+
+#HIGHLIGHTS .barMarker::before {
+  border-left: 1px dotted var( --link );
+}
+
+#HIGHLIGHTS .barMarker::after {
+  font: bold 10px Tahoma, Arial, sans-serif;
+  color: var( --link );
+}
+
+#NOTE_HINT {
+  box-shadow: inset -1px -1px var( --light ), inset 1px 1px var( --shadow );
+  background: var( --face );
+  color: var( --ink );
+  font: var( --ui );
+  padding: 3px 6px;
+  min-height: 22px;
+  margin-top: 3px;
+}
+
+#PROBLEM_TIP {
+  border: 1px solid var( --dark );
+  background: var( --tip );
+  color: var( --ink );
+  font: var( --ui );
+}
+
+#SPLITTER {
+  background: var( --face );
+  width: 4px;
+}
+
+#OUTPUT {
+  margin: 3px 3px 0 0;
+}
+
+#SOUND_BUTTON {
+  font-size: 18px;
+}
+
+#SOUND_PANEL {
+  box-shadow: var( --window ), 2px 2px 0 rgba( 0, 0, 0, 0.35 );
+  background: var( --face );
+  padding: 3px 3px 10px;
+  color: var( --ink );
+  font: var( --ui );
+}
+
+#SOUND_TITLE::before {
+  content: "";
+}
+
+#SOUND_TITLE {
+  background: linear-gradient( 90deg, var( --title-from ), var( --title-to ) );
+  font: bold 12px Tahoma, Arial, sans-serif;
+  color: var( --title-ink );
+  margin-bottom: 4px;
+  padding: 3px 6px;
+  display: block;
+}
+
+#SOUND_SLIDER_LIST,
+#SOUND_PANEL > :not( #SOUND_SLIDER_LIST, #SOUND_TITLE ) {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+#SHEET_INSTRUMENTS {
+  color: var( --muted );
+}
+
+#CLOCK,
+#SWING_READOUT,
+#VOLUME_READOUT,
+#SOUND_SLIDER_LIST span:last-child {
+  font: 11px "Courier New", Courier, monospace;
+}
+
+#TRANSPORT {
+  box-shadow: var( --raised );
+  background: var( --face );
+  margin: 0 3px 3px;
+  padding: 4px 6px;
+}
+
+#TRANSPORT button {
+  font-size: 14px;
+  height: 26px;
+  width: 30px;
+}
+
+#CLOCK {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  color: var( --field-ink );
+  padding: 5px 8px 4px;
+  line-height: 1;
+}
+
+#SWING_CONTROL,
+#VOLUME_CONTROL {
+  font: var( --ui );
+}
+
+#PLAY_BUTTON.holding {
+  animation: blink 1s steps( 1 ) infinite;
+}
+
+@keyframes blink {
+  50% {
+    color: var( --face );
+  }
+}
+
+.popup {
+  box-shadow: var( --window ), 2px 2px 0 rgba( 0, 0, 0, 0.35 );
+  background: var( --face );
+  color: var( --ink );
+  font: var( --ui );
+}
+
+#SCORE {
+  box-shadow: var( --sunken );
+  background: var( --desk );
+}
+
+body.dark #SCORE {
+  background:
+    radial-gradient( 1.5px 1.5px at 23px 41px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 1.5px 1.5px at 97px 13px, #d6d0ff 50%, transparent 51% ),
+    radial-gradient( 2px 2px at 151px 88px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 1.5px 1.5px at 61px 132px, #fff4c8 50%, transparent 51% ),
+    radial-gradient( 1.5px 1.5px at 183px 161px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 2.5px 2.5px at 121px 191px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 1.5px 1.5px at 11px 187px, #c8d8ff 50%, transparent 51% ),
+    radial-gradient( 1px 1px at 37px 67px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 1px 1px at 113px 29px, #ffffff 50%, transparent 51% ),
+    radial-gradient( 1px 1px at 79px 103px, #e8e0ff 50%, transparent 51% ),
+    radial-gradient( 1px 1px at 131px 121px, #ffffff 50%, transparent 51% ),
+    linear-gradient( var( --desk ), #1c1250 70%, #3a1c5e );
+  background-size: 200px 210px,
+                   200px 210px,
+                   200px 210px,
+                   200px 210px,
+                   200px 210px,
+                   200px 210px,
+                   200px 210px,
+                   143px 137px,
+                   143px 137px,
+                   143px 137px,
+                   143px 137px,
+                   100% 100%;
+}
+
+.page {
+  box-shadow: 3px 3px 0 rgba( 0, 0, 0, 0.5 );
+}
+
+#SEEKER_THUMB {
+  box-shadow: var( --raised );
+  background: var( --face );
+  height: 20px;
+}
+
+input[type="range"] {
+  background: transparent;
+  appearance: none;
+  height: 22px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  height: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: var( --raised );
+  background: var( --face );
+  margin-top: -8px;
+  appearance: none;
+  height: 20px;
+  width: 11px;
+}
+
+input[type="range"]::-moz-range-track {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-shadow: var( --raised );
+  background: var( --face );
+  border-radius: 0;
+  height: 20px;
+  border: none;
+  width: 11px;
+}
+
+@supports ( -moz-appearance: none ) {
+  * {
+    scrollbar-color: var( --face ) var( --soft-light );
+  }
+}
+
+::-webkit-scrollbar {
+  height: 16px;
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: repeating-conic-gradient( var( --face ) 0 25%, var( --light ) 0 50% ) 0 0 / 2px 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: var( --raised );
+  background: var( --face );
+}
+
+::-webkit-scrollbar-button:single-button {
+  box-shadow: var( --raised );
+  background: var( --face );
+  height: 16px;
+}
+
+@media ( max-width: 700px ) {
+  nav > button,
+  #EXPORT_BUTTON,
+  #LOOK_BUTTON {
+    height: 28px;
+    width: 32px;
+  }
+
+  #EXPORT_MENU,
+  #LOOK_MENU {
+    top: 34px;
+  }
+
+  #TRANSPORT button {
+    height: 32px;
+    width: 34px;
+  }
+}
+
+select:has( + .dropdown ) {
+  display: none;
+}
+
+.dropdown {
+  display: inline-flex;
+}
+
+.dropdownButton {
+  box-shadow: var( --sunken );
+  background: var( --field );
+  padding: 3px 24px 3px 4px;
+  color: var( --field-ink );
+  font: var( --ui );
+  border: none;
+  height: 22px;
+}
+
+.dropdownButton::after {
+  box-shadow: var( --raised );
+  background: var( --face );
+  position: absolute;
+  bottom: 2px;
+  content: "";
+  width: 16px;
+  right: 2px;
+  top: 2px;
+}
+
+.dropdownButton::before {
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-top: 4px solid var( --ink );
+  position: absolute;
+  margin-top: -2px;
+  content: "";
+  right: 6px;
+  z-index: 1;
+  top: 50%;
+}
+
+.dropdownList {
+  border: 1px solid var( --dark );
+  background: var( --field );
+  top: 100%;
+}
+
+.dropdownOption {
+  color: var( --field-ink );
+  background: transparent;
+  font: var( --ui );
+  padding: 1px 4px;
+  border: none;
+}
+
+.dropdownOption:hover {
+  background: var( --select );
+  color: var( --select-ink );
+}

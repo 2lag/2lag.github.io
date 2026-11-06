@@ -1,0 +1,644 @@
+:root {
+  --title: linear-gradient( #0997ff 0%, #0053ee 9%, #0050ee 45%, #0066ff 88%, #005bff 94%, #003dd7 100% );
+  --glow: inset 0 -1px #f9b337, inset 0 1px #fee8b2, inset 1px 0 #fbd88e, inset -1px 0 #fbd88e;
+  --title-button: linear-gradient( 135deg, #6fa6fe 0%, #3b7cf2 45%, #2663de 100% );
+  --button: linear-gradient( #ffffff 0%, #f4f3ee 60%, #ecebe6 86%, #d6d0c5 100% );
+  --go: linear-gradient( #6ec26b 0%, #3c9a39 45%, #2f8a2c 55%, #48a645 100% );
+  --button-pressed: linear-gradient( #e5e4de 0%, #e3e2da 80%, #f2f1ec 100% );
+  --scroll: linear-gradient( 90deg, #cad8fb, #b7cbf5 50%, #a9c1f2 );
+  --ui: 12px Tahoma, Verdana, "Segoe UI", sans-serif;
+  --scroll-track: #f4f3ee;
+  --button-edge: #003c74;
+  --field-edge: #7f9db9;
+  --select-ink: #ffffff;
+  --title-ink: #ffffff;
+  --field-ink: #000000;
+  --go-edge: #1e6b1b;
+  --problem: #e00000;
+  --select: #316ac5;
+  --accent: #316ac5;
+  --marker: #c1d2ee;
+  --muted: #6d6d6d;
+  --frame: #0831d9;
+  --field: #ffffff;
+  --face: #ece9d8;
+  --ink: #000000;
+  --tip: #ffffe1;
+  --thumb: 11px;
+}
+
+body.dark {
+  --glow: inset 0 -1px #4aa3ff, inset 0 1px #9fd0ff, inset 1px 0 #6cb6ff, inset -1px 0 #6cb6ff;
+  --title: linear-gradient( #6b7a96 0%, #2a3346 7%, #151b28 45%, #0b0f17 85%, #1d2a44 100% );
+  --title-button: linear-gradient( 135deg, #5d6b85 0%, #2b3447 50%, #121722 100% );
+  --button: linear-gradient( #3d4860 0%, #2c3548 55%, #232a3a 86%, #1b2130 100% );
+  --go: linear-gradient( #6ec26b 0%, #3c9a39 45%, #2f8a2c 55%, #48a645 100% );
+  --button-pressed: linear-gradient( #141924 0%, #1b2130 80%, #252d3f 100% );
+  --scroll: linear-gradient( 90deg, #3d4860, #2f3850 50%, #283046 );
+  --scroll-track: #141924;
+  --button-edge: #05070c;
+  --field-edge: #3a4660;
+  --select-ink: #ffffff;
+  --title-ink: #ffffff;
+  --field-ink: #e8eef8;
+  --go-edge: #0f3d0d;
+  --problem: #ff7b7b;
+  --select: #2f6fd6;
+  --accent: #6cb6ff;
+  --marker: #24406e;
+  --muted: #8f9bb3;
+  --frame: #05070c;
+  --field: #11151e;
+  --face: #1c2230;
+  --ink: #e8eef8;
+  --tip: #1f2636;
+}
+
+body {
+  background: var( --face );
+  color: var( --ink );
+  font: var( --ui );
+}
+
+header {
+  box-shadow: inset 0 1px rgba( 255, 255, 255, 0.35 );
+  background: var( --title );
+  padding: 4px 6px 4px 10px;
+  color: var( --title-ink );
+}
+
+#BRAND {
+  font: bold 14px "Trebuchet MS", Tahoma, sans-serif;
+  text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.45 );
+}
+
+#BRAND::before {
+  content: "";
+}
+
+nav {
+  gap: 3px;
+}
+
+nav > button,
+#LOOK_BUTTON,
+#EXPORT_BUTTON {
+  box-shadow: inset 0 0 2px rgba( 255, 255, 255, 0.5 );
+  font: bold 13px Tahoma, sans-serif;
+  background: var( --title-button );
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  color: #ffffff;
+  height: 22px;
+  width: 24px;
+  padding: 0;
+}
+
+nav > button:hover,
+#LOOK_BUTTON:hover,
+#EXPORT_BUTTON:hover,
+#LOOK_ITEM:has( #LOOK_MENU.open ) #LOOK_BUTTON,
+#EXPORT_ITEM:has( #EXPORT_MENU.open ) #EXPORT_BUTTON {
+  filter: brightness( 1.2 );
+}
+
+#EXPORT_ICON,
+#LOOK_BUTTON svg {
+  height: 13px;
+  width: 13px;
+}
+
+#SOUND_BUTTON,
+#LOOK_MENU button,
+#TRANSPORT button,
+#CLOSE_HELP_BUTTON,
+#SOUND_ACTIONS button {
+  border: 1px solid var( --button-edge );
+  background: var( --button );
+  color: var( --ink );
+  border-radius: 3px;
+  font: var( --ui );
+}
+
+#SOUND_BUTTON:hover,
+#LOOK_MENU button:hover,
+#TRANSPORT button:hover,
+#CLOSE_HELP_BUTTON:hover,
+#SOUND_ACTIONS button:hover {
+  box-shadow: var( --glow );
+}
+
+#SOUND_BUTTON:active,
+#LOOK_MENU button:active,
+#TRANSPORT button:active,
+#CLOSE_HELP_BUTTON:active,
+#SOUND_ACTIONS button:active {
+  background: var( --button-pressed );
+}
+
+#LOOK_MENU,
+#EXPORT_MENU {
+  box-shadow: 2px 2px 4px rgba( 0, 0, 0, 0.35 );
+  background: var( --field );
+  border: 1px solid #aca899;
+  padding: 2px;
+  top: 28px;
+}
+
+#EXPORT_MENU {
+  transform: none;
+  left: auto;
+  right: 0;
+}
+
+#EXPORT_MENU button {
+  color: var( --field-ink );
+  background: transparent;
+  padding: 4px 22px;
+  font: var( --ui );
+  border: none;
+}
+
+#EXPORT_MENU button:hover {
+  background: var( --select );
+  color: var( --select-ink );
+}
+
+#LOOK_MENU button {
+  font-size: 15px;
+  height: 26px;
+}
+
+#ERA_BUTTON {
+  font: bold 12px Tahoma, sans-serif;
+}
+
+#HELP {
+  box-shadow: 3px 3px 10px rgba( 0, 0, 0, 0.4 );
+  border: 3px solid var( --frame );
+  border-radius: 8px 8px 0 0;
+  background: var( --face );
+  color: var( --ink );
+  padding: 0 0 12px;
+  font: var( --ui );
+  border-top: none;
+
+  line-height: 1.5;
+}
+
+#HELP > *:not( h2 ) {
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+#HELP::backdrop {
+  background: rgba( 0, 0, 0, 0.15 );
+}
+
+#HELP h2 {
+  font: bold 14px "Trebuchet MS", Tahoma, sans-serif;
+  text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.45 );
+  border-radius: 8px 8px 0 0;
+  background: var( --title );
+  color: var( --title-ink );
+  margin: 0 -3px 12px;
+  padding: 6px 10px;
+}
+
+#HELP h2::before {
+  content: "";
+}
+
+#SAMPLE_ROW {
+  background: var( --field );
+  border: 1px solid #d0d0bf;
+  border-radius: 4px;
+}
+
+#SAMPLE_PICKER,
+#SOUND_PANEL select {
+  border: 1px solid var( --field-edge );
+  background: var( --field );
+  color: var( --field-ink );
+  font: var( --ui );
+  border-radius: 0;
+}
+
+#HELP pre,
+#HELP code {
+  font: 12px "Lucida Console", Consolas, monospace;
+}
+
+#HELP pre {
+  border: 1px solid var( --field-edge );
+  background: var( --field );
+  color: var( --field-ink );
+}
+
+#HELP i {
+  color: var( --muted );
+}
+
+#CLOSE_HELP_BUTTON {
+  padding: 4px 12px;
+  min-width: 75px;
+}
+
+#EDITOR_FRAME {
+  border: 1px solid var( --field-edge );
+  background: var( --field );
+}
+
+#EDITOR,
+#HIGHLIGHTS {
+  font-family: "Lucida Console", Consolas, monospace;
+}
+
+#EDITOR {
+  caret-color: var( --field-ink );
+  color: var( --field-ink );
+}
+
+#EDITOR::selection {
+  background: var( --select );
+  color: var( --select-ink );
+}
+
+#HIGHLIGHTS mark {
+  text-decoration: underline wavy var( --problem );
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  background: transparent;
+}
+
+#HIGHLIGHTS .playing {
+  box-shadow: 0 0 0 1px var( --select );
+  background: var( --marker );
+  border-radius: 2px;
+}
+
+#HIGHLIGHTS .barMarker::before {
+  border-left: 1px solid var( --accent );
+}
+
+#HIGHLIGHTS .barMarker::after {
+  font: bold 10px Tahoma, sans-serif;
+  color: var( --accent );
+}
+
+#NOTE_HINT {
+  box-shadow: inset 0 1px #d0cfc2;
+  border-top: 1px solid #ffffff;
+  font: 11px Tahoma, sans-serif;
+  background: var( --face );
+  color: var( --ink );
+  padding: 4px 10px;
+  min-height: 24px;
+}
+
+body.dark #NOTE_HINT {
+  border-top-color: #2b3346;
+  box-shadow: none;
+}
+
+body.dark header,
+body.dark #HELP h2,
+body.dark #SOUND_TITLE {
+  box-shadow: inset 0 1px rgba( 255, 255, 255, 0.25 ), inset 0 -2px #2f6fd6;
+}
+
+body.dark #TRANSPORT {
+  border-top-color: #2b3346;
+}
+
+#PROBLEM_TIP {
+  box-shadow: 2px 2px 4px rgba( 0, 0, 0, 0.3 );
+  border: 1px solid #000000;
+  background: var( --tip );
+  color: var( --ink );
+  border-radius: 4px;
+  font: var( --ui );
+}
+
+#SPLITTER {
+  background: var( --face );
+  width: 5px;
+}
+
+#SOUND_BUTTON {
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+#SOUND_PANEL {
+  box-shadow: 3px 3px 10px rgba( 0, 0, 0, 0.4 );
+  border: 3px solid var( --frame );
+  border-radius: 8px 8px 0 0;
+  background: var( --face );
+  color: var( --ink );
+  padding: 0 0 10px;
+  font: var( --ui );
+  border-top: none;
+}
+
+#SOUND_TITLE::before {
+  content: "";
+}
+
+#SOUND_TITLE {
+  font: bold 13px "Trebuchet MS", Tahoma, sans-serif;
+  text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.45 );
+  border-radius: 8px 8px 0 0;
+  background: var( --title );
+  color: var( --title-ink );
+  margin: 0 -3px 4px;
+  padding: 5px 10px;
+  display: block;
+}
+
+#SOUND_SLIDER_LIST,
+#SOUND_PANEL > :not( #SOUND_SLIDER_LIST, #SOUND_TITLE ) {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+#SHEET_INSTRUMENTS {
+  color: var( --muted );
+  font-style: italic;
+}
+
+#CLOCK,
+#SWING_READOUT,
+#VOLUME_READOUT,
+#SOUND_SLIDER_LIST span:last-child {
+  font: 11px "Lucida Console", Consolas, monospace;
+}
+
+#TRANSPORT {
+  background: linear-gradient( var( --face ), color-mix( in srgb, var( --face ) 88%, #000000 ) );
+  border-top: 1px solid #ffffff;
+  padding: 5px 10px;
+}
+
+#TRANSPORT button {
+  height: 28px;
+  width: 32px;
+}
+
+#TRANSPORT #PLAY_BUTTON {
+  font: italic bold 15px "Trebuchet MS", Tahoma, sans-serif;
+  box-shadow: inset 0 1px rgba( 255, 255, 255, 0.45 );
+  text-shadow: 1px 1px 0 rgba( 0, 0, 0, 0.45 );
+  border: 1px solid var( --go-edge );
+  border-radius: 3px 12px 12px 3px;
+  background: var( --go );
+  color: #ffffff;
+  width: 44px;
+}
+
+#TRANSPORT #PLAY_BUTTON .pauseIcon {
+  left: -1px;
+}
+
+#TRANSPORT #PLAY_BUTTON:hover {
+  filter: brightness( 1.12 );
+}
+
+#PLAY_BUTTON.holding {
+  animation: throb 1.2s ease-in-out infinite;
+}
+
+@keyframes throb {
+  50% {
+    filter: brightness( 1.35 );
+  }
+}
+
+#TRANSPORT #KEY_BUTTON.on,
+#TRANSPORT #SWING_BUTTON.on,
+#TRANSPORT #METRONOME_BUTTON.on {
+  box-shadow: var( --glow ), inset 1px 1px 2px rgba( 0, 0, 0, 0.25 );
+  background: var( --button-pressed );
+}
+
+#SWING_CONTROL,
+#VOLUME_CONTROL {
+  font: var( --ui );
+}
+
+.popup {
+  box-shadow: 2px 2px 4px rgba( 0, 0, 0, 0.35 );
+  border: 1px solid #aca899;
+  background: var( --face );
+  color: var( --ink );
+  border-radius: 3px;
+  font: var( --ui );
+}
+
+#SCORE {
+  background: url( "../images/hills-day.svg" ) center / cover no-repeat, #3f86e3;
+}
+
+body.dark #SCORE {
+  background: url( "../images/hills-night.svg" ) center / cover no-repeat, #0a1838;
+}
+
+.page {
+  box-shadow: 4px 4px 12px rgba( 0, 0, 0, 0.35 );
+}
+
+#SEEKER_THUMB {
+  background: linear-gradient( #ffffff, #e6eef6 60%, #c6d9ee );
+  box-shadow: inset 0 -2px #21a121;
+  border-radius: 2px 2px 5px 5px;
+  border: 1px solid #1c5180;
+  height: 20px;
+}
+
+body.dark #SEEKER_THUMB {
+  background: linear-gradient( #5d6b85, #2b3447 );
+  box-shadow: inset 0 -2px var( --accent );
+  border-color: #000000;
+}
+
+input[type="range"] {
+  background: transparent;
+  appearance: none;
+  height: 22px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: color-mix( in srgb, var( --face ) 85%, #000000 );
+  border: 1px solid #9d9c99;
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background: linear-gradient( #ffffff, #e6eef6 60%, #c6d9ee );
+  box-shadow: inset 0 -2px #21a121;
+  border-radius: 2px 2px 5px 5px;
+  border: 1px solid #1c5180;
+  margin-top: -9px;
+  appearance: none;
+  height: 20px;
+  width: 11px;
+}
+
+input[type="range"]::-moz-range-track {
+  background: color-mix( in srgb, var( --face ) 85%, #000000 );
+  border: 1px solid #9d9c99;
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: linear-gradient( #ffffff, #e6eef6 60%, #c6d9ee );
+  box-shadow: inset 0 -2px #21a121;
+  border-radius: 2px 2px 5px 5px;
+  border: 1px solid #1c5180;
+  height: 20px;
+  width: 11px;
+}
+
+body.dark input[type="range"]::-webkit-slider-thumb {
+  background: linear-gradient( #5d6b85, #2b3447 );
+  box-shadow: inset 0 -2px var( --accent );
+  border-color: #000000;
+}
+
+body.dark input[type="range"]::-moz-range-thumb {
+  background: linear-gradient( #5d6b85, #2b3447 );
+  box-shadow: inset 0 -2px var( --accent );
+  border-color: #000000;
+}
+
+@supports ( -moz-appearance: none ) {
+  * {
+    scrollbar-color: #b7cbf5 var( --scroll-track );
+  }
+
+  body.dark * {
+    scrollbar-color: #3d4860 var( --scroll-track );
+  }
+}
+
+::-webkit-scrollbar {
+  height: 17px;
+  width: 17px;
+}
+
+::-webkit-scrollbar-track {
+  background: var( --scroll-track );
+}
+
+::-webkit-scrollbar-thumb {
+  box-shadow: 0 0 0 1px #98b1e8;
+  background: var( --scroll );
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+  box-shadow: 0 0 0 1px #05070c;
+  border-color: #4d5a76;
+}
+
+::-webkit-scrollbar-button:single-button {
+  background: var( --scroll );
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  height: 17px;
+}
+
+@media ( max-width: 700px ) {
+  nav > button,
+  #EXPORT_BUTTON,
+  #LOOK_BUTTON {
+    height: 28px;
+    width: 32px;
+  }
+
+  #EXPORT_MENU,
+  #LOOK_MENU {
+    top: 34px;
+  }
+
+  #TRANSPORT button {
+    height: 32px;
+    width: 34px;
+  }
+}
+
+select:has( + .dropdown ) {
+  display: none;
+}
+
+.dropdown {
+  display: inline-flex;
+}
+
+.dropdownButton {
+  border: 1px solid var( --field-edge );
+  background: var( --field );
+  padding: 2px 22px 2px 4px;
+  color: var( --field-ink );
+  font: var( --ui );
+  height: 22px;
+}
+
+.dropdownButton::after {
+  background: linear-gradient( #e0e9fd, #c1d3fb 45%, #b2c7f5 55%, #c7d7fb );
+  border: 1px solid #b9cbf3;
+  position: absolute;
+  border-radius: 2px;
+  content: "";
+  bottom: 1px;
+  width: 15px;
+  right: 1px;
+  top: 1px;
+}
+
+body.dark .dropdownButton::after {
+  border-color: var( --field-edge );
+  background: var( --button );
+}
+
+.dropdownButton::before {
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-top: 5px solid #4d6185;
+  position: absolute;
+  margin-top: -2px;
+  right: 4.5px;
+  content: "";
+  z-index: 1;
+  top: 50%;
+}
+
+body.dark .dropdownButton::before {
+  border-top-color: var( --accent );
+}
+
+.dropdownList {
+  background: var( --field );
+  border: 1px solid #000000;
+  top: 100%;
+}
+
+body.dark .dropdownList {
+  border-color: var( --field-edge );
+}
+
+.dropdownOption {
+  color: var( --field-ink );
+  background: transparent;
+  font: var( --ui );
+  padding: 2px 4px;
+  border: none;
+}
+
+.dropdownOption:hover {
+  background: var( --select );
+  color: var( --select-ink );
+}

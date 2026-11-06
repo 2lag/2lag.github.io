@@ -1,0 +1,630 @@
+:root {
+  --bloom: radial-gradient( circle at 72% 32%, #a9d2ff 0, transparent 42% ),
+           radial-gradient( circle at 25% 78%, #4f8fe8 0, transparent 50% ),
+           radial-gradient( circle at 95% 95%, #c9b8ff 0, transparent 40% ),
+           #dce9f8;
+  --dialog-shadow: 0 32px 64px rgba( 0, 0, 0, 0.19 ), 0 2px 21px rgba( 0, 0, 0, 0.15 );
+  --small: 12px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --ui: 14px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
+  --flyout-shadow: 0 8px 16px rgba( 0, 0, 0, 0.14 );
+  --stroke-strong: rgba( 0, 0, 0, 0.16 );
+  --acrylic: rgba( 252, 252, 252, 0.85 );
+  --stroke: rgba( 0, 0, 0, 0.0803 );
+  --hover: rgba( 0, 0, 0, 0.0373 );
+  --scroll: rgba( 0, 0, 0, 0.45 );
+  --track: rgba( 0, 0, 0, 0.45 );
+  --sheet-highlight: #005fb8;
+  --accent-hover: #bf6ebf;
+  --on-accent: #ffffff;
+  --problem: #c42b1c;
+  --accent: #b85fb8;
+  --field: #ffffff;
+  --muted: #5d5d5d;
+  --mica: #f3f3f3;
+  --card: #fbfbfb;
+  --ink: #1a1a1a;
+  --thumb: 20px;
+}
+
+body.dark {
+  --bloom: radial-gradient( circle at 72% 32%, #1d4f91 0, transparent 45% ),
+           radial-gradient( circle at 25% 78%, #0f2f66 0, transparent 50% ),
+           radial-gradient( circle at 95% 95%, #3a2a6b 0, transparent 40% ),
+           #0b1424;
+  --dialog-shadow: 0 32px 64px rgba( 0, 0, 0, 0.37 ), 0 2px 21px rgba( 0, 0, 0, 0.37 );
+  --flyout-shadow: 0 8px 16px rgba( 0, 0, 0, 0.26 );
+  --stroke-strong: rgba( 255, 255, 255, 0.093 );
+  --stroke: rgba( 255, 255, 255, 0.0698 );
+  --hover: rgba( 255, 255, 255, 0.0605 );
+  --track: rgba( 255, 255, 255, 0.54 );
+  --scroll: rgba( 255, 255, 255, 0.5 );
+  --acrylic: rgba( 44, 44, 44, 0.88 );
+  --accent-hover: #e6bae6;
+  --on-accent: #000000;
+  --problem: #ff99a4;
+  --accent: #ffcdff;
+  --field: #1c1c1c;
+  --muted: #c5c5c5;
+  --mica: #202020;
+  --card: #2b2b2b;
+  --ink: #ffffff;
+}
+
+body {
+  background: var( --mica );
+  color: var( --ink );
+  font: var( --ui );
+}
+
+header {
+  padding: 0 0 0 14px;
+}
+
+#BRAND {
+  font: var( --small );
+}
+
+#BRAND::before {
+  color: var( --accent );
+  content: "";
+}
+
+#SOUND_TITLE {
+  font: 600 12px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  margin-bottom: 2px;
+  display: block;
+}
+
+#HELP h2::before,
+#SOUND_TITLE::before {
+  color: var( --accent );
+  content: "";
+}
+
+nav {
+  gap: 0;
+}
+
+nav > button,
+#LOOK_BUTTON,
+#EXPORT_BUTTON {
+  font: 15px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  background: transparent;
+  color: var( --ink );
+  border-radius: 0;
+  height: 36px;
+  border: none;
+  width: 46px;
+}
+
+nav > button:hover,
+#LOOK_BUTTON:hover,
+#EXPORT_BUTTON:hover,
+#LOOK_ITEM:has( #LOOK_MENU.open ) #LOOK_BUTTON,
+#EXPORT_ITEM:has( #EXPORT_MENU.open ) #EXPORT_BUTTON {
+  background: var( --hover );
+}
+
+#EXPORT_ICON,
+#LOOK_BUTTON svg {
+  height: 16px;
+  width: 16px;
+}
+
+#SOUND_BUTTON,
+#LOOK_MENU button,
+#TRANSPORT button,
+#CLOSE_HELP_BUTTON,
+#SOUND_ACTIONS button {
+  border: 1px solid var( --stroke );
+  background: var( --card );
+  color: var( --ink );
+  border-radius: 4px;
+  font: var( --ui );
+
+  border-bottom-color: var( --stroke-strong );
+}
+
+#SOUND_BUTTON:hover,
+#LOOK_MENU button:hover,
+#TRANSPORT button:hover,
+#CLOSE_HELP_BUTTON:hover,
+#SOUND_ACTIONS button:hover {
+  background: color-mix( in srgb, var( --card ) 92%, var( --ink ) );
+}
+
+#SOUND_BUTTON:active,
+#LOOK_MENU button:active,
+#TRANSPORT button:active,
+#CLOSE_HELP_BUTTON:active,
+#SOUND_ACTIONS button:active {
+  color: var( --muted );
+}
+
+#LOOK_MENU,
+#EXPORT_MENU {
+  backdrop-filter: blur( 30px ) saturate( 125% );
+  box-shadow: var( --flyout-shadow );
+  border: 1px solid var( --stroke );
+  background: var( --acrylic );
+  border-radius: 8px;
+  padding: 4px;
+  top: 40px;
+}
+
+#EXPORT_MENU {
+  transform: none;
+  left: auto;
+  right: 0;
+}
+
+#EXPORT_MENU button {
+  background: transparent;
+  color: var( --ink );
+  border-radius: 4px;
+  padding: 7px 12px;
+  font: var( --ui );
+  border: none;
+}
+
+#EXPORT_MENU button:hover {
+  background: var( --hover );
+}
+
+#LOOK_MENU button {
+  border-color: transparent;
+  background: transparent;
+  font-size: 16px;
+}
+
+#ERA_BUTTON {
+  font: 600 13px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+}
+
+#HELP {
+  box-shadow: var( --dialog-shadow );
+  border: 1px solid var( --stroke );
+  background: var( --mica );
+  color: var( --ink );
+  border-radius: 8px;
+  font: var( --ui );
+  padding: 24px;
+
+  line-height: 1.5;
+}
+
+#HELP::backdrop {
+  background: rgba( 0, 0, 0, 0.3 );
+}
+
+#HELP h2 {
+  font: 600 20px "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  margin-bottom: 16px;
+}
+
+#SAMPLE_ROW {
+  border: 1px solid var( --stroke );
+  background: var( --card );
+  border-radius: 8px;
+}
+
+#SAMPLE_PICKER,
+#SOUND_PANEL select {
+  border: 1px solid var( --stroke );
+  background: var( --card );
+  color: var( --ink );
+  border-radius: 4px;
+  font: var( --ui );
+
+  border-bottom-color: var( --stroke-strong );
+}
+
+#HELP pre,
+#HELP code {
+  font: 13px var( --mono );
+}
+
+#HELP pre {
+  border: 1px solid var( --stroke );
+  background: var( --card );
+  border-radius: 8px;
+}
+
+#HELP i {
+  color: var( --muted );
+}
+
+#CLOSE_HELP_BUTTON {
+  background: var( --accent );
+  border-color: transparent;
+  color: var( --on-accent );
+  min-width: 96px;
+}
+
+#CLOSE_HELP_BUTTON:hover {
+  background: var( --accent-hover );
+}
+
+#WRITING {
+  padding: 0 0 0 8px;
+}
+
+#EDITOR_FRAME {
+  border: 1px solid var( --stroke );
+  border-radius: 8px 8px 0 0;
+  background: var( --field );
+  overflow: hidden;
+}
+
+#EDITOR,
+#HIGHLIGHTS {
+  font-family: var( --mono );
+}
+
+#EDITOR {
+  caret-color: var( --accent );
+  color: var( --ink );
+}
+
+#EDITOR::selection {
+  background: var( --accent );
+  color: var( --on-accent );
+}
+
+#HIGHLIGHTS mark {
+  background: color-mix( in srgb, var( --problem ) 14%, transparent );
+  text-decoration: underline wavy var( --problem );
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  border-radius: 2px;
+}
+
+#HIGHLIGHTS .playing {
+  background: color-mix( in srgb, var( --accent ) 28%, transparent );
+  border-radius: 3px;
+}
+
+#HIGHLIGHTS .barMarker::before {
+  border-left: 1.5px solid color-mix( in srgb, var( --accent ) 60%, transparent );
+}
+
+#HIGHLIGHTS .barMarker::after {
+  font: 600 10px "Segoe UI", system-ui, sans-serif;
+  color: var( --accent );
+}
+
+#NOTE_HINT {
+  border: 1px solid var( --stroke );
+  border-radius: 0 0 8px 8px;
+  background: var( --card );
+  color: var( --muted );
+  font: var( --small );
+  margin-bottom: 8px;
+  border-top: none;
+}
+
+#PROBLEM_TIP {
+  box-shadow: var( --flyout-shadow );
+  border: 1px solid var( --stroke );
+  backdrop-filter: blur( 30px );
+  background: var( --acrylic );
+  font: var( --small );
+  color: var( --ink );
+  border-radius: 4px;
+
+  border-left: 3px solid var( --problem );
+}
+
+#SPLITTER {
+  background: transparent;
+  width: 8px;
+}
+
+#SPLITTER:hover,
+body.resizing #SPLITTER {
+  background: linear-gradient( 90deg, transparent 3px, var( --accent ) 3px 5px, transparent 5px );
+}
+
+#OUTPUT {
+  border: 1px solid var( --stroke );
+  margin: 0 8px 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#SOUND_BUTTON {
+  box-shadow: var( --flyout-shadow );
+  backdrop-filter: blur( 30px );
+  background: var( --acrylic );
+  border-radius: 50%;
+  font-size: 17px;
+}
+
+#SOUND_PANEL {
+  font: 13px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  backdrop-filter: blur( 30px ) saturate( 125% );
+  box-shadow: var( --flyout-shadow );
+  border: 1px solid var( --stroke );
+  background: var( --acrylic );
+  color: var( --ink );
+  border-radius: 8px;
+}
+
+#SHEET_INSTRUMENTS {
+  color: var( --muted );
+  font-size: 12px;
+}
+
+#CLOCK,
+#SWING_READOUT,
+#VOLUME_READOUT,
+#SOUND_SLIDER_LIST span:last-child {
+  font: 12px var( --mono );
+  color: var( --muted );
+}
+
+#SOUND_ACTIONS button {
+  font-size: 13px;
+}
+
+#TRANSPORT {
+  border-top: 1px solid var( --stroke );
+  background: var( --card );
+}
+
+#TRANSPORT button {
+  border-radius: 50%;
+}
+
+#TRANSPORT #PLAY_BUTTON {
+  background: var( --accent );
+  border-color: transparent;
+  color: var( --on-accent );
+}
+
+#TRANSPORT #PLAY_BUTTON:hover {
+  background: var( --accent-hover );
+}
+
+#PLAY_BUTTON.holding {
+  animation: breathe 1.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  50% {
+    box-shadow: 0 0 0 6px color-mix( in srgb, var( --accent ) 30%, transparent );
+  }
+}
+
+#TRANSPORT #KEY_BUTTON.on,
+#TRANSPORT #SWING_BUTTON.on,
+#TRANSPORT #METRONOME_BUTTON.on {
+  background: var( --accent );
+  border-color: transparent;
+  color: var( --on-accent );
+}
+
+#SWING_CONTROL,
+#VOLUME_CONTROL {
+  font: 13px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  color: var( --muted );
+}
+
+.popup {
+  font: 13px "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  backdrop-filter: blur( 30px ) saturate( 125% );
+  box-shadow: var( --flyout-shadow );
+  border: 1px solid var( --stroke );
+  background: var( --acrylic );
+  color: var( --ink );
+  border-radius: 8px;
+}
+
+#SCORE {
+  background: var( --bloom );
+}
+
+.page {
+  box-shadow: 0 8px 24px rgba( 0, 0, 0, 0.18 );
+  border-radius: 4px;
+}
+
+#SEEKER_THUMB {
+  box-shadow: 0 0 0 1px var( --stroke-strong );
+  border: 5px solid var( --card );
+  transition: border-width 0.1s;
+  background: var( --accent );
+  border-radius: 50%;
+  height: 20px;
+}
+
+#SEEKER:hover + #SEEKER_THUMB {
+  border-width: 4px;
+}
+
+#SEEKER:active + #SEEKER_THUMB {
+  border-width: 6px;
+}
+
+input[type="range"] {
+  background: transparent;
+  appearance: none;
+  height: 22px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var( --track );
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 0 0 0 1px var( --stroke-strong );
+  border: 5px solid var( --card );
+  transition: border-width 0.1s;
+  background: var( --accent );
+  border-radius: 50%;
+  margin-top: -8px;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+  border-width: 4px;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  border-width: 6px;
+}
+
+input[type="range"]::-moz-range-track {
+  background: var( --track );
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-progress {
+  background: var( --accent );
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 0 0 0 1px var( --stroke-strong );
+  border: 5px solid var( --card );
+  background: var( --accent );
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+}
+
+@supports ( -moz-appearance: none ) {
+  * {
+    scrollbar-color: var( --scroll ) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+::-webkit-scrollbar {
+  height: 12px;
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var( --scroll ) padding-box;
+  border: 4px solid transparent;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-width: 3px;
+}
+
+@media ( max-width: 700px ) {
+  #WRITING {
+    padding: 0 8px;
+  }
+
+  #OUTPUT {
+    margin: 0 8px 8px;
+  }
+}
+
+#TRANSPORT #METRONOME_BUTTON.downbeat {
+  animation: downbeat 0.16s ease-out;
+}
+
+#TRANSPORT #METRONOME_BUTTON.beat {
+  animation: beat 0.16s ease-out;
+}
+
+@keyframes downbeat {
+  from {
+    transform: scale( 1.3 );
+  }
+}
+
+@keyframes beat {
+  from {
+    transform: scale( 1.15 );
+  }
+}
+
+select:has( + .dropdown ) {
+  display: none;
+}
+
+.dropdown {
+  display: inline-flex;
+}
+
+.dropdownButton {
+  border-bottom-color: var( --stroke-strong );
+  border: 1px solid var( --stroke );
+  padding: 5px 32px 5px 11px;
+  background: var( --card );
+  color: var( --ink );
+  border-radius: 4px;
+  font: var( --ui );
+}
+
+.dropdownButton:hover {
+  background: color-mix( in srgb, var( --card ) 92%, var( --ink ) );
+}
+
+.dropdownButton::before {
+  border-bottom: 1.5px solid var( --muted );
+  border-right: 1.5px solid var( --muted );
+  transform: rotate( 45deg );
+  position: absolute;
+  margin-top: -5px;
+  content: "";
+  right: 13px;
+  height: 6px;
+  width: 6px;
+  top: 50%;
+}
+
+.dropdownList {
+  backdrop-filter: blur( 30px ) saturate( 125% );
+  box-shadow: var( --flyout-shadow );
+  border: 1px solid var( --stroke );
+  background: var( --acrylic );
+  top: calc( 100% + 4px );
+  border-radius: 8px;
+  padding: 4px;
+  gap: 2px;
+}
+
+.dropdownOption {
+  padding: 6px 10px 6px 14px;
+  background: transparent;
+  color: var( --ink );
+  position: relative;
+  border-radius: 4px;
+  font: var( --ui );
+  border: none;
+}
+
+.dropdownOption:hover,
+.dropdownOption.chosen {
+  background: var( --hover );
+}
+
+.dropdownOption.chosen::before {
+  background: var( --accent );
+  position: absolute;
+  border-radius: 2px;
+  margin-top: -8px;
+  height: 16px;
+  content: "";
+  width: 3px;
+  left: 3px;
+  top: 50%;
+}

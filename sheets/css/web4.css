@@ -1,0 +1,457 @@
+:root {
+  --editor-paper: #fff;
+  --problem: #b3261e;
+  --editor-ink: #222;
+  --chrome: #f4f3f0;
+  --accent: #6a3fb5;
+  --paper: #fdfdfb;
+  --desk: #e6e4df;
+  --line: #c9c6bf;
+  --ink: #1a1a1a;
+  --thumb: 16px;
+}
+
+body.dark {
+  --editor-paper: #17181a;
+  --problem: #f2b8b5;
+  --editor-ink: #ddd;
+  --chrome: #1a1b1e;
+  --accent: #b493f0;
+  --paper: #1e1f22;
+  --desk: #121315;
+  --line: #34363b;
+  --ink: #e8e6e1;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: var( --chrome );
+  color: var( --ink );
+}
+
+header {
+  border-bottom: 1px solid var( --line );
+}
+
+#BRAND {
+  font-family: "Century Schoolbook", "TeX Gyre Schola", Georgia, serif;
+  font-size: 22px;
+}
+
+nav > button,
+#LOOK_BUTTON,
+#EXPORT_BUTTON {
+  background: transparent;
+  color: var( --ink );
+  border-radius: 6px;
+  font-size: 20px;
+  border: none;
+}
+
+nav > button:hover,
+#LOOK_BUTTON:hover,
+#EXPORT_BUTTON:hover,
+#LOOK_ITEM:has( #LOOK_MENU.open ) #LOOK_BUTTON,
+#EXPORT_ITEM:has( #EXPORT_MENU.open ) #EXPORT_BUTTON {
+  background: var( --line );
+}
+
+#LOOK_MENU {
+  box-shadow: 0 6px 18px rgba( 0, 0, 0, 0.15 );
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  border-radius: 6px;
+}
+
+#LOOK_MENU button {
+  background: transparent;
+  color: var( --ink );
+  border-radius: 4px;
+  font-size: 18px;
+  border: none;
+}
+
+#ERA_BUTTON {
+  font: bold 14px ui-monospace, Menlo, monospace;
+}
+
+#LOOK_MENU button:hover {
+  background: var( --line );
+}
+
+#EXPORT_MENU {
+  box-shadow: 0 6px 18px rgba( 0, 0, 0, 0.15 );
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  border-radius: 6px;
+}
+
+#EXPORT_MENU button {
+  background: transparent;
+  color: var( --ink );
+  border-radius: 4px;
+  font-size: 14px;
+  border: none;
+}
+
+#EXPORT_MENU button:hover {
+  background: var( --line );
+}
+
+#HELP {
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  color: var( --ink );
+  border-radius: 8px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+#SAMPLE_ROW {
+  border: 1px solid var( --accent );
+  border-radius: 6px;
+}
+
+#SAMPLE_PICKER {
+  background: var( --editor-paper );
+  border: 1px solid var( --line );
+  color: var( --ink );
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#HELP::backdrop {
+  background: rgba( 0, 0, 0, 0.35 );
+}
+
+#HELP h2 {
+  font: italic 22px "Century Schoolbook", "TeX Gyre Schola", Georgia, serif;
+}
+
+#HELP pre,
+#HELP code {
+  font: 13px ui-monospace, Menlo, monospace;
+}
+
+#HELP pre {
+  background: var( --editor-paper );
+  border-radius: 6px;
+}
+
+#HELP i {
+  opacity: 0.55;
+}
+
+#CLOSE_HELP_BUTTON {
+  border: 1px solid var( --line );
+  background: transparent;
+  color: var( --ink );
+  border-radius: 6px;
+}
+
+#EDITOR_FRAME {
+  background: var( --editor-paper );
+}
+
+#HIGHLIGHTS mark {
+  background: color-mix( in srgb, var( --problem ) 18%, transparent );
+  text-decoration: underline wavy var( --problem );
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  border-radius: 2px;
+}
+
+#HIGHLIGHTS .playing {
+  background: color-mix( in srgb, var( --sheet-highlight ) 30%, transparent );
+  border-radius: 2px;
+}
+
+#HIGHLIGHTS .barMarker::before {
+  border-left: 1.5px solid color-mix( in srgb, var( --accent ) 60%, transparent );
+}
+
+#HIGHLIGHTS .barMarker::after {
+  color: var( --accent );
+}
+
+#EDITOR {
+  caret-color: var( --editor-ink );
+  color: var( --editor-ink );
+}
+
+#NOTE_HINT {
+  color: color-mix( in srgb, var( --ink ) 70%, transparent );
+  font: 12px/1.4 system-ui, sans-serif;
+  border-top: 1px solid var( --line );
+  background: var( --chrome );
+}
+
+#PROBLEM_TIP {
+  font: 12px/1.4 system-ui, sans-serif;
+  background: var( --problem );
+  color: var( --editor-paper );
+  border-radius: 5px;
+}
+
+#SPLITTER {
+  background: var( --line );
+}
+
+#SPLITTER:hover,
+body.resizing #SPLITTER {
+  background: var( --accent );
+}
+
+#SOUND_BUTTON {
+  box-shadow: 0 2px 8px rgba( 0, 0, 0, 0.12 );
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  color: var( --ink );
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+#SOUND_BUTTON:hover {
+  background: var( --line );
+}
+
+#SOUND_PANEL {
+  box-shadow: 0 8px 24px rgba( 0, 0, 0, 0.18 );
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  color: var( --ink );
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+#SHEET_INSTRUMENTS {
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+#SOUND_PANEL select {
+  background: var( --editor-paper );
+  border: 1px solid var( --line );
+  color: var( --ink );
+  border-radius: 4px;
+}
+
+#SOUND_SLIDER_LIST input {
+  accent-color: var( --accent );
+}
+
+#SOUND_SLIDER_LIST span:last-child {
+  font: 11px ui-monospace, Menlo, monospace;
+  opacity: 0.7;
+}
+
+#SOUND_ACTIONS button {
+  border: 1px solid var( --line );
+  background: transparent;
+  color: var( --ink );
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+#SOUND_ACTIONS button:hover {
+  background: var( --line );
+}
+
+#TRANSPORT {
+  border-top: 1px solid var( --line );
+  background: var( --chrome );
+}
+
+#TRANSPORT button {
+  font: 16px system-ui, sans-serif;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var( --ink );
+  border-radius: 50%;
+}
+
+#PLAY_BUTTON.holding {
+  animation: waiting 1.2s ease-in-out infinite;
+  background: var( --accent );
+  color: var( --chrome );
+}
+
+@keyframes waiting {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+#TRANSPORT button:hover {
+  background: var( --line );
+}
+
+#CLOCK {
+  font: 13px ui-monospace, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+#SEEKER {
+  accent-color: var( --accent );
+}
+
+#SWING_CONTROL,
+#VOLUME_CONTROL {
+  font: 12px system-ui, sans-serif;
+  opacity: 0.85;
+}
+
+#SWING_SLIDER,
+#VOLUME_SLIDER {
+  accent-color: var( --accent );
+}
+
+#SWING_READOUT,
+#VOLUME_READOUT {
+  font: 11px ui-monospace, Menlo, monospace;
+  opacity: 0.75;
+}
+
+#KEY_BUTTON,
+#SWING_BUTTON,
+#VOLUME_BUTTON,
+#METRONOME_BUTTON {
+  font-weight: bold;
+  opacity: 0.55;
+}
+
+#TRANSPORT #KEY_BUTTON.on,
+#TRANSPORT #SWING_BUTTON.on,
+#TRANSPORT #METRONOME_BUTTON.on {
+  border-color: var( --accent );
+  background: var( --accent );
+  color: var( --chrome );
+  opacity: 1;
+}
+
+.popup {
+  box-shadow: 0 6px 18px rgba( 0, 0, 0, 0.15 );
+  font: 12px system-ui, sans-serif;
+  border: 1px solid var( --line );
+  background: var( --chrome );
+  color: var( --ink );
+  border-radius: 8px;
+}
+
+#SCORE {
+  background: var( --desk );
+}
+
+@media ( max-width: 700px ) {
+  #CLOCK {
+    font-size: 12px;
+  }
+
+}
+
+input[type="range"] {
+  background: transparent;
+  appearance: none;
+  height: 22px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: var( --line );
+  border-radius: 2px;
+  height: 4px;
+}
+
+#SEEKER_THUMB,
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.3 );
+  background: var( --accent );
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  margin-top: -6px;
+  appearance: none;
+}
+
+input[type="range"]::-moz-range-track {
+  background: var( --line );
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-progress {
+  background: var( --accent );
+  border-radius: 2px;
+  height: 4px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.3 );
+  background: var( --accent );
+  border-radius: 50%;
+  height: 16px;
+  border: none;
+  width: 16px;
+}
+
+@supports ( -moz-appearance: none ) {
+  * {
+    scrollbar-color: var( --line ) transparent;
+    scrollbar-width: thin;
+  }
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var( --line ) padding-box;
+  border: 3px solid transparent;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var( --accent ) padding-box;
+}
+
+#SOUND_PANEL {
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+#SOUND_PANEL input,
+#SOUND_PANEL select,
+#SOUND_PANEL button {
+  cursor: pointer;
+}
+
+#TRANSPORT #METRONOME_BUTTON.downbeat {
+  animation: downbeat 0.16s ease-out;
+}
+
+#TRANSPORT #METRONOME_BUTTON.beat {
+  animation: beat 0.16s ease-out;
+}
+
+@keyframes downbeat {
+  from {
+    transform: scale( 1.3 );
+  }
+}
+
+@keyframes beat {
+  from {
+    transform: scale( 1.15 );
+  }
+}
