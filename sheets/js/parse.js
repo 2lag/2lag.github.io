@@ -42,17 +42,50 @@ const NOTE_MARKS = {
   "\\": "fall",
   "/": "rise"
 };
+const DYNAMIC_LEVELS = {
+  pp: 0.3,
+  p: 0.45,
+  mp: 0.6,
+  mf: 0.78,
+  f: 1,
+  ff: 1.25
+};
 const TOKEN_PATTERN =
   /\(|\)[^\s()]*|\{[^}]*\}?[^\s()]*|\[[^\]]*\]?[^\s()]*|[^\s()]+/g;
 const LETTER_SEMITONES = { c: 0, d: 2, e: 4, f: 5, g: 7, a: 9, b: 11 };
+const CLEF_TYPES = { t: "treble", b: "bass", a: "alto", tn: "tenor" };
 const ARTICULATIONS = [ "staccato", "accent", "tenuto", "fermata" ];
+const DYNAMIC_STEPS = [ "pp", "p", "mp", "mf", "f", "ff" ];
+const MEASURE_NUMBERING = [ "all", "lines", "none" ];
 const NOTE_VALUES = [ 1, 2, 4, 8, 16, 32, 64 ];
-const CLEF_NAMES = { t: "treble", b: "bass" };
 const SILENT = { report: () => null };
 const SHARP_ORDER = "fcgdaeb";
 const FLAT_ORDER = "beadgcf";
 const MOST_COPIES = 999;
 const EPSILON = 1e-6;
+
+const BARLINE_SETTINGS = {
+  key: {
+    read: keyFifthsOf,
+    wrong: "unknown key"
+  },
+  break: {
+    read: oneOf( "line", "page" ),
+    wrong: "break is line or page"
+  },
+  bar: {
+    read: oneOf( "double", "final" ),
+    wrong: "bar is double or final"
+  },
+  mark: {
+    read: value => value.length <= 16 ? value : null,
+    wrong: "a mark is 16 characters at most"
+  }
+};
+
+function oneOf( ...choices ) {
+  return value => choices.includes( value ) ? value : null;
+}
 
 function writtenLengthOf( event ) {
   return ( 1 / event.duration ) * ( 2 - Math.pow( 0.5, event.dots ) );
@@ -103,13 +136,13 @@ function applyKeyToNotes( staves, key_changes ) {
       staff.events.forEach(
         event => {
           while ( key_changes[ change + 1 ]?.position <= position + EPSILON )
-            change++;
+            ++change;
           const fifths = key_changes[ change ].fifths;
           const pitches = [
             ...event.pitches,
             ...( event.graces || [] )
           ];
-          for ( let i = 0; i < pitches.length; i++ )
+          for ( let i = 0; i < pitches.length; ++i )
             pitches[ i ].alter ??= keyAlterOf( pitches[ i ].letter, fifths );
           event.pitches.sort( ( a, b ) => midiOf( a ) - midiOf( b ) );
           position += lengthOf( event );
@@ -119,28 +152,59 @@ function applyKeyToNotes( staves, key_changes ) {
   );
 }
 
-function isKeyOnBarline( request, measure_length ) {
+function isRequestOnBarline( request, measure_length ) {
   if ( isOnBarline( request.position, measure_length ) )
     return true;
-  request.problem( "key changes go on a barline, between measures" );
+  request.problem( `${ request.name }= goes on a barline, between measures` );
   return false;
 }
 
-function keyChangesOf( requests, measure_length ) {
-  const changes = [{ position: 0, fifths: 0 }];
+function barlineSettingsOf( requests, measure_length ) {
+  const settings = { key: [], break: [], bar: [], mark: [] };
   requests.filter(
-    request => isKeyOnBarline( request, measure_length )
+    request =>
+      isRequestOnBarline( request, measure_length )
   ).sort(
     ( a, b ) => a.position - b.position
   ).forEach(
-    ({ position, fifths }) => {
-      if ( Math.abs( changes.at( -1 ).position - position ) < EPSILON )
+    ({ name, value, position }) => {
+      const list = settings[ name ];
+      const last = list.at( -1 );
+      if ( last && Math.abs( last.position - position ) < EPSILON )
+        list.pop();
+      list.push({ position, value });
+    }
+  );
+  return settings;
+}
+
+function keyChangesOf( requests ) {
+  const changes = [{ position: 0, fifths: 0 }];
+  requests.forEach(
+    ({ position, value }) => {
+      if ( changes.at( -1 ).position === position )
         changes.pop();
-      if ( changes.at( -1 )?.fifths !== fifths )
-        changes.push({ position, fifths });
+      if ( changes.at( -1 )?.fifths !== value )
+        changes.push({ position, fifths: value });
     }
   );
   return changes;
+}
+
+function nextLetterAfter( text ) {
+  return /^[A-Y]$/.test( text )
+    ? String.fromCharCode( text.charCodeAt( 0 ) + 1 )
+    : "A";
+}
+
+function rehearsalMarksOf( requests ) {
+  let previous = "";
+  return requests.map(
+    ({ position, value }) => {
+      previous = value || nextLetterAfter( previous );
+      return { position, text: previous };
+    }
+  );
 }
 
 function parseLength( text ) {
@@ -258,7 +322,148 @@ function attachGraces( event, staff, report ) {
   staff.waitingGraces = [];
 }
 
+function parseDynamic( text ) {
+  if ( Object.hasOwn( DYNAMIC_LEVELS, text )
+    || text === "sfz"
+  ) return { level: text };
+  const hairpin = text.match( /^([<>])(\d+(?:\.\d+)?)?$/ );
+  if ( !hairpin )
+    return null;
+  const beats = hairpin[ 2 ] ? Number( hairpin[ 2 ] ) : null;
+  if ( beats === 0 )
+    return null;
+  return {
+    hairpin: hairpin[ 1 ],
+    beats
+  };
+}
+
+function isLevelMark( event ) {
+  return Object.hasOwn( DYNAMIC_LEVELS, event.dynamic?.level ?? "" );
+}
+
+function steppedLevel( level, hairpin ) {
+  const levels = DYNAMIC_STEPS.map( name => DYNAMIC_LEVELS[ name ] );
+  const nearest = levels.reduce(
+    ( best, value, idx ) =>
+      Math.abs( value - level ) < Math.abs( levels[ best ] - level )
+        ? idx
+        : best,
+    0
+  );
+  const step = hairpin === "<" ? 1 : -1;
+  return levels[
+    Math.min(
+      levels.length - 1,
+      Math.max( 0, nearest + step )
+    )
+  ];
+}
+
+function rampBetween( from, to, start, end ) {
+  const slope = end > start
+    ? ( to - from ) / ( end - start )
+    : 0;
+  return {
+    from, to,
+    start, end,
+    slope
+  };
+}
+
+function rampOf( events, starts, idx, level, staff_end, beat_length ) {
+  const start = starts[ idx ];
+  const { hairpin, beats } = events[ idx ].dynamic;
+  const next = events.findIndex(
+    ( event, later ) => later > idx
+                     && isLevelMark( event )
+  );
+  if ( !beats && next !== -1 ) {
+    const to = DYNAMIC_LEVELS[ events[ next ].dynamic.level ];
+    return rampBetween( level, to, start, starts[ next ] );
+  }
+  const end = beats
+    ? Math.min( staff_end, start + beats * beat_length )
+    : staff_end;
+  return rampBetween( level, steppedLevel( level, hairpin ), start, end );
+}
+
+function applyDynamics( staff, beat_length ) {
+  staff.hairpins = [];
+  if ( !staff.events.some( event => event.dynamic ) )
+    return;
+  const starts = [];
+  let staff_end = 0;
+  staff.events.forEach(
+    event => {
+      starts.push( staff_end );
+      staff_end += lengthOf( event );
+    }
+  );
+  let level = 1;
+  let ramp = null;
+  staff.events.forEach(
+    ( event, idx ) => {
+      const start = starts[ idx ];
+      if ( ramp && start >= ramp.end - EPSILON ) {
+        level = ramp.to;
+        ramp = null;
+      }
+      if ( isLevelMark( event ) ) {
+        level = DYNAMIC_LEVELS[ event.dynamic.level ];
+        ramp = null;
+      }
+      if ( event.dynamic?.hairpin ) {
+        ramp = rampOf(
+          staff.events, starts, idx,
+          level, staff_end, beat_length
+        );
+        staff.hairpins.push({ kind: event.dynamic.hairpin, ...ramp });
+      }
+      const current = ramp
+        ? ramp.from + ramp.slope * ( start - ramp.start )
+        : level;
+      event.loudness = event.dynamic?.level === "sfz"
+        ? current * 1.5
+        : current;
+    }
+  );
+}
+
+function parseWithDynamic( token, column, line_number, staff, report ) {
+  const colon = token.indexOf( ":" );
+  const dynamic = parseDynamic( token.slice( colon + 1 ) );
+  if ( !dynamic ) {
+    return report(
+      line_number,
+      column + colon,
+      token.slice( colon ),
+      "dynamics are :pp :p :mp :mf :f :ff :sfz, or :< :> for a hairpin"
+    );
+  }
+  const body = token.slice( 0, colon );
+  if ( parseGrace( body ) ) {
+    return report(
+      line_number,
+      column + colon,
+      token.slice( colon ),
+      "dynamics go on the main note, not a grace note"
+    );
+  }
+  const event = parseEvent(
+    body, column, line_number,
+    staff, report
+  );
+  return event && {
+    ...event,
+    token,
+    dynamic
+  };
+}
+
 function parseEvent( token, column, line_number, staff, report ) {
+  if ( token.includes( ":" ) )
+    return parseWithDynamic( token, column, line_number, staff, report );
   const grace = parseGrace( token );
   if ( grace ) {
     staff.waitingGraces.push({
@@ -363,7 +568,7 @@ function parseTuplet( token, column, line_number, staff, report ) {
 
 function repeatSignOf( token, staff ) {
   if ( token === "|" ) {
-    staff.openRepeats++;
+    ++staff.openRepeats;
     return {
       kind: "start",
       level: staff.openRepeats
@@ -430,7 +635,7 @@ function playToken( { token, column, line }, staff, pass ) {
     ? parseTuplet( token, column, line, staff, pass.report )
     : [ parseEvent( token, column, line, staff, pass.report ) ];
   const kept = ( events || [] ).filter( Boolean );
-  for ( let i = 0; i < kept.length; i++ )
+  for ( let i = 0; i < kept.length; ++i )
     addEvent( kept[ i ], line, staff, pass );
 }
 
@@ -455,7 +660,7 @@ function playTimes( times, count_source, pass, play_once ) {
     );
     times = 1;
   }
-  for ( let copy = 0; copy < Math.max( 1, times ); copy++ ) {
+  for ( let copy = 0; copy < Math.max( 1, times ); ++copy ) {
     play_once(
       !copy
         ? pass
@@ -627,10 +832,10 @@ function reportMisplacedMarks( staff, measure_length, report ) {
        )
    );
   staff.events.filter(
-    ( event, index ) => event.tie
+    ( event, idx ) => event.tie
                      && !event.countSource
-                     && staff.events[ index + 1 ]
-                     && !sharesAPitch( event, staff.events[ index + 1 ] )
+                     && staff.events[ idx + 1 ]
+                     && !sharesAPitch( event, staff.events[ idx + 1 ] )
   ).forEach(
     event =>
       report(
@@ -763,16 +968,29 @@ function applySetting( name, value, sheet, problem ) {
     else problem( "time signature looks like 4,4 or 6,8" );
     return;
   }
+  if ( name === "numbers" ) {
+    if ( MEASURE_NUMBERING.includes( value ) )
+      sheet.numbers = value;
+    else
+      problem( "numbers is all, lines or none" );
+    return;
+  }
   problem( "unknown setting", true );
 }
 
-function changeKey( value, sheet, staff, problem ) {
-  const fifths = keyFifthsOf( value );
-  if ( fifths === null )
-    return problem( "unknown key" );
+function placeOnBarline( name, value, sheet, staff, problem ) {
+  const setting = BARLINE_SETTINGS[ name ];
+  const read = setting.read( value );
+  if ( read === null )
+    return problem( setting.wrong );
   if ( staff.group.depth > 0 )
-    return problem( "a key change can't go inside a ( )x2 group" );
-  sheet.keyChanges.push({ position: staff.position, fifths, problem });
+    return problem( `${ name }= can't go inside a ( )x2 group` );
+  sheet.barlineRequests.push({
+    name,
+    value: read,
+    position: staff.position,
+    problem
+  });
 }
 
 function instrumentNamed( name, problem ) {
@@ -785,19 +1003,19 @@ function instrumentNamed( name, problem ) {
 
 function parseSheet( text ) {
   const sheet = makeSheet();
-  const staves = makeStaves();
+  const staves = new Map();
   const report = ( line, column, token, reason ) => {
     sheet.problems.push({ line, column, token, reason });
     return null;
   };
   const state = {
-    current: staves.treble,
+    current: null,
     instrument: null
   };
   text.split( "\n" ).forEach(
-    ( raw_line, index ) =>
+    ( raw_line, idx ) =>
       parseLine(
-        raw_line, index + 1,
+        raw_line, idx + 1,
         staves, sheet, state,
         report
       )
@@ -816,53 +1034,81 @@ function makeSheet() {
     staves: [],
     repeats: [],
     problems: [],
-    keyChanges: [],
+    numbers: "lines",
     key: { fifths: 0 },
+    barlineRequests: [],
     meter: { beats: 4, unit: 4 }
   };
 }
 
-function makeStaff( clef ) {
+function makeStaff( clef_type, number ) {
   return {
-    clef,
+    number,
     loops: [],
     events: [],
     repeats: [],
     tuplets: [],
     position: 0,
     openRepeats: 0,
+    clef: clef_type,
     waitingGraces: [],
     group: { depth: 0, records: [] }
   };
 }
 
-function makeStaves() {
+function parseClefValue( value ) {
+  const match = value.match( /^([tb]|tn|a)(\d+)?$/ );
+  if ( !match )
+    return null;
   return {
-    treble: makeStaff( "treble" ),
-    bass: makeStaff( "bass" )
+    type: match[ 1 ],
+    number: match[ 2 ] ? Number( match[ 2 ] ) : 1
   };
+}
+
+function staffKey( type, number ) {
+  return `${ type }${ number }`;
+}
+
+function findOrCreateStaff( staves, type, number ) {
+  const key = staffKey( type, number );
+  if ( !staves.has( key ) ) {
+    staves.set( key,
+      makeStaff( CLEF_TYPES[ type ], number )
+    );
+  }
+  return staves.get( key );
+}
+
+function currentStaffOf( staves, state ) {
+  state.current ??= findOrCreateStaff( staves, "t", 1 );
+  return state.current;
+}
+
+function readMusic( line_text, line_number, staves, state, report ) {
+  const staff = currentStaffOf( staves, state );
+  if ( state.instrument && line_text.trim() ) {
+    staff.instrument = state.instrument;
+    state.instrument = null;
+  }
+  parseMusicLine(
+    line_text.toLowerCase(),
+    line_number, staff, report
+  );
 }
 
 function parseLine( raw_line, line_number, staves, sheet, state, report ) {
   const line_text = raw_line.split( "#" )[ 0 ];
   const setting = line_text.match( /^(\s*)(\w+)(\s*=\s*)(.*?)\s*$/ );
   if ( !setting ) {
-    if ( state.instrument && line_text.trim() ) {
-      state.current.instrument = state.instrument;
-      state.instrument = null;
-    }
-    parseMusicLine(
-      line_text.toLowerCase(),
-      line_number,
-      state.current,
-      report
-    );
+    readMusic( line_text, line_number, staves, state, report );
     return;
   }
   const [ , indent, rawName, equals, rawValue ] = setting;
   const name = rawName.toLowerCase();
   const value = name === "title"
              || name === "author"
+             || name === "mark"
     ? rawValue
     : rawValue.toLowerCase();
   const problem = ( reason, is_about_name ) =>
@@ -881,24 +1127,33 @@ function parseLine( raw_line, line_number, staves, sheet, state, report ) {
     ) ?? state.instrument;
     return;
   }
-  if ( name === "key" ) {
-    changeKey( value, sheet, state.current, problem );
+  if ( Object.hasOwn( BARLINE_SETTINGS, name ) ) {
+    placeOnBarline(
+      name, value, sheet,
+      currentStaffOf( staves, state ),
+      problem
+    );
     return;
   }
-  if ( name !== "clef" && name !== "mclef" ) {
+  if ( name !== "clef"
+    && name !== "mclef"
+  ) {
     applySetting( name, value, sheet, problem );
     return;
   }
-  if ( !Object.hasOwn( CLEF_NAMES, value ) )
-    return problem( "clef is t (treble) or b (bass)" );
-  state.current = staves[ CLEF_NAMES[ value ] ];
+  const clef = parseClefValue( value );
+  if ( !clef ) {
+    problem( "clef is t, b, a or tn, with an optional number: clef=t2" );
+    return;
+  }
+  state.current = findOrCreateStaff( staves, clef.type, clef.number );
   if ( name === "mclef" )
     state.current.muted = true;
 }
 
 function finalizeStaves( sheet, staves, report ) {
   const measure_length = measureLengthOf( sheet.meter );
-  const all_staves = [ staves.treble, staves.bass ];
+  const all_staves = [ ...staves.values() ];
   sheet.repeats = mergedRepeatsOf(
     all_staves.map(
       staff =>
@@ -906,14 +1161,29 @@ function finalizeStaves( sheet, staves, report ) {
     )
   );
   sheet.loop = loopOf( all_staves, report );
-  sheet.keyChanges = keyChangesOf( sheet.keyChanges, measure_length );
+  const settings = barlineSettingsOf(
+    sheet.barlineRequests,
+    measure_length
+  );
+  delete sheet.barlineRequests;
+  sheet.keyChanges = keyChangesOf( settings.key );
   sheet.key = { fifths: sheet.keyChanges[ 0 ].fifths };
+  sheet.breaks = settings.break;
+  sheet.barlines = settings.bar;
+  sheet.rehearsalMarks = rehearsalMarksOf( settings.mark );
   applyKeyToNotes( all_staves, sheet.keyChanges );
+  all_staves.forEach(
+    staff =>
+      applyDynamics( staff, 1 / sheet.meter.unit )
+  );
   const used_staves = all_staves.filter(
     staff => staff.events.length > 0
   );
-  sheet.staves = used_staves.length
-    ? used_staves
-    : [ staves.treble ];
+  if ( !used_staves.length ) {
+    const default_staff = findOrCreateStaff( staves, "t", 1 );
+    applyDynamics( default_staff, 1 / sheet.meter.unit );
+    used_staves.push( default_staff );
+  }
+  sheet.staves = used_staves;
   return sheet;
 }

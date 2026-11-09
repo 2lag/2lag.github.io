@@ -1,7 +1,18 @@
+let FOLLOWED = { sheet: null, events: new Set(), line: 0 };
+
 function followedStaffOf( sheet ) {
   const heard = sheet.staves.filter( staff => !staff.muted );
-  const top = heard.find( staff => staff.clef === "treble" );
-  return top || heard[ 0 ] || sheet.staves[ 0 ];
+  return heard[ 0 ] || sheet.staves[ 0 ];
+}
+
+function followedEventsOf( sheet ) {
+  if ( FOLLOWED.sheet !== sheet )
+    FOLLOWED = {
+      sheet,
+      events: new Set( followedStaffOf( sheet ).events ),
+      line: 0
+    };
+  return FOLLOWED.events;
 }
 
 function isComfortablyVisible( top ) {
@@ -12,11 +23,13 @@ function isComfortablyVisible( top ) {
 
 function followInEditor( event ) {
   const mark = event.textMarks?.[ 0 ];
-  const followed = followedStaffOf( SHEET );
   if ( !mark
-    || !followed.events.includes( event )
-    || isComfortablyVisible( mark.offsetTop )
+    || !followedEventsOf( SHEET ).has( event )
+    || event.line === FOLLOWED.line
   ) return;
+  FOLLOWED.line = event.line;
+  if ( isComfortablyVisible( mark.offsetTop ) )
+    return;
   const top = mark.offsetTop - EDITOR.clientHeight / 3;
   EDITOR.scrollTo({
     top,

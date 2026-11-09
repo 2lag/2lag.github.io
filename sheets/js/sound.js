@@ -373,8 +373,8 @@ function frequencyOf( midi ) {
 
 function roomEchoSamplesOf( length, channel ) {
   const key = `${ length } ${ channel }`;
-  ROOM_ECHO_SAMPLES[ key ] ??= Float32Array.from( { length }, ( _, index ) => (
-    Math.random() * 2 - 1 ) * Math.pow( 1 - index / length, 3 ) );
+  ROOM_ECHO_SAMPLES[ key ] ??= Float32Array.from( { length }, ( _, idx ) => (
+    Math.random() * 2 - 1 ) * Math.pow( 1 - idx / length, 3 ) );
   return ROOM_ECHO_SAMPLES[ key ];
 }
 
@@ -382,7 +382,7 @@ function roomEchoOf( context ) {
   const seconds = 2.2;
   const length = context.sampleRate * seconds;
   const echo = context.createBuffer( 2, length, context.sampleRate );
-  for ( let channel = 0; channel < 2; channel++ ) {
+  for ( let channel = 0; channel < 2; ++channel ) {
     echo.copyToChannel(
       roomEchoSamplesOf( echo.length, channel ),
       channel
@@ -435,10 +435,10 @@ function buildVoice( mix, instrument = null ) {
         { type: shape.type }
       )
   );
-  filters.forEach( ( filter, index ) => {
-    filter.frequency.value = body[ index ].frequency;
-    filter.Q.value = body[ index ].Q;
-    filter.gain.value = body[ index ].gain || 0;
+  filters.forEach( ( filter, idx ) => {
+    filter.frequency.value = body[ idx ].frequency;
+    filter.Q.value = body[ idx ].Q;
+    filter.gain.value = body[ idx ].gain || 0;
   });
   voice.tone.type = "lowpass";
   [ voice.input, ...filters, voice.tone ].reduce(
@@ -474,7 +474,7 @@ function applyLiveSettings( mix ) {
   if ( !mix )
     return;
   const now = mix.context.currentTime;
-  const update = ( parameter, value ) =>
+  const update = ([ parameter, value ]) =>
     parameter.setTargetAtTime( value, now, 0.03 );
   mix.voices.filter( voice => !voice.instrument )
             .forEach(
@@ -509,14 +509,14 @@ function pluckedStringOf( mix, midi, sound ) {
   const loss = Math.pow( 0.001, period / ( sound.decay * rate ) );
   const brightness = 0.5 + 0.45 * Math.min( 1, sound.brightness / 12000 );
   let smoothed = 0;
-  for ( let index = 0; index < period; index++ ) {
+  for ( let idx = 0; idx < period; ++idx ) {
     smoothed += ( Math.random() * 2 - 1 - smoothed ) * brightness;
-    samples[ index ] = smoothed;
+    samples[ idx ] = smoothed;
   }
-  for ( let index = period; index < length; index++ ) {
-    const before = samples[ index - period - 1 ] ?? 0;
-    samples[ index ] = loss * (
-      brightness * samples[ index - period ] + ( 1 - brightness ) * before
+  for ( let idx = period; idx < length; ++idx ) {
+    const before = samples[ idx - period - 1 ] ?? 0;
+    samples[ idx ] = loss * (
+      brightness * samples[ idx - period ] + ( 1 - brightness ) * before
     );
   }
   const buffer = context.createBuffer( 1, length, rate );
@@ -561,12 +561,12 @@ function sourcesOfNote( voice, midi, sound ) {
   const voices = Math.round( sound.voices );
   const bodies = Array.from(
     { length: voices },
-    ( _, index ) => {
+    ( _, idx ) => {
       const source = context.createOscillator();
       source.type = sound.waveform;
       source.frequency.value = frequencyOf( midi );
       source.detune.value = voices > 1
-        ? ( index - ( voices - 1 ) / 2 ) * sound.detune
+        ? ( idx - ( voices - 1 ) / 2 ) * sound.detune
         : 0;
       return {
         level: 1 / Math.sqrt( voices ),
@@ -756,18 +756,18 @@ function scheduleNoteSources(
 }
 
 function previewSound() {
-  const context = new AudioContext();
-  const mix = buildMix( context );
+  ensureAudioContext();
+  const mix = buildMix( AUDIO_CONTEXT );
   const voice = buildVoice( mix );
-  const start = context.currentTime + 0.05;
+  const start = AUDIO_CONTEXT.currentTime + 0.05;
   const chord = [ [ "c", 4 ], [ "e", 4 ], [ "g", 4 ], [ "c", 5 ] ];
-  chord.forEach( ( [ letter, octave ], index ) => {
-    const when = start + index * 0.18;
+  chord.forEach( ( [ letter, octave ], idx ) => {
+    const when = start + idx * 0.18;
     scheduleNote(
       { letter, alter: 0, octave },
-      when, 1.2 - index * 0.18, voice
+      when, 1.2 - idx * 0.18, voice
     );
   });
   const preview_time = ( 2.4 + SOUND_SETTINGS.release * 2 ) * 1000;
-  setTimeout( () => context.close(), preview_time );
+  setTimeout( () => fadeOutAndRelease( mix ), preview_time );
 }

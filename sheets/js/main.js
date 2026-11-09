@@ -1,6 +1,9 @@
 let SHEET = parseSheet( "" );
+let PARSED = { text: "", sheet: SHEET };
+let MARKED_SHEET = null;
 let PENDING_RENDER = null;
 let PROBLEM_MARKS = [];
+let OVERLAY_FRAME = 0;
 
 function columnOf( problem, line_text ) {
   if ( Number.isInteger( problem.column ) )
@@ -20,10 +23,10 @@ function problemRangeOf( problem, line_text ) {
 
 function noteRangesByLine( events ) {
   const by_line = new Map();
-  for ( let i = 0; i < events.length; i++ ) {
+  for ( let i = 0; i < events.length; ++i ) {
     const event = events[ i ];
     const sources = sourcesOf( event );
-    for ( let j = 0; j < sources.length; j++ ) {
+    for ( let j = 0; j < sources.length; ++j ) {
       const source = sources[ j ];
       if ( !source.line || !source.token )
         continue;
@@ -67,19 +70,31 @@ function markedLine( line_text, ranges ) {
   return pieces;
 }
 
+function parsedSheetOf( text ) {
+  if ( PARSED.text !== text )
+    PARSED = { text, sheet: parseSheet( text ) };
+  return PARSED.sheet;
+}
+
 function showMarks( problems, parsed ) {
+  MARKED_SHEET = parsed;
   PROBLEM_MARKS = [];
   const events = parsed.staves.flatMap( staff => staff.events );
   events.forEach( event => event.textMarks = [] );
   const measure_starts = measureStartsOf( parsed );
   const lines = EDITOR.value.split( "\n" );
   const events_by_line = noteRangesByLine( events );
-  const pieces = lines.flatMap( ( line_text, index ) => {
-    const line_number = index + 1;
-    const line_problems = problems.filter(
-      problem =>
-        problem.line === line_number
-    );
+  const problems_by_line = new Map();
+  problems.forEach(
+    problem => {
+      if ( !problems_by_line.has( problem.line ) )
+        problems_by_line.set( problem.line, [] );
+      problems_by_line.get( problem.line ).push( problem );
+    }
+  );
+  const pieces = lines.flatMap( ( line_text, idx ) => {
+    const line_number = idx + 1;
+    const line_problems = problems_by_line.get( line_number ) ?? [];
     const problem_ranges = line_problems.map(
       problem =>
         problemRangeOf( problem, line_text )
@@ -98,7 +113,19 @@ function showMarks( problems, parsed ) {
     return [ ...markedLine( line_text, ranges ), "\n" ];
   });
   HIGHLIGHTS.replaceChildren( ...pieces, " " );
-  followEditorScroll();
+  syncOverlaySoon();
+}
+
+function syncOverlaySoon() {
+  if ( OVERLAY_FRAME )
+    return;
+  OVERLAY_FRAME = requestAnimationFrame(
+    () => {
+      OVERLAY_FRAME = 0;
+      followEditorScroll();
+      drawExtraCarets();
+    }
+  );
 }
 
 function followEditorScroll() {
@@ -134,7 +161,7 @@ function hideProblemTip() {
 
 function refreshScore() {
   stopPlayback();
-  SHEET = parseSheet( EDITOR.value );
+  SHEET = parsedSheetOf( EDITOR.value );
   renderScore( SHEET );
   PLAYBACK_POSITION = Math.min(
     PLAYBACK_POSITION,
@@ -143,7 +170,8 @@ function refreshScore() {
   showPosition( PLAYBACK_POSITION );
   if ( PLAYBACK_POSITION > 0 )
     placePlayhead( PLAYBACK_POSITION, false );
-  showMarks( SHEET.problems, SHEET );
+  if ( MARKED_SHEET !== SHEET || SHEET.problems.length )
+    showMarks( SHEET.problems, SHEET );
   rememberSheet( EDITOR.value );
   showNoteHint();
   showSheetInstruments();
@@ -243,7 +271,7 @@ HELP.addEventListener( "click",
 
 EDITOR.addEventListener( "input",
   () => {
-    showMarks( [], parseSheet( EDITOR.value ) );
+    showMarks( [], parsedSheetOf( EDITOR.value ) );
     refreshSoon();
   }
 );

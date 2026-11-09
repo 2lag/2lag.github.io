@@ -26,6 +26,7 @@
   }
 
   .page {
+    content-visibility: visible;
     break-after: page;
     box-shadow: none;
     background: #fff;

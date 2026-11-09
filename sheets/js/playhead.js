@@ -11,9 +11,9 @@ PLAYHEAD.setAttribute( "rx", 0.25 * SPACE );
 
 function playheadXAt( time ) {
   const matches = stop => stop.time <= time + EPSILON;
-  const index = Math.max( 0, PLAYHEAD_STOPS.findLastIndex( matches ) );
-  const stop = PLAYHEAD_STOPS[ index ];
-  const next = PLAYHEAD_STOPS[ index + 1 ];
+  const idx = Math.max( 0, PLAYHEAD_STOPS.findLastIndex( matches ) );
+  const stop = PLAYHEAD_STOPS[ idx ];
+  const next = PLAYHEAD_STOPS[ idx + 1 ];
   if ( !next || next.system !== stop.system ) {
     return {
       x: stop.x,

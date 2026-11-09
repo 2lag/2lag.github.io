@@ -37,6 +37,7 @@
           </svg>
         </button>
         <div id="LOOK_MENU">
+          <button id="ERA_BUTTON">4.0</button>
           <button id="THEME_BUTTON">
             <svg class="sunIcon" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="4.2" />
@@ -46,7 +47,6 @@
               <path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.4 8.4 0 1 0 10.6 10.6z" />
             </svg>
           </button>
-          <button id="ERA_BUTTON">4.0</button>
         </div>
       </div>
     </nav>
@@ -82,13 +82,20 @@ clef=b                      <i># following lines go to the bass staff</i>
       <tr><td><code>g5cs 5d4</code></td><td>grace note before the next note (several in a row make a run)</td></tr>
       <tr><td><code>4c8- 4d8- 4e8</code></td><td>slur: each <code>-</code> joins a note to the next</td></tr>
       <tr><td><code>4c4*</code> <code>4c4&gt;</code> <code>4c4_</code></td><td>staccato, accent, tenuto (combine them: <code>4c4*&gt;</code>)</td></tr>
+      <tr><td><code>4c4:mf</code></td><td>dynamics: <code>:pp :p :mp :mf :f :ff :sfz</code> (louder or softer from this note on)</td></tr>
+      <tr><td><code>4c4:&lt;</code> <code>4c4:&gt;2</code></td><td>crescendo or diminuendo to the next dynamic, or one step over that many beats</td></tr>
       <tr><td><code>4c2^</code></td><td>fermata: playback waits on it until you press ▶</td></tr>
       <tr><td><code>5c4\</code> <code>5c4/</code></td><td>fall off the note, rise off the note</td></tr>
       <tr><td><code>{4c8 4d8 4e8}</code></td><td>triplet (any count: 5 sixteenths make a quintuplet)</td></tr>
       <tr><td><code>|</code> <code>||</code></td><td>start and end of a repeat, on a barline (nest by opening another <code>|</code> inside)</td></tr>
       <tr><td><code>|||</code> <code>||||</code></td><td>loop forever: everything between them plays on repeat until you stop it</td></tr>
       <tr><td><code>4c8x4</code> <code>(…)x2</code></td><td>write a note, chord, triplet or a whole <code>( )</code> group several times in a row (groups can span lines)</td></tr>
-      <tr><td><code>mclef=b</code></td><td>mute that staff (any one of its clef lines will do), to hear only the other</td></tr>
+      <tr><td><code>break=line</code></td><td>start a new line at this barline (<code>break=page</code> for a new page)</td></tr>
+      <tr><td><code>bar=double</code></td><td>double barline here, to end a phrase (<code>bar=final</code> for a final one)</td></tr>
+      <tr><td><code>mark=</code> <code>mark=Coda</code></td><td>rehearsal mark at this barline (left empty, the next letter: A, B, C…)</td></tr>
+      <tr><td><code>numbers=all</code></td><td>number every measure (<code>numbers=none</code> for none; normally the first of each line)</td></tr>
+      <tr><td><code>clef=t2</code> <code>clef=a</code> <code>clef=tn</code></td><td>numbered clefs for full scores (each is its own staff, in the order they appear)</td></tr>
+      <tr><td><code>mclef=b</code> <code>mclef=t2</code></td><td>mute that staff (any one of its clef lines will do)</td></tr>
       <tr><td><code># ...</code></td><td>comment</td></tr>
     </table>
     <p>
@@ -96,7 +103,7 @@ clef=b                      <i># following lines go to the bass staff</i>
       A staff without <code>instrument=</code> plays the sound picked in the sound menu (top right of the sheet).
     </p>
     <p>
-      Notes follow the key: in <code>key=f</code>, <code>4b4</code> is B flat. A <code>key=</code> line between music lines changes the key from that barline on, for both staves.
+      Notes follow the key: in <code>key=f</code>, <code>4b4</code> is B flat. A <code>key=</code> line between music lines changes the key from that barline on, for every staff.
       Add <code>s</code>, <code>b</code> or <code>n</code> to step outside the key for one note.
       Notes that cross a barline are split and tied for you.
     </p>
@@ -250,6 +257,9 @@ clef=b
   <script src="js/samples.js"></script>
   <script src="js/hint.js"></script>
   <script src="js/barmarks.js"></script>
+  <script src="js/undo.js"></script>
+  <script src="js/cursors.js"></script>
+  <script src="js/keys.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

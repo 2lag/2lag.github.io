@@ -34,7 +34,7 @@ function eventSourceOf( event ) {
 function spanOf( numbers ) {
   const unique = [ ...new Set( numbers ) ].sort( ( a, b ) => a - b );
   const first = unique[ 0 ];
-  const is_run = unique.every( ( number, index ) => number === first + index );
+  const is_run = unique.every( ( number, idx ) => number === first + idx );
   if ( is_run && unique.length > 1 )
     return `${ unique[ 0 ] }–${ unique.at( -1 ) }`;
   return unique.join( "," );

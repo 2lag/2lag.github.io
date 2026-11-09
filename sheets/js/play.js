@@ -1,5 +1,7 @@
 const HIDDEN_LOOKAHEAD_SECONDS = 45;
 const PERFORMANCES = new WeakMap();
+const PASS_LENGTHS = new WeakMap();
+const LIT_EVENTS = new Set();
 const LOOKAHEAD_SECONDS = 2;
 let PLAYBACK_TIMEOUT = null;
 const ENDLESS_MINUTES = 30;
@@ -16,6 +18,14 @@ let ACTIVE_PLAN = null;
 let HELD_NOTES = [];
 let HOLDING = false;
 let PLAYING = false;
+
+function ensureAudioContext() {
+  if ( !AUDIO_CONTEXT || AUDIO_CONTEXT.state === "closed" )
+    AUDIO_CONTEXT = new AudioContext();
+  if ( AUDIO_CONTEXT.state === "suspended" )
+    AUDIO_CONTEXT.resume();
+  return AUDIO_CONTEXT;
+}
 
 function secondsPerWholeNoteOf( sheet ) {
   return 240 / sheet.bpm;
@@ -104,7 +114,9 @@ function totalDurationOf( sheet ) {
 }
 
 function passLengthOf( sheet ) {
-  return lengthOfSegments( onePassOf( sheet ) );
+  if ( !PASS_LENGTHS.has( sheet ) )
+    PASS_LENGTHS.set( sheet, lengthOfSegments( onePassOf( sheet ) ) );
+  return PASS_LENGTHS.get( sheet );
 }
 
 function shownPositionOf( position ) {
@@ -131,14 +143,12 @@ function scorePositionOf( performed ) {
 
 function timedEventsOf( staff ) {
   let position = 0;
-  return staff.events.map( ( event, index ) => {
+  return staff.events.map( ( event, idx ) => {
     const start = position;
     position += lengthOf( event );
     return {
-      event,
-      index,
-      start,
-      end: position
+      event, idx,
+      start, end: position
     };
   });
 }
@@ -178,8 +188,16 @@ function nextFermataAfter( from, performance ) {
 function soundStyleOf( event ) {
   const articulations = event.articulations || [];
   return {
-    loudness: articulations.includes( "accent" ) ? 1.5 : 1,
-    slide: event.fall ? "fall" : event.rise ? "rise" : null
+    loudness: ( event.loudness ?? 1 ) * (
+      articulations.includes( "accent" )
+        ? 1.5
+        : 1
+    ),
+    slide: event.fall
+             ? "fall"
+             : event.rise
+               ? "rise"
+               : null
   };
 }
 
@@ -193,41 +211,47 @@ function hasPitch( event, pitch ) {
   return event.pitches.some( p => pitchMatches( p, pitch ) );
 }
 
-function tiedDurationOf( staff, index, pitch ) {
-  let total = lengthOf( staff.events[ index ] );
-  let i = index;
+function tiedDurationOf( staff, idx, pitch ) {
+  let total = lengthOf( staff.events[ idx ] );
+  let i = idx;
 
   while ( staff.events[ i ].tie
        && i + 1 < staff.events.length
        && hasPitch( staff.events[ i + 1 ], pitch )
   ) {
     total += lengthOf( staff.events[ i + 1 ] );
-    i++;
+    ++i;
   }
   return total;
 }
 
-function isContinuing( staff, index, pitch ) {
-  if ( !index )
+function isContinuing( staff, idx, pitch ) {
+  if ( !idx )
     return false;
-  const previous = staff.events[ index - 1 ];
+  const previous = staff.events[ idx - 1 ];
   return previous.tie && hasPitch( previous, pitch );
 }
 
-function highlight( event, is_on ) {
-  const marks = [
-    ...( event.marks || [] ),
-    ...( event.textMarks || [] )
-  ];
-  for ( let i = 0; i < marks.length; i++ )
-    marks[ i ].classList.toggle( "playing", is_on );
-  if ( !is_on )
+function lightMarks( marks, is_on ) {
+  if ( !marks )
     return;
+  for ( let i = 0; i < marks.length; ++i )
+    marks[ i ].classList.toggle( "playing", is_on );
+}
+
+function highlight( event, is_on ) {
+  lightMarks( event.marks, is_on );
+  lightMarks( event.textMarks, is_on );
+  if ( !is_on ) {
+    LIT_EVENTS.delete( event );
+    return;
+  }
+  LIT_EVENTS.add( event );
   followInEditor( event );
 }
 
-function unhighlightEvent( event ) {
-  highlight( event, false );
+function unhighlightAll() {
+  LIT_EVENTS.forEach( event => highlight( event, false ) );
 }
 
 function swingRatio() {
@@ -286,7 +310,7 @@ function flushHighlights() {
       showBeat( entry.beat );
     else
       highlight( entry.event, entry.is_on );
-    HIGHLIGHT_INDEX++;
+    ++HIGHLIGHT_INDEX;
   }
   if ( PLAYING )
     HIGHLIGHT_FRAME = requestAnimationFrame( flushHighlights );
@@ -295,10 +319,10 @@ function flushHighlights() {
 function scheduleGraces( graces, begins_at, note_seconds, voice ) {
   const grace_seconds = Math.min( 0.06, note_seconds / ( graces.length + 2 ) );
   graces.forEach(
-    ( pitch, index ) =>
+    ( pitch, idx ) =>
       scheduleNote(
         pitch,
-        begins_at + index * grace_seconds,
+        begins_at + idx * grace_seconds,
         grace_seconds,
         voice
       )
@@ -311,9 +335,9 @@ function planTimeOf( plan, position ) {
 }
 
 function schedulePitch( pitch, staff, item, plan, grace_delay ) {
-  const { event, index, segment } = item;
+  const { event, idx, segment } = item;
   const chain_end = Math.min(
-    item.start + tiedDurationOf( staff, index, pitch ),
+    item.start + tiedDurationOf( staff, idx, pitch ),
     segment.end
   );
   const sound_end = event.articulations?.includes( "staccato" )
@@ -348,7 +372,7 @@ function schedulePitch( pitch, staff, item, plan, grace_delay ) {
 }
 
 function scheduleOccurrence( staff, item, plan ) {
-  const { event, index, segment } = item;
+  const { event, idx, segment } = item;
   const start_in_segment = Math.max( item.start, segment.start );
   const end_in_segment = Math.min( item.end, segment.end );
   const performed_start = item.performedAt( start_in_segment );
@@ -370,7 +394,7 @@ function scheduleOccurrence( staff, item, plan ) {
     );
   }
   event.pitches.filter(
-    pitch => !isContinuing( staff, index, pitch )
+    pitch => !isContinuing( staff, idx, pitch )
           || item.start <= segment.start + EPSILON
   ).forEach(
     pitch => schedulePitch( pitch, staff, item, plan, grace_delay )
@@ -427,7 +451,7 @@ function scheduleAhead( plan ) {
     const { staff, item, startsAt: starts_at } = plan.queue[ plan.next ];
     if ( starts_at >= now - LATE_SECONDS && !staff.muted )
       scheduleOccurrence( staff, item, plan );
-    plan.next++;
+    ++plan.next;
   }
   plan.metronome( horizon );
   HIGHLIGHT_QUEUE.sort( ( a, b ) => a.time - b.time );
@@ -474,9 +498,10 @@ function startPlayback() {
   if ( PLAYBACK_POSITION >= song_length - EPSILON )
     PLAYBACK_POSITION = 0;
   PLAYING = true;
+  FOLLOWED.line = 0;
   PLAY_BUTTON.classList.add( "pausable" );
   PLAY_BUTTON.classList.remove( "holding" );
-  AUDIO_CONTEXT = new AudioContext();
+  ensureAudioContext();
   AUDIO_MIX = buildMix( AUDIO_CONTEXT );
   const voices = voicesOf( AUDIO_MIX );
   const start_time = AUDIO_CONTEXT.currentTime + 0.05;
@@ -539,9 +564,9 @@ function continueAfterFermata() {
   clearTimeout( PLAYBACK_TIMEOUT );
   HELD_NOTES.forEach( note => note.letGo() );
   HELD_NOTES = [];
-  SHEET.staves.forEach( staff => staff.events.forEach( unhighlightEvent ) );
-  setTimeout( () => held_context.close(), 400 );
-  AUDIO_CONTEXT = null;
+  unhighlightAll();
+  fadeOutAndRelease( AUDIO_MIX );
+  AUDIO_MIX = null;
   HOLDING = false;
   if ( PLAYBACK_POSITION >= totalDurationOf( SHEET ) - EPSILON )
     finishPlayback();
@@ -577,20 +602,33 @@ function stopPlayback() {
   }
   HIGHLIGHT_QUEUE = [];
   HIGHLIGHT_INDEX = 0;
-  SHEET.staves.forEach( staff => staff.events.forEach( unhighlightEvent ) );
+  unhighlightAll();
   resetMetronome();
   stopPlayhead();
 
-  if ( AUDIO_CONTEXT ) {
-    fadeOutAndClose( AUDIO_CONTEXT, AUDIO_MIX );
-    AUDIO_CONTEXT = null;
+  if ( AUDIO_MIX ) {
+    fadeOutAndRelease( AUDIO_MIX );
     AUDIO_MIX = null;
   }
 }
 
-function fadeOutAndClose( context, mix ) {
+function fadeOutAndRelease( mix ) {
+  const context = mix.context;
   mix.master.gain.setTargetAtTime( 0, context.currentTime, 0.015 );
-  setTimeout( () => context.close(), 150 );
+  setTimeout(
+    () => {
+      mix.master.disconnect();
+      mix.voices.forEach(
+        voice => {
+          voice.input.disconnect();
+          voice.tone.disconnect();
+          voice.dry.disconnect();
+          voice.wet.disconnect();
+        }
+      );
+    },
+    150
+  );
 }
 
 PLAY_BUTTON.addEventListener( "click",

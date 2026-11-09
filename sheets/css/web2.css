@@ -27,33 +27,6 @@
   --thumb: 11px;
 }
 
-body.dark {
-  --glow: inset 0 -1px #4aa3ff, inset 0 1px #9fd0ff, inset 1px 0 #6cb6ff, inset -1px 0 #6cb6ff;
-  --title: linear-gradient( #6b7a96 0%, #2a3346 7%, #151b28 45%, #0b0f17 85%, #1d2a44 100% );
-  --title-button: linear-gradient( 135deg, #5d6b85 0%, #2b3447 50%, #121722 100% );
-  --button: linear-gradient( #3d4860 0%, #2c3548 55%, #232a3a 86%, #1b2130 100% );
-  --go: linear-gradient( #6ec26b 0%, #3c9a39 45%, #2f8a2c 55%, #48a645 100% );
-  --button-pressed: linear-gradient( #141924 0%, #1b2130 80%, #252d3f 100% );
-  --scroll: linear-gradient( 90deg, #3d4860, #2f3850 50%, #283046 );
-  --scroll-track: #141924;
-  --button-edge: #05070c;
-  --field-edge: #3a4660;
-  --select-ink: #ffffff;
-  --title-ink: #ffffff;
-  --field-ink: #e8eef8;
-  --go-edge: #0f3d0d;
-  --problem: #ff7b7b;
-  --select: #2f6fd6;
-  --accent: #6cb6ff;
-  --marker: #24406e;
-  --muted: #8f9bb3;
-  --frame: #05070c;
-  --field: #11151e;
-  --face: #1c2230;
-  --ink: #e8eef8;
-  --tip: #1f2636;
-}
-
 body {
   background: var( --face );
   color: var( --ink );
@@ -296,21 +269,6 @@ nav > button:hover,
   min-height: 24px;
 }
 
-body.dark #NOTE_HINT {
-  border-top-color: #2b3346;
-  box-shadow: none;
-}
-
-body.dark header,
-body.dark #HELP h2,
-body.dark #SOUND_TITLE {
-  box-shadow: inset 0 1px rgba( 255, 255, 255, 0.25 ), inset 0 -2px #2f6fd6;
-}
-
-body.dark #TRANSPORT {
-  border-top-color: #2b3346;
-}
-
 #PROBLEM_TIP {
   box-shadow: 2px 2px 4px rgba( 0, 0, 0, 0.3 );
   border: 1px solid #000000;
@@ -439,10 +397,6 @@ body.dark #TRANSPORT {
   background: url( "../images/hills-day.svg" ) center / cover no-repeat, #3f86e3;
 }
 
-body.dark #SCORE {
-  background: url( "../images/hills-night.svg" ) center / cover no-repeat, #0a1838;
-}
-
 .page {
   box-shadow: 4px 4px 12px rgba( 0, 0, 0, 0.35 );
 }
@@ -453,12 +407,6 @@ body.dark #SCORE {
   border-radius: 2px 2px 5px 5px;
   border: 1px solid #1c5180;
   height: 20px;
-}
-
-body.dark #SEEKER_THUMB {
-  background: linear-gradient( #5d6b85, #2b3447 );
-  box-shadow: inset 0 -2px var( --accent );
-  border-color: #000000;
 }
 
 input[type="range"] {
@@ -501,25 +449,9 @@ input[type="range"]::-moz-range-thumb {
   width: 11px;
 }
 
-body.dark input[type="range"]::-webkit-slider-thumb {
-  background: linear-gradient( #5d6b85, #2b3447 );
-  box-shadow: inset 0 -2px var( --accent );
-  border-color: #000000;
-}
-
-body.dark input[type="range"]::-moz-range-thumb {
-  background: linear-gradient( #5d6b85, #2b3447 );
-  box-shadow: inset 0 -2px var( --accent );
-  border-color: #000000;
-}
-
 @supports ( -moz-appearance: none ) {
   * {
     scrollbar-color: #b7cbf5 var( --scroll-track );
-  }
-
-  body.dark * {
-    scrollbar-color: #3d4860 var( --scroll-track );
   }
 }
 
@@ -537,11 +469,6 @@ body.dark input[type="range"]::-moz-range-thumb {
   background: var( --scroll );
   border: 1px solid #ffffff;
   border-radius: 3px;
-}
-
-body.dark ::-webkit-scrollbar-thumb {
-  box-shadow: 0 0 0 1px #05070c;
-  border-color: #4d5a76;
 }
 
 ::-webkit-scrollbar-button:single-button {
@@ -599,11 +526,6 @@ select:has( + .dropdown ) {
   top: 1px;
 }
 
-body.dark .dropdownButton::after {
-  border-color: var( --field-edge );
-  background: var( --button );
-}
-
 .dropdownButton::before {
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
@@ -616,18 +538,10 @@ body.dark .dropdownButton::after {
   top: 50%;
 }
 
-body.dark .dropdownButton::before {
-  border-top-color: var( --accent );
-}
-
 .dropdownList {
   background: var( --field );
   border: 1px solid #000000;
   top: 100%;
-}
-
-body.dark .dropdownList {
-  border-color: var( --field-edge );
 }
 
 .dropdownOption {

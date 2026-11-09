@@ -26,28 +26,6 @@
   --thumb: 11px;
 }
 
-body.dark {
-  --soft-light: #4a446c;
-  --title-from: #1b0b4f;
-  --select-ink: #ffffff;
-  --title-ink: #ffffff;
-  --field-ink: #ece8ff;
-  --title-to: #8a3fb8;
-  --problem: #ff7b9c;
-  --shadow: #17142a;
-  --select: #6c3fa8;
-  --marker: #44306e;
-  --light: #6c6596;
-  --muted: #a39dc8;
-  --field: #15131f;
-  --face: #2f2b45;
-  --dark: #05040c;
-  --desk: #070a24;
-  --link: #c3b4ff;
-  --ink: #ece8ff;
-  --tip: #262240;
-}
-
 body {
   background: var( --face );
   color: var( --ink );
@@ -395,34 +373,6 @@ nav > button:active,
 #SCORE {
   box-shadow: var( --sunken );
   background: var( --desk );
-}
-
-body.dark #SCORE {
-  background:
-    radial-gradient( 1.5px 1.5px at 23px 41px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 1.5px 1.5px at 97px 13px, #d6d0ff 50%, transparent 51% ),
-    radial-gradient( 2px 2px at 151px 88px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 1.5px 1.5px at 61px 132px, #fff4c8 50%, transparent 51% ),
-    radial-gradient( 1.5px 1.5px at 183px 161px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 2.5px 2.5px at 121px 191px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 1.5px 1.5px at 11px 187px, #c8d8ff 50%, transparent 51% ),
-    radial-gradient( 1px 1px at 37px 67px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 1px 1px at 113px 29px, #ffffff 50%, transparent 51% ),
-    radial-gradient( 1px 1px at 79px 103px, #e8e0ff 50%, transparent 51% ),
-    radial-gradient( 1px 1px at 131px 121px, #ffffff 50%, transparent 51% ),
-    linear-gradient( var( --desk ), #1c1250 70%, #3a1c5e );
-  background-size: 200px 210px,
-                   200px 210px,
-                   200px 210px,
-                   200px 210px,
-                   200px 210px,
-                   200px 210px,
-                   200px 210px,
-                   143px 137px,
-                   143px 137px,
-                   143px 137px,
-                   143px 137px,
-                   100% 100%;
 }
 
 .page {

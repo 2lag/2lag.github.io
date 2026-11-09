@@ -13,7 +13,7 @@ SWING_SLIDER.addEventListener( "input",
     SWING_AMOUNT = SWING_SLIDER.value / 100;
     localStorage.setItem( "swing", SWING_AMOUNT );
     showSwing();
-    restartPlaybackSoon();
+    restartPlayback( true );
   }
 );
 

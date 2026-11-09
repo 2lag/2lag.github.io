@@ -26,6 +26,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 6px 16px;
+  user-select: none;
   display: flex;
 }
 
@@ -178,6 +179,17 @@ nav > button,
 
 #HIGHLIGHTS {
   pointer-events: none;
+}
+
+#HIGHLIGHTS .extraCaret {
+  border-left: 2px solid var( --sheet-highlight );
+  position: absolute;
+}
+
+#HIGHLIGHTS .extraSelection {
+  background: var( --sheet-highlight );
+  position: absolute;
+  opacity: 0.3;
 }
 
 #HIGHLIGHTS .barMarker {
@@ -338,6 +350,7 @@ body.dragging * {
 #TRANSPORT {
   align-items: center;
   padding: 8px 16px;
+  user-select: none;
   display: flex;
   gap: 12px;
 }

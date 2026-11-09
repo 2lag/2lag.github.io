@@ -309,6 +309,151 @@ instrument=chiptune
 2b8 3b8 2b8 3b8 2e8 3e8 2e8 3e8
 2a8 3a8 2a8 3a8 [1a 2a]2`,
 
+  "Morning Mood (full score)":
+`title=Morning Mood
+author=Edvard Grieg
+bpm=88
+ts=6,8
+key=e
+
+clef=t
+instrument=flute
+5b4:p 5g8 5f4 5e8
+5f4 5g8 5b4 5g8
+5f4 5e8 5f4:< 5g8
+5f4 5g8 5e4.:mp
+mark=
+r2.
+r2.
+r2.
+r4. 5b4.:<
+mark=
+key=b
+5f4:mf 5d8 5c4 4b8
+5c4 5d8 5f4 5d8
+5c4:< 4b8 5c4 5d8
+5c4 5d8 5f4.
+mark=
+key=e
+6e2.:ff
+6c4. 5b4.
+5b2.:>
+5g2.:p
+
+clef=t2
+instrument=violin
+r2.
+r2.
+r2.
+r2.
+5b4:mp 5g8 5f4 5e8
+5f4 5g8 5b4 5g8
+5f4 5e8 5f4:< 5g8
+5f4 5g8 5e4.
+5f4:mf 5d8 5c4 4b8
+5c4 5d8 5f4 5d8
+5c4:< 4b8 5c4 5d8
+5c4 5d8 5f4.
+5b4:ff 5g8 5f4 5e8
+5f4 5g8 5b4 5g8
+5f4:> 5e8 5f4 5g8
+5e2.:p
+
+clef=a
+instrument=strings
+4g2.:p
+4g2.
+4a2.
+4g2.
+4g2.:mp
+4g2.
+4a2.
+4g2.
+4f2.:mf
+4f2.
+4e2.:<
+4f2.
+4g2.:ff
+4a2.
+4b2.:>
+4g2.:p
+
+clef=t3
+instrument=harp
+r2.
+r2.
+r2.
+r2.
+4e8:mp 4g8 4b8 5e8 4b8 4g8
+4e8 4g8 4b8 5e8 4b8 4g8
+4e8 4a8 5c8 5e8 5c8 4a8
+4e8 4g8 4b8 5e8 4b8 4g8
+4d8:mf 4f8 4b8 5d8 4b8 4f8
+4d8 4f8 4b8 5d8 4b8 4f8
+4e8 4g8 5c8 5e8 5c8 4g8
+4d8 4f8 4b8 5d8 4b8 4f8
+[4e 4g 4b 5e]2.:ff
+[4e 4a 5c 5e]2.
+[4d 4f 4b]2.:>
+[4e 4g 4b 5e]2.:p
+
+clef=b3
+instrument=harp
+r2.
+r2.
+r2.
+r2.
+2e4. 3b4.
+2e4. 3b4.
+2a4. 3e4.
+2e4. 3b4.
+1b4. 2f4.
+1b4. 2f4.
+2c4. 2g4.
+1b4. 2f4.
+[2e 3e]2.
+[2a 3a]2.
+[2b 3b]2.
+[2e 3e]2.
+
+clef=b
+instrument=cello
+3e2.:p
+3e2.
+3e2.
+3e2.
+3e2.:mp
+3e2.
+3a2.
+3e2.
+2b2.:mf
+2b2.
+3c2.:<
+2b2.
+3b4:ff 3g8 3f4 3e8
+3f4 3g8 3b4 3g8
+3f4:> 3e8 3f4 3g8
+3e2.:p
+
+clef=b2
+instrument=upright bass
+2e2.:p
+2e2.
+2e2.
+2e2.
+2e2.:mp
+2e2.
+2a2.
+2e2.
+1b2.:mf
+1b2.
+2c2.:<
+1b2.
+2e2.:ff
+2a2.
+1b2.:>
+2e2.:p`,
+
   "Boogie in C (Claude original)":
 `title=Boogie in C
 author=Claude Opus 5.5 - Medium
@@ -355,26 +500,43 @@ key=f
 
 clef=t
 instrument=trumpet
-| 5c8- 5d8- 5c8 4a8 4f4* 4g4*
+mark=
+| 5c8-:mf 5d8- 5c8 4a8 4f4* 4g4*
 | 4a4> {4b8 5c8 5d8} 5c4_ 4a4_
 g5cs 5d4 5c8- 4b8- 4a8 4g8 4f4 ||
+mark=
 4a4 5c4~ 5c8 4bn8- 5c8 5d8
 5f4> 5e4\\ 5d4/ {5c8 4b8 4a8}
 4g4. 4a8 [4e 4g 5c]2 ||
+mark=
+4f4:p 4a8 5c8 4a4 5c4
+4b4 5d8 5f8 5d4 4b4
+4a4:< 5c4 5f4 5a4
+5g4:f 5f8 5e8 5d4 5c4
+bar=double
 key=g
+mark=Coda
 5d8* 5dss8* 5f8* 5g8* {5a8 5b8 6c8} 6d4>
-5e4\\ 5fn4/ [4b 5d 5g]2^
+5b4 5g4 5e4 5d4:<
+6c4 5b4 5a4 5f4
+5e4\\:ff 5fn4/ [4b 5d 5g]2^
 
 clef=b
 instrument=trombone
-| 3f8 3c8 3a8 3c8 3f8 3c8 3a8 3c8
+| 3f8:mf 3c8 3a8 3c8 3f8 3c8 3a8 3c8
 | 2b8 3f8 3d8 3f8 2b8 3f8 3d8 3f8
 3c8 3g8 3e8 3g8 2f8 3c8 3a8 3c8 ||
 2d8 3a8 3f8 3a8 2g4 3g4
 2b4* 2a4* 2g4* 3c4*
 3c4 2e4 2f2 ||
+2f4:p 3c4 2a4 3c4
+2b4 3d4 2b4 3d4
+2f4:< 3c4 2a4 3c4
+2c4:f 2e4 2g4 2c4
 2e4 2b4 2a4 3d4
-3d4 3d4 [2g 3d 3g]2^`,
+2g4 3d4 2c4 2e4:<
+2d4 2a4 2d4 2f4
+3d4:ff 3d4 [2g 3d 3g]2^`,
 
   "Night Walk (Claude original)":
 `title=Night Walk

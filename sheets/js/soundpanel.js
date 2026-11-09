@@ -36,7 +36,7 @@ function sliderRowOf( slider ) {
   input.addEventListener( "input",
     () => {
       const value = { [ slider.name ]: Number( input.value ) };
-      changeSound( value );
+      changeSound( value, SOUND_SETTINGS.preset, true );
     }
   );
   SLIDER_INPUTS[ slider.name ] = input;
@@ -57,7 +57,15 @@ function showSoundSettings() {
   });
 }
 
-function restartPlaybackSoon() {
+function restartPlayback( debounce = false ) {
+  if ( !debounce ) {
+    if ( PLAYING ) {
+      clearTimeout( PENDING_RESTART );
+      pausePlayback();
+      startPlayback();
+    }
+    return;
+  }
   clearTimeout( PENDING_RESTART );
   PENDING_RESTART = setTimeout(
     () => {
@@ -70,7 +78,7 @@ function restartPlaybackSoon() {
   );
 }
 
-function changeSound( changes, preset = "custom" ) {
+function changeSound( changes, preset = "custom", debounce = false ) {
   const changes_notes = Object.keys( changes ).some(
     name => !LIVE_SETTINGS.includes( name )
          && changes[ name ] !== SOUND_SETTINGS[ name ]
@@ -80,7 +88,7 @@ function changeSound( changes, preset = "custom" ) {
   showSoundSettings();
   applyLiveSettings( AUDIO_MIX );
   if ( changes_notes )
-    restartPlaybackSoon();
+    restartPlayback( debounce );
 }
 
 function randomPickOf( choices ) {

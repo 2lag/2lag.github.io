@@ -15,6 +15,8 @@
   background: var( --sheet-paper );
   -webkit-user-select: none;
   color: var( --sheet-ink );
+  content-visibility: auto;
+  aspect-ratio: 794 / 1123;
   margin: 0 auto 24px;
   user-select: none;
   max-width: 900px;
@@ -27,8 +29,13 @@
   fill: currentColor;
 }
 
-.page line {
+.page line,
+.page .staffLines {
   stroke: currentColor;
+}
+
+.page .staffLines {
+  fill: none;
 }
 
 .page .tie,
@@ -79,6 +86,16 @@
 
 .page .measureNumber {
   font: italic 10px "Century Schoolbook", "TeX Gyre Schola", Georgia, serif;
+}
+
+.page .staffName {
+  font: 11px "Century Schoolbook", "TeX Gyre Schola", Georgia, serif;
+}
+
+.page .rehearsalBox {
+  stroke: currentColor;
+  stroke-width: 1.2px;
+  fill: none;
 }
 
 .page .playhead {

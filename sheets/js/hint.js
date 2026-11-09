@@ -23,12 +23,12 @@ function nameOf( pitch ) {
 }
 
 function ordinalOf( number ) {
-  const index = number % 100 > 10
+  const idx = number % 100 > 10
              && number % 100 < 14
     ? 0
     : number % 10;
   const endings = [ "th", "st", "nd", "rd" ];
-  return number + ( endings[ index ] || "th" );
+  return number + ( endings[ idx ] || "th" );
 }
 
 function ledgerPlaceOf( distance, side ) {
@@ -70,6 +70,20 @@ function describePitch( pitch, clef ) {
   return `${ nameOf( pitch ) }${ middle }, ${ staffPlaceOf( pitch, clef ) }`;
 }
 
+function dynamicTextOf( event ) {
+  if ( !event.dynamic )
+    return "";
+  if ( event.dynamic.level )
+    return ` · ${ event.dynamic.level }`;
+  const word = event.dynamic.hairpin === "<"
+    ? "crescendo"
+    : "diminuendo";
+  const { beats } = event.dynamic;
+  if ( !beats )
+    return ` · ${ word }`;
+  return ` · ${ word } over ${ beats } beat${ beats === 1 ? "" : "s" }`;
+}
+
 function describeEvent( event, clef ) {
   if ( event.rest )
     return `${ lengthNameOf( event ) } rest`;
@@ -77,7 +91,8 @@ function describeEvent( event, clef ) {
   const pitch_text = event.pitches.map(
     pitch => describePitch( pitch, clef )
   ).join( " · " );
-  return `${ pitch_text } · ${ lengthNameOf( event ) } ${ kind }`;
+  const dynamic = dynamicTextOf( event );
+  return `${ pitch_text } · ${ lengthNameOf( event ) } ${ kind }${ dynamic }`;
 }
 
 function cursorPlace() {
@@ -97,11 +112,11 @@ function touches( source, place ) {
 function hintAt( place ) {
   for ( const staff of SHEET.staves ) {
     for ( const event of staff.events ) {
-      const grace_index = ( event.graceSources || [] ).findIndex(
+      const grace_idx = ( event.graceSources || [] ).findIndex(
         source => touches( source, place )
       );
-      if ( grace_index >= 0 ) {
-        const pitch = event.graces[ grace_index ];
+      if ( grace_idx >= 0 ) {
+        const pitch = event.graces[ grace_idx ];
         const pitch_text = describePitch( pitch, staff.clef );
         return `${ pitch_text } · grace note`;
       }

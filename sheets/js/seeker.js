@@ -1,9 +1,22 @@
 let RESUME_AFTER_SEEKING = false;
+let SEEKER_BOXES = null;
+
+function seekerBoxesOf() {
+  SEEKER_BOXES ??= {
+    track: SEEKER.getBoundingClientRect(),
+    bar: TRANSPORT.getBoundingClientRect(),
+    thumb: SEEKER_THUMB.getBoundingClientRect()
+  };
+  return SEEKER_BOXES;
+}
+
+function remeasureSeeker() {
+  SEEKER_BOXES = null;
+  placeSeekerThumb();
+}
 
 function placeSeekerThumb() {
-  const track = SEEKER.getBoundingClientRect();
-  const bar = TRANSPORT.getBoundingClientRect();
-  const thumb = SEEKER_THUMB.getBoundingClientRect();
+  const { track, bar, thumb } = seekerBoxesOf();
   const travel = track.width - thumb.width;
   const left = track.left - bar.left + travel * SEEKER.value / SEEKER.max;
   const top = track.top - bar.top + ( track.height - thumb.height ) / 2;
@@ -31,7 +44,11 @@ function showPosition( position ) {
   const total = SHEET.loop ? "∞" : clockTimeOf( total_seconds );
   SEEKER.value = pass_length ? shown / pass_length * SEEKER.max : 0;
   const shown_seconds = shown * seconds_per_whole_note;
-  CLOCK.textContent = `${ clockTimeOf( shown_seconds ) } / ${ total }`;
+  const clock = `${ clockTimeOf( shown_seconds ) } / ${ total }`;
+  if ( CLOCK.textContent !== clock ) {
+    CLOCK.textContent = clock;
+    SEEKER_BOXES = null;
+  }
   placeSeekerThumb();
 }
 
@@ -61,5 +78,9 @@ SEEKER.addEventListener( "change",
   }
 );
 
-new ResizeObserver( placeSeekerThumb ).observe( TRANSPORT );
-ERA_STYLE.addEventListener( "load", placeSeekerThumb );
+ERA_STYLE.addEventListener( "load", remeasureSeeker );
+
+const SEEKER_WATCH = new ResizeObserver( remeasureSeeker );
+SEEKER_WATCH.observe( TRANSPORT );
+SEEKER_WATCH.observe( SEEKER );
+SEEKER_WATCH.observe( SEEKER_THUMB );

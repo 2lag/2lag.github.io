@@ -1,10 +1,24 @@
+const REHEARSAL_FACES = `"Century Schoolbook", "TeX Gyre Schola", Georgia`;
+const TEXT_RULER = document.createElement( "canvas" ).getContext( "2d" );
 const SVG_NS = "http://www.w3.org/2000/svg";
+const FERMATA_GLYPH = "\uE4C0";
 const KEY_CHANGE_INSET = 0.9;
+const GRACE_ADVANCE = 1.3;
 const LETTERS = "cdefgab";
+const UNTITLED_ROOM = 20;
 const PAGE_HEIGHT = 1123;
+let PLAYHEAD_STOPS = [];
+const GRACE_SIZE = 0.65;
 const PAGE_MARGIN = 68;
 const PAGE_WIDTH = 794;
+const TITLE_ROOM = 90;
+const TITLE_GAP = 16;
 const SPACE = 7;
+
+const MUSIC_ROOM = PAGE_HEIGHT - 2 * PAGE_MARGIN - TITLE_ROOM - TITLE_GAP;
+const TALLEST_SYSTEM = MUSIC_ROOM / STEP;
+const SYSTEM_GAP = 7 * SPACE;
+const STEP = SPACE / 2;
 
 const GLYPHS = {
   metronomeQuarter: "",
@@ -12,6 +26,8 @@ const GLYPHS = {
   noteheadBlack: "",
   noteheadHalf: "",
   brace: "",
+  bracketTop: "",
+  bracketBottom: "",
   dot: ""
 };
 
@@ -20,8 +36,6 @@ const ARTICULATION_GLYPHS = {
   accent: { above: "\uE4A0", below: "\uE4A1" },
   tenuto: { above: "\uE4A4", below: "\uE4A5" }
 };
-
-const FERMATA_GLYPH = "\uE4C0";
 
 const REST_GLYPHS = {
   1: "",
@@ -44,6 +58,14 @@ const ACCIDENTAL_GLYPHS = {
   "0": "\uE261",
   "1": "\uE262",
   "2": "\uE263"
+};
+
+const DYNAMIC_GLYPHS = {
+  p: "\uE520",
+  m: "\uE521",
+  f: "\uE522",
+  s: "\uE524",
+  z: "\uE525"
 };
 
 const ACCIDENTAL_WIDTHS = {
@@ -74,9 +96,6 @@ const BEAM_COUNTS = {
   64: 4
 };
 
-const GRACE_ADVANCE = 1.3;
-const GRACE_SIZE = 0.65;
-
 const CLEFS = {
   treble: {
     glyph: "",
@@ -93,15 +112,38 @@ const CLEFS = {
     glyphStep: 6,
     sharpSteps: [ 6, 3, 7, 4, 1, 5, 2 ],
     flatSteps: [ 2, 5, 1, 4, 0, 3, -1 ]
+  },
+  alto: {
+    glyph: "\uE05C",
+    width: 2.6,
+    bottomLine: 24,
+    glyphStep: 4,
+    sharpSteps: [ 7, 4, 8, 5, 2, 6, 3 ],
+    flatSteps: [ 3, 6, 2, 5, 1, 4, 0 ]
+  },
+  tenor: {
+    glyph: "\uE05C",
+    width: 2.6,
+    bottomLine: 22,
+    glyphStep: 6,
+    sharpSteps: [ 2, 6, 3, 7, 4, 8, 5 ],
+    flatSteps: [ 5, 8, 4, 7, 3, 6, 2 ]
   }
 };
 
-let PLAYHEAD_STOPS = [];
-
 const NOTATED_VALUES = [ 1, 2, 4, 8, 16, 32 ]
-  .flatMap( duration => [ { duration, dots: 1 }, { duration, dots: 0 } ] )
+  .flatMap(
+    duration => [
+      { duration, dots: 1 },
+      { duration, dots: 0 }
+    ]
+  )
   .map( value => ({ ...value, length: lengthOf( value ) }) )
   .sort( ( a, b ) => b.length - a.length );
+
+function leftOf( system ) {
+  return PAGE_MARGIN + system.indent * SPACE;
+}
 
 function svgElement( tag, attributes, parent ) {
   const element = document.createElementNS( SVG_NS, tag );
@@ -120,24 +162,48 @@ function drawGlyph( glyph, x, y, parent, class_name = "glyph" ) {
 }
 
 function drawText( content, x, y, class_name, parent ) {
-  const text = svgElement( "text", { x, y, class: class_name }, parent );
+  const text = svgElement(
+    "text",
+    {
+      x, y,
+      class: class_name
+    },
+    parent
+  );
   text.textContent = content;
   return text;
 }
 
-function fitText( text, room ) {
-  const size = parseFloat( getComputedStyle( text ).fontSize );
-  const fit = room / text.getComputedTextLength();
-  const scale = Math.max( 0.5, Math.min( 1, fit ) );
-  text.style.fontSize = `${ size * scale }px`;
-  while ( text.getComputedTextLength() > room && text.textContent.length > 1 )
-    text.textContent = text.textContent.slice( 0, -2 ) + "...";
+function textWidthOf( content, weight, size ) {
+  TEXT_RULER.font = `${ weight } ${ size }px ${ REHEARSAL_FACES }, serif`;
+  return TEXT_RULER.measureText( content ).width;
+}
+
+function fitText( text, room, weight, size ) {
+  const fit = room / textWidthOf( text.textContent, weight, size );
+  const fitted_size = size * Math.max( 0.5, Math.min( 1, fit ) );
+  if ( fitted_size < size )
+    text.style.fontSize = `${ fitted_size }px`;
+  const content = text.textContent;
+  if ( textWidthOf( content, weight, fitted_size ) <= room )
+    return;
+  const shortened = length => `${ content.slice( 0, length ) }...`;
+  const fits = length =>
+    textWidthOf( shortened( length ), weight, fitted_size ) <= room;
+  let kept = content.length - 1;
+  while ( kept > 1 && !fits( kept ) )
+    --kept;
+  text.textContent = shortened( kept );
 }
 
 function drawLine( x1, y1, x2, y2, thickness, parent ) {
   svgElement(
     "line",
-    { x1, y1, x2, y2, "stroke-width": thickness * SPACE },
+    {
+      x1, y1,
+      x2, y2,
+      "stroke-width": thickness * SPACE
+    },
     parent
   );
 }
@@ -151,17 +217,17 @@ function drawPolygon( points, parent ) {
 }
 
 function staffStepOf( pitch, clef ) {
-  const letter_index = LETTERS.indexOf( pitch.letter );
-  return pitch.octave * 7 + letter_index - CLEFS[ clef ].bottomLine;
+  const letter_idx = LETTERS.indexOf( pitch.letter );
+  return pitch.octave * 7 + letter_idx - CLEFS[ clef ].bottomLine;
 }
 
 function yOfStep( staff_top, step ) {
-  return staff_top + ( 8 - step ) * SPACE / 2;
+  return staff_top + ( 8 - step ) * STEP;
 }
 
 function notatedPiecesOf( length ) {
-  const pieces = [];
   let remaining = length;
+  const pieces = [];
   while ( remaining > EPSILON ) {
     const piece = NOTATED_VALUES.find(
       value =>
@@ -197,7 +263,7 @@ function placedPieceOf( event, piece, start, is_first_piece, previous ) {
 }
 
 function measuresOf( events, measure_length, measure_count ) {
-  const measures = Array.from({ length: measure_count }, () => []);
+  const measures = Array.from( { length: measure_count }, () => [] );
   let previous = null;
   let position = 0;
 
@@ -205,8 +271,8 @@ function measuresOf( events, measure_length, measure_count ) {
     let remaining = total_length;
     const pieces = [];
     while ( remaining > EPSILON ) {
-      const index = Math.floor( position / measure_length + EPSILON );
-      const start = position - index * measure_length;
+      const idx = Math.floor( position / measure_length + EPSILON );
+      const start = position - idx * measure_length;
       const room = measure_length - start;
       const fits_as_written = remaining === total_length
                            && remaining <= room + EPSILON
@@ -214,17 +280,17 @@ function measuresOf( events, measure_length, measure_count ) {
       const notated_pieces = fits_as_written
         ? [ event ]
         : notatedPiecesOf( Math.min( remaining, room ) );
-      for ( let i = 0; i < notated_pieces.length; i++ ) {
+      for ( let i = 0; i < notated_pieces.length; ++i ) {
         const is_first_piece = remaining === total_length;
         const placed = placedPieceOf(
           event,
           notated_pieces[ i ],
-          position - index * measure_length,
+          position - idx * measure_length,
           is_first_piece,
           previous
         );
-        measures[ index ] ??= [];
-        measures[ index ].push( placed );
+        measures[ idx ] ??= [];
+        measures[ idx ].push( placed );
         pieces.push( placed );
         position += placed.length;
         remaining -= placed.length;
@@ -239,7 +305,12 @@ function measuresOf( events, measure_length, measure_count ) {
   events.forEach( event => placeEvent( event, lengthOf( event ) ) );
   const padding = measure_count * measure_length - position;
   if ( padding > EPSILON ) {
-    const full_rest = { rest: true, pitches: [], padding: true, marks: [] };
+    const full_rest = {
+      padding: true,
+      pitches: [],
+      rest: true,
+      marks: []
+    };
     placeEvent( full_rest, padding );
   }
 
@@ -339,10 +410,10 @@ function rightmostHeadOf( placed ) {
   return Math.max( 0, ...placed.heads.map( head => head.offset ) );
 }
 
-function writtenFifthsOf( sheet, measure_index ) {
+function writtenFifthsOf( sheet, measure_idx ) {
   if ( SHOW_IN_C )
     return 0;
-  const start = measure_index * measureLengthOf( sheet.meter ) + EPSILON;
+  const start = measure_idx * measureLengthOf( sheet.meter ) + EPSILON;
   return sheet.keyChanges.findLast(
     change => change.position <= start
   ).fifths;
@@ -381,10 +452,10 @@ function arrangeHeads( placed ) {
   const going_up = placed.stem !== "down";
   const heads = placed.pitches
     .map(
-      ( pitch, index ) => ({
+      ( pitch, idx ) => ({
           pitch,
-          step: placed.steps[ index ],
-          accidental: placed.accidentals[ index ],
+          step: placed.steps[ idx ],
+          accidental: placed.accidentals[ idx ],
           offset: 0
       })
     ).sort(
@@ -393,7 +464,7 @@ function arrangeHeads( placed ) {
           ? a.step - b.step
           : b.step - a.step
     );
-  for ( let i = 1; i < heads.length; i++ ) {
+  for ( let i = 1; i < heads.length; ++i ) {
     const head = heads[ i ];
     const neighbor = heads[ i - 1 ];
     if ( neighbor.offset !== 0 )
@@ -468,7 +539,7 @@ function prepareNote( placed, clef ) {
     ? 0.4 + placed.dots * 0.6
     : 0;
 
-  for ( let i = 0; i < placed.heads.length; i++ ) {
+  for ( let i = 0; i < placed.heads.length; ++i ) {
     const head = placed.heads[ i ];
     if ( head.accidental === null )
       continue;
@@ -494,8 +565,8 @@ function prepareNote( placed, clef ) {
   placed.leading += graceWidthOf( placed );
 }
 
-function prepareMeasure( measure, index, clef, sheet ) {
-  markAccidentals( measure, writtenFifthsOf( sheet, index ) );
+function prepareMeasure( measure, idx, clef, sheet ) {
+  markAccidentals( measure, writtenFifthsOf( sheet, idx ) );
   measure.forEach( placed => {
     placed.steps = placed.pitches.map( pitch => staffStepOf( pitch, clef ) );
     placed.beamCount = BEAM_COUNTS[ placed.duration ] || 0;
@@ -506,7 +577,7 @@ function prepareMeasure( measure, index, clef, sheet ) {
         group.flatMap( placed => placed.steps )
       );
       const beam = { notes: group, direction };
-      for ( let i = 0; i < group.length; i++ ) {
+      for ( let i = 0; i < group.length; ++i ) {
         group[ i ].stem = direction;
         group[ i ].beam = beam;
       }
@@ -533,10 +604,16 @@ function prepareStaves( sheet ) {
     staff.events.forEach( event => event.marks = [] );
     const measures = measuresOf( staff.events, measure_length, measure_count );
     measures.forEach(
-      ( measure, index ) =>
-        prepareMeasure( measure, index, staff.clef, sheet )
+      ( measure, idx ) =>
+        prepareMeasure( measure, idx, staff.clef, sheet )
     );
-    return { clef: staff.clef, measures, events: staff.events };
+    return {
+      clef: staff.clef,
+      number: staff.number,
+      instrument: staff.instrument,
+      measures,
+      events: staff.events
+    };
   });
 }
 
@@ -553,14 +630,14 @@ function layoutMeasure( measure_on_each_staff, measure_length ) {
       )
     )
   ].map( Number ).sort( ( a, b ) => a - b );
-  const columns = onsets.map( ( onset, index ) => {
+  const columns = onsets.map( ( onset, idx ) => {
     let trailing = 0;
     let leading = 0;
     const items = everything.filter(
       placed =>
         Math.abs( placed.start - onset ) < EPSILON
     );
-    for ( let i = 0; i < items.length; i++ ) {
+    for ( let i = 0; i < items.length; ++i ) {
       if ( items[ i ].leading > leading )
         leading = items[ i ].leading;
       if ( items[ i ].trailing > trailing )
@@ -571,12 +648,12 @@ function layoutMeasure( measure_on_each_staff, measure_length ) {
       items,
       leading,
       trailing,
-      natural: spaceFor( ( onsets[ index + 1 ] ?? measure_length ) - onset )
+      natural: spaceFor( ( onsets[ idx + 1 ] ?? measure_length ) - onset )
     };
   });
-  columns.forEach( ( column, index ) => {
-    const next_leading = index + 1 < columns.length
-      ? columns[ index + 1 ].leading
+  columns.forEach( ( column, idx ) => {
+    const next_leading = idx + 1 < columns.length
+      ? columns[ idx + 1 ].leading
       : 0.6;
     column.width = Math.max(
       column.natural,
@@ -624,11 +701,29 @@ function keyChangeWidthOf( from, to ) {
   return KEY_CHANGE_INSET + cancelled + gap + keySignatureWidthOf( to ) + 0.8;
 }
 
+function settingAt( list, position ) {
+  return list.find(
+    item => Math.abs( item.position - position ) < EPSILON
+  );
+}
+
+function withBarlineSettings( layout, sheet, measure_length ) {
+  const start = layout.idx * measure_length;
+  const end = start + measure_length;
+  layout.breakBefore = layout.idx
+    ? settingAt( sheet.breaks, start )?.value
+    : undefined;
+  layout.endStyle = settingAt( sheet.barlines, end )?.value
+                 ?? "single";
+  layout.rehearsalMark = settingAt( sheet.rehearsalMarks, start )?.text;
+  return layout;
+}
+
 function withKeyChange( layout, sheet ) {
-  if ( !layout.index )
+  if ( !layout.idx )
     return layout;
-  const from = writtenFifthsOf( sheet, layout.index - 1 );
-  const to = writtenFifthsOf( sheet, layout.index );
+  const from = writtenFifthsOf( sheet, layout.idx - 1 );
+  const to = writtenFifthsOf( sheet, layout.idx );
   if ( from === to )
     return layout;
   layout.keyChange = { from, to, width: keyChangeWidthOf( from, to ) };
@@ -643,40 +738,136 @@ function dropKeyChange( layout ) {
   layout.keyChange = null;
 }
 
-function headerWidthOf( sheet, measure_index, is_first_system ) {
+function instrumentNameOf( staff ) {
+  if ( !staff.instrument )
+    return "";
+  return staff.instrument
+    .split( " " )
+    .map( word =>
+      word.charAt( 0 ).toUpperCase() + word.slice( 1 )
+    ).join( " " );
+}
+
+function isFullScore( staves ) {
+  if ( staves.length > 2 )
+    return true;
+  if ( staves.length < 2 )
+    return false;
+  return staves[ 0 ].number !== 1
+      || staves[ 0 ].clef !== "treble"
+      || staves[ 1 ].number !== 1
+      || staves[ 1 ].clef !== "bass";
+}
+
+function staffNameWidthOf( name ) {
+  return textWidthOf( name, "", 11 ) / SPACE;
+}
+
+function isPianoPair( staves, idx ) {
+  const upper = staves[ idx ];
+  const lower = staves[ idx + 1 ];
+  return upper?.clef === "treble"
+      && lower?.clef === "bass"
+      && upper.number === lower.number;
+}
+
+function sharesPairName( staves, idx ) {
+  return idx > 0
+      && isPianoPair( staves, idx - 1 )
+      && staves[ idx ].instrument ===
+           staves[ idx - 1 ].instrument;
+}
+
+function staffLabelsOf( staves ) {
+  const names = staves.map(
+    ( staff, idx ) =>
+      sharesPairName( staves, idx )
+        ? ""
+        : instrumentNameOf( staff )
+  );
+  const totals = {};
+  names.forEach(
+    name => {
+      if ( name )
+        totals[ name ] = ( totals[ name ] ?? 0 ) + 1;
+    }
+  );
+  const seen = {};
+  return names.map(
+    name => {
+      if ( !name || totals[ name ] < 2 )
+        return name;
+      seen[ name ] = ( seen[ name ] ?? 0 ) + 1;
+      return `${ name } ${ seen[ name ] }`;
+    }
+  );
+}
+
+function hasPianoPair( staves ) {
+  return staves.some(
+    ( _, idx ) =>
+      isPianoPair( staves, idx )
+  );
+}
+
+function headerWidthOf( sheet, measure_idx, is_first_system ) {
   const time_signature = is_first_system
     ? timeSignatureWidthOf( sheet.meter ) + 1
     : 0;
-  const fifths = writtenFifthsOf( sheet, measure_index );
+  const fifths = writtenFifthsOf( sheet, measure_idx );
   const key_width = keySignatureWidthOf( fifths );
   return 1 + 2.75 + 1 + key_width + time_signature;
 }
 
-function breakIntoSystems( measure_layouts, sheet ) {
+function braceWidthEstimate() {
+  const tallness = 14.5 / 4;
+  return 0.35 + 1.31 * Math.sqrt( tallness ) * 0.9;
+}
+
+function indentOf( staves ) {
+  const labels = staffLabelsOf( staves );
+  const max_width = Math.max( ...labels.map( name =>
+    name ? staffNameWidthOf( name ) : 0
+  ));
+  const grouping_room = hasPianoPair( staves )
+    ? braceWidthEstimate()
+    : 1.1;
+  return max_width + 0.5 + grouping_room;
+}
+
+function breakIntoSystems( measure_layouts, sheet, staves ) {
   const line_width = ( PAGE_WIDTH - 2 * PAGE_MARGIN ) / SPACE;
   const systems = [];
   let current = null;
   const widthOf = layout => layout.opening + layout.stretchable;
-  measure_layouts.forEach( ( layout, index ) => {
-    if ( current && current.used + widthOf( layout ) > current.available )
+  measure_layouts.forEach( ( layout, idx ) => {
+    const is_full = current
+                 && current.used + widthOf( layout ) > current.available;
+    if ( is_full || layout.breakBefore )
       current = null;
     if ( !current ) {
       dropKeyChange( layout );
-      const header = headerWidthOf( sheet, index, !systems.length );
+      const is_first = !systems.length;
+      const indent = is_first && isFullScore( staves )
+        ? indentOf( staves )
+        : 0;
+      const header = headerWidthOf( sheet, idx, is_first );
       current = {
+        indent,
         header,
-        available: line_width - header,
+        available: line_width - indent - header,
         used: 0,
         measures: [],
-        firstMeasureNumber: index + 1
+        firstMeasureNumber: idx + 1,
+        pageBreak: layout.breakBefore === "page"
       };
       systems.push( current );
     }
     current.measures.push( layout );
     current.used += widthOf( layout );
   });
-  systems.forEach( ( system, index ) => {
-    const is_last = index === systems.length - 1;
+  systems.forEach( ( system, idx ) => {
+    const is_last = idx === systems.length - 1;
     justifySystem( system, is_last );
   });
   return systems;
@@ -732,38 +923,55 @@ function verticalExtentOf( measures_of_staff ) {
   };
 }
 
+function fittedGaps( gaps, fixed ) {
+  const total = gaps.reduce( ( sum, gap ) => sum + gap, fixed );
+  if ( total <= TALLEST_SYSTEM )
+    return gaps;
+  const scale = Math.max( 0, TALLEST_SYSTEM - fixed ) / ( total - fixed );
+  return gaps.map( gap => Math.max( 4, gap * scale ) );
+}
+
 function stackStaves( system, staves ) {
   const extents = staves.map(
-    staff =>
+    ( _, idx ) =>
       verticalExtentOf(
         system.measures.map(
-          layout =>
-            layout.measureOnEachStaff[ staves.indexOf( staff ) ]
+          layout => layout.measureOnEachStaff[ idx ]
         )
       )
   );
-  let top = Math.max( 0, extents[ 0 ].above - 8 ) * SPACE / 2;
-  system.staffTops = extents.map( ( extent, index ) => {
-    if ( index > 0 ) {
-      const previous = extents[ index - 1 ];
-      const gap = Math.max( 13, -previous.below + extent.above - 8 );
-      top += ( 8 + gap ) * SPACE / 2;
+  const top_room = Math.max( 0, extents[ 0 ].above - 8 );
+  const bottom_room = -Math.min( 0, extents.at( -1 ).below );
+  const gaps = fittedGaps(
+    extents.slice( 1 ).map(
+      ( extent, idx ) =>
+        Math.max( 13, -extents[ idx ].below + extent.above - 8 )
+    ),
+    top_room + bottom_room + 8 * staves.length
+  );
+  let top = top_room * STEP;
+  system.staffTops = extents.map(
+    ( _, idx ) => {
+      if ( idx )
+        top += ( 8 + gaps[ idx - 1 ] ) * STEP;
+      return top;
     }
-    return top;
-  });
-  const last_extent = Math.min( 0, extents.at( -1 ).below );
+  );
   system.height = system.staffTops.at( -1 )
-    + ( 8 - last_extent ) * SPACE / 2;
+    + ( 8 + bottom_room ) * STEP;
 }
 
 function arrangeOnPages( systems, sheet ) {
-  const title_room = sheet.title || sheet.author ? 90 : 20;
-  let y = PAGE_MARGIN + title_room + 16;
+  const title_room = sheet.title || sheet.author
+    ? TITLE_ROOM
+    : UNTITLED_ROOM;
+  let y = PAGE_MARGIN + title_room + TITLE_GAP;
   const pages = [ { systems: [] } ];
 
   systems.forEach( system => {
     const last_page = pages.at( -1 );
-    if ( y + system.height > PAGE_HEIGHT - PAGE_MARGIN
+    const overflows = y + system.height > PAGE_HEIGHT - PAGE_MARGIN;
+    if ( ( overflows || system.pageBreak )
       && last_page.systems.length
     ) {
       pages.push({ systems: [] });
@@ -771,24 +979,32 @@ function arrangeOnPages( systems, sheet ) {
     }
     system.y = y;
     pages.at( -1 ).systems.push( system );
-    y += system.height + 7 * SPACE;
+    y += system.height + SYSTEM_GAP;
   });
 
   return pages;
 }
 
 function drawStaffLines( left, right, top, parent ) {
-  for ( let line = 0; line < 5; line++ ) {
-    const y = top + line * SPACE;
-    drawLine( left, y, right, y, 0.13, parent );
-  }
+  const lines = [ 0, 1, 2, 3, 4 ].map(
+    line => `M${ left } ${ top + line * SPACE }H${ right }`
+  );
+  svgElement(
+    "path",
+    {
+      d: lines.join( "" ),
+      class: "staffLines",
+      "stroke-width": 0.13 * SPACE
+    },
+    parent
+  );
 }
 
 function drawAccidentalRow( steps, glyph, advance, x, top, parent ) {
   steps.forEach(
-    ( step, index ) => {
+    ( step, idx ) => {
       const y = yOfStep( top, step );
-      drawGlyph( glyph, x + index * advance * SPACE, y, parent );
+      drawGlyph( glyph, x + idx * advance * SPACE, y, parent );
     }
   );
 }
@@ -814,8 +1030,8 @@ function drawKeyChange( change, x, system, staves, parent ) {
   const naturals_x = x + KEY_CHANGE_INSET * SPACE;
   const key_x = naturals_x + ( cancelled + ( cancelled ? 0.4 : 0 ) ) * SPACE;
   staves.forEach(
-    ( staff, index ) => {
-      const top = system.y + system.staffTops[ index ];
+    ( staff, idx ) => {
+      const top = system.y + system.staffTops[ idx ];
       drawAccidentalRow(
         stepsOfKey( staff.clef, change.from ).slice( kept, kept + cancelled ),
         ACCIDENTAL_GLYPHS[ 0 ],
@@ -852,21 +1068,87 @@ function drawTimeSignature( meter, x, top, parent ) {
   drawNumber( meter.unit, 2 );
 }
 
+function nameBaselineOf( system, staves, idx ) {
+  const top = system.y + system.staffTops[ idx ];
+  if ( !sharesPairName( staves, idx + 1 ) )
+    return top + 2 * SPACE + 4;
+  const bottom = system.y + system.staffTops[ idx + 1 ] + 4 * SPACE;
+  return ( top + bottom ) / 2 + 4;
+}
+
+function drawInstrumentNames( system, staves, parent ) {
+  const marks_end = hasPianoPair( staves )
+    ? leftOf( system ) - braceWidthEstimate() * SPACE
+    : leftOf( system ) - 1.1 * SPACE;
+  const names_end = marks_end - 0.5 * SPACE;
+  staffLabelsOf( staves ).forEach(
+    ( label, idx ) => {
+      if ( !label )
+        return;
+      const y = nameBaselineOf( system, staves, idx );
+      const width = staffNameWidthOf( label ) * SPACE;
+      drawText( label, names_end - width, y, "staffName", parent );
+    }
+  );
+}
+
+function drawPianoBrace( system, left, top_idx, bottom_idx, parent ) {
+  const top = system.y + system.staffTops[ top_idx ];
+  const bottom = system.y + system.staffTops[ bottom_idx ] + 4 * SPACE;
+  const tallness = ( bottom - top ) / ( 4 * SPACE );
+  const wideness = Math.sqrt( tallness ) * 0.9;
+  const brace_x = left - ( 0.35 + 1.31 * wideness ) * SPACE;
+  const parts = [
+    `translate( ${ brace_x } ${ bottom } )`,
+    `scale( ${ wideness } ${ tallness } )`
+  ];
+  const transform = parts.join( " " );
+  const brace = svgElement(
+    "text",
+    { class: "glyph", transform },
+    parent
+  );
+  brace.textContent = GLYPHS.brace;
+}
+
+function drawGrouping( system, staves, parent ) {
+  const left = leftOf( system );
+  const first_top = system.y + system.staffTops[ 0 ];
+  const last_bottom = system.y + system.staffTops.at( -1 ) + 4 * SPACE;
+  if ( staves.length < 2 )
+    return;
+  if ( !isFullScore( staves ) ) {
+    drawLine( left, first_top, left, last_bottom, 0.16, parent );
+    drawPianoBrace( system, left, 0, 1, parent );
+    return;
+  }
+  const bracket_x = left - 0.6 * SPACE;
+  drawLine( bracket_x, first_top, bracket_x, last_bottom, 0.5, parent );
+  drawGlyph( GLYPHS.bracketTop, bracket_x + 0.5, first_top + 0.5, parent );
+  drawGlyph( GLYPHS.bracketBottom, bracket_x + 0.5, last_bottom - 0.5, parent );
+  staves.forEach(
+    ( _, idx ) => {
+      if ( isPianoPair( staves, idx ) )
+        drawPianoBrace( system, left, idx, idx + 1, parent );
+    }
+  );
+}
+
 function drawSystemHeader( system, staves, sheet, is_first_system, parent ) {
-  const left = PAGE_MARGIN;
+  const left = leftOf( system );
   const fifths = writtenFifthsOf( sheet, system.firstMeasureNumber - 1 );
-  staves.forEach( ( staff, index ) => {
-    const top = system.y + system.staffTops[ index ];
+  if ( is_first_system && isFullScore( staves ) )
+    drawInstrumentNames( system, staves, parent );
+  staves.forEach( ( staff, idx ) => {
+    const top = system.y + system.staffTops[ idx ];
     const clef = CLEFS[ staff.clef ];
     const y = yOfStep( top, clef.glyphStep );
     drawGlyph( clef.glyph, left + SPACE, y, parent );
     const key_x = left + ( 1 + clef.width + 1 ) * SPACE;
     drawKeySignature(
       staff.clef,
-      fifths,
-      key_x,
-      top,
-      parent
+      fifths, key_x,
+      top, parent
     );
     if ( is_first_system ) {
       const key_width = keySignatureWidthOf( fifths );
@@ -874,46 +1156,182 @@ function drawSystemHeader( system, staves, sheet, is_first_system, parent ) {
       drawTimeSignature( sheet.meter, time_x, top, parent );
     }
   });
-  const first_top = system.y + system.staffTops[ 0 ];
-  const last_bottom = system.y + system.staffTops.at( -1 ) + 4 * SPACE;
-  if ( staves.length > 1 ) {
-    drawLine( left, first_top, left, last_bottom, 0.16, parent );
-    const tallness = ( last_bottom - first_top ) / ( 4 * SPACE );
-    const wideness = Math.sqrt( tallness ) * 0.9;
-    const brace_x = left - ( 0.35 + 1.31 * wideness ) * SPACE;
-    const parts = [
-      `translate( ${ brace_x } ${ last_bottom } )`,
-      `scale( ${ wideness } ${ tallness } )`
-    ];
-    const transform = parts.join( " " );
-    const brace = svgElement(
-      "text",
-      { class: "glyph", transform },
-      parent
-    );
-    brace.textContent = GLYPHS.brace;
-  }
-  if ( !is_first_system ) {
+  drawGrouping( system, staves, parent );
+  if ( !is_first_system && sheet.numbers !== "none" ) {
+    const first_top = system.y + system.staffTops[ 0 ];
     const number_y = first_top - 2.4 * SPACE;
     drawText(
       system.firstMeasureNumber,
-      left,
-      number_y,
-      "measureNumber",
-      parent
+      left, number_y,
+      "measureNumber", parent
     );
   }
 }
 
-function drawBarline( x, system, is_final, parent ) {
+function drawBarline( x, system, style, parent ) {
   const top = system.y + system.staffTops[ 0 ];
   const bottom = system.y + system.staffTops.at( -1 ) + 4 * SPACE;
-  if ( !is_final ) {
-    drawLine( x, top, x, bottom, 0.16, parent );
+  if ( style === "final" ) {
+    const thick_x = x - 0.25 * SPACE;
+    const thin_x = x - 1.05 * SPACE;
+    drawLine( thick_x, top, thick_x, bottom, 0.5, parent );
+    drawLine( thin_x, top, thin_x, bottom, 0.16, parent );
     return;
   }
-  drawLine( x - 0.25 * SPACE, top, x - 0.25 * SPACE, bottom, 0.5, parent );
-  drawLine( x - 1.05 * SPACE, top, x - 1.05 * SPACE, bottom, 0.16, parent );
+  drawLine( x, top, x, bottom, 0.16, parent );
+  if ( style !== "double" )
+    return;
+  drawLine(
+    x - 0.6 * SPACE, top,
+    x - 0.6 * SPACE, bottom,
+    0.16, parent
+  );
+}
+
+function rehearsalFontOf( size ) {
+  return `bold ${ size }px ${ REHEARSAL_FACES }, serif`;
+}
+
+function inkOf( text ) {
+  TEXT_RULER.font = rehearsalFontOf( 150 );
+  const ink = TEXT_RULER.measureText( text );
+  return {
+    left: ink.actualBoundingBoxLeft / 10,
+    width: ( ink.actualBoundingBoxLeft + ink.actualBoundingBoxRight ) / 10,
+    above: ink.actualBoundingBoxAscent / 10,
+    height: ( ink.actualBoundingBoxAscent + ink.actualBoundingBoxDescent ) / 10
+  };
+}
+
+function rehearsalWidthOf( text ) {
+  return inkOf( text ).width / SPACE + 1.2;
+}
+
+function drawRehearsalMark( text, x, system, parent ) {
+  const ink = inkOf( text );
+  const width = rehearsalWidthOf( text ) * SPACE;
+  const height = 2.4 * SPACE;
+  const first_top = system.y + system.staffTops[ 0 ];
+  const bottom = Math.min( system.y - 0.4 * SPACE, first_top - 2 * SPACE );
+  const top = bottom - height;
+  const box = {
+    x, y: top,
+    width, height,
+    class: "rehearsalBox"
+  };
+  svgElement( "rect", box, parent );
+  const text_x = x + ( width - ink.width ) / 2 + ink.left;
+  const baseline = top + ( height - ink.height ) / 2 + ink.above;
+  const label = drawText( text, text_x, baseline, "rehearsalMark", parent );
+  label.style.font = rehearsalFontOf( 15 );
+}
+
+function drawMeasureLabels( layout, system, sheet, parent ) {
+  const left = leftOf( system );
+  const x = left + layout.x * SPACE;
+  if ( layout.rehearsalMark ) {
+    drawRehearsalMark(
+      layout.rehearsalMark,
+      x, system, parent
+    );
+    return;
+  }
+  const is_line_start = layout === system.measures[ 0 ];
+  if ( sheet.numbers !== "all" || is_line_start )
+    return;
+  const first_top = system.y + system.staffTops[ 0 ];
+  const y = Math.min(
+    first_top - 2.4 * SPACE,
+    system.y - 0.4 * SPACE
+  );
+  drawText(
+    layout.idx + 1,
+    x + 0.3 * SPACE, y,
+    "measureNumber", parent
+  );
+}
+
+function dynamicBaselineOf( placed, top ) {
+  const under_staff = top + 7.5 * SPACE;
+  if ( placed.rest )
+    return under_staff;
+  const lowest = yOfStep( top, Math.min( ...placed.steps ) );
+  return Math.max( under_staff, lowest + 3 * SPACE );
+}
+
+function drawDynamic( placed, top ) {
+  const level = placed.event.dynamic?.level;
+  if ( !level || placed.event.marks[ 0 ] !== placed.group )
+    return;
+  const glyphs = [ ...level ].map( letter => DYNAMIC_GLYPHS[ letter ] );
+  drawGlyph(
+    glyphs.join( "" ),
+    placed.drawn.x,
+    dynamicBaselineOf( placed, top ),
+    placed.group
+  );
+}
+
+function xOfTime( system, time, measure_length ) {
+  const left = leftOf( system );
+  const layout = system.measures.find(
+    candidate =>
+      time < ( candidate.idx + 1 ) * measure_length - EPSILON
+  ) ?? system.measures.at( -1 );
+  const offset = time - layout.idx * measure_length;
+  const column = layout.columns.findLast(
+    candidate => candidate.onset <= offset + EPSILON
+  ) ?? layout.columns[ 0 ];
+  return left + column.x * SPACE;
+}
+
+function drawHairpinPart( hairpin, part, y, parent ) {
+  const opening = 1.2 * SPACE;
+  const length = hairpin.end - hairpin.start;
+  const sizeAt = time => {
+    const done = ( time - hairpin.start ) / length;
+    return opening * (
+      hairpin.kind === "<"
+        ? done
+        : 1 - done
+    ) / 2;
+  };
+  const from = sizeAt( part.from_time );
+  const to = sizeAt( part.to_time );
+  drawLine( part.from_x, y - from, part.to_x, y - to, 0.12, parent );
+  drawLine( part.from_x, y + from, part.to_x, y + to, 0.12, parent );
+}
+
+function drawHairpins( hairpins, staff_idx, systems, measure_length ) {
+  hairpins.forEach(
+    hairpin => systems.forEach(
+      system => {
+        const first = system.measures[ 0 ].idx * measure_length;
+        const last = ( system.measures.at( -1 ).idx + 1 ) * measure_length;
+        if ( hairpin.start >= last - EPSILON
+          || hairpin.end <= first + EPSILON
+        ) return;
+        const from_time = Math.max( hairpin.start, first );
+        const to_time = Math.min( hairpin.end, last );
+        const runs_on = hairpin.end >= last - EPSILON;
+        const left = leftOf( system );
+        const part = {
+          from_time,
+          to_time,
+          from_x: xOfTime( system, from_time, measure_length ),
+          to_x: runs_on
+            ? left + system.width * SPACE
+            : xOfTime( system, to_time, measure_length ) - 0.8 * SPACE
+        };
+        const top = system.y + system.staffTops[ staff_idx ];
+        drawHairpinPart(
+          hairpin, part,
+          top + 7 * SPACE,
+          system.page
+        );
+      }
+    )
+  );
 }
 
 function drawLedgerLines( placed, x, top, parent ) {
@@ -963,7 +1381,7 @@ function drawDots( head, placed, x, top, parent ) {
   const first_dot_x = x + (
     rightmostHeadOf( placed ) + headWidthOf( placed ) + 0.4
   ) * SPACE;
-  for ( let dot = 0; dot < placed.dots; dot++ ) {
+  for ( let dot = 0; dot < placed.dots; ++dot ) {
     drawGlyph(
       GLYPHS.dot,
       first_dot_x + dot * 0.6 * SPACE,
@@ -999,25 +1417,30 @@ function drawGraces( placed, x, top, parent ) {
   const stem_top = yOfStep( top, Math.max( ...placed.graceSteps ) + 5 );
   const head_width = 1.18 * GRACE_SIZE * SPACE;
   let grace_x = x - ( placed.leading - 0.2 ) * SPACE;
-  const stems = placed.graceSteps.map( ( step, index ) => {
-    const accidental = placed.graceAccidentals[ index ];
-    const y = yOfStep( top, step );
-    if ( accidental !== null ) {
+  const stems = placed.graceSteps.map(
+    ( step, idx ) => {
+      const accidental = placed.graceAccidentals[ idx ];
+      const y = yOfStep( top, step );
+      if ( accidental !== null ) {
+        drawGlyph(
+          ACCIDENTAL_GLYPHS[ accidental ],
+          grace_x, y, parent,
+          "glyph grace"
+        );
+        grace_x += graceAccidentalWidthOf( accidental ) * SPACE;
+      }
+      drawGraceLedgerLines( step, grace_x, top, parent );
       drawGlyph(
-        ACCIDENTAL_GLYPHS[ accidental ],
-        grace_x, y,
-        parent,
+        GLYPHS.noteheadBlack,
+        grace_x, y, parent,
         "glyph grace"
       );
-      grace_x += graceAccidentalWidthOf( accidental ) * SPACE;
+      const stem_x = grace_x + head_width - 0.05 * SPACE;
+      drawLine( stem_x, y, stem_x, stem_top, 0.09, parent );
+      grace_x += GRACE_ADVANCE * SPACE;
+      return stem_x;
     }
-    drawGraceLedgerLines( step, grace_x, top, parent );
-    drawGlyph( GLYPHS.noteheadBlack, grace_x, y, parent, "glyph grace" );
-    const stem_x = grace_x + head_width - 0.05 * SPACE;
-    drawLine( stem_x, y, stem_x, stem_top, 0.09, parent );
-    grace_x += GRACE_ADVANCE * SPACE;
-    return stem_x;
-  });
+  );
   if ( stems.length === 1 ) {
     drawGlyph(
       FLAG_GLYPHS.up[ 8 ],
@@ -1049,7 +1472,7 @@ function drawGraces( placed, x, top, parent ) {
 function drawNote( placed, x, top, parent ) {
   drawGraces( placed, x, top, parent );
   drawLedgerLines( placed, x, top, parent );
-  for ( let i = 0; i < placed.heads.length; i++ ) {
+  for ( let i = 0; i < placed.heads.length; ++i ) {
     const head = placed.heads[ i ];
     const y = yOfStep( top, head.step );
     const glyph_x = x + head.offset * SPACE;
@@ -1075,7 +1498,11 @@ function drawNote( placed, x, top, parent ) {
   placed.stemTipY = yOfStep( top, stem_end );
   const start_y = yOfStep( top, stem_start );
   const end_y = yOfStep( top, stem_end );
-  drawLine( placed.stemX, start_y, placed.stemX, end_y, 0.12, parent );
+  drawLine(
+    placed.stemX, start_y,
+    placed.stemX, end_y,
+    0.12, parent
+  );
   if ( placed.beamCount ) {
     const flag_x = placed.stemX - 0.06 * SPACE;
     const flag_y = yOfStep( top, stem_end );
@@ -1089,7 +1516,9 @@ function drawNote( placed, x, top, parent ) {
 
 function drawRest( placed, x, top, measure_layout, parent ) {
   if ( placed.wholeMeasure ) {
-    const center_x = measure_layout.x * SPACE + PAGE_MARGIN
+    const left = leftOf( placed.drawn.system );
+    const center_x = left
+                   + measure_layout.x * SPACE
                    + measure_layout.width * SPACE / 2;
     const glyph_x = center_x - 0.56 * SPACE;
     drawGlyph( REST_GLYPHS[ 1 ], glyph_x, yOfStep( top, 6 ), parent );
@@ -1101,7 +1530,7 @@ function drawRest( placed, x, top, measure_layout, parent ) {
     x, yOfStep( top, step ),
     parent
   );
-  for ( let dot = 0; dot < placed.dots; dot++ ) {
+  for ( let dot = 0; dot < placed.dots; ++dot ) {
     const dot_x = x + ( 1.5 + dot * 0.6 ) * SPACE;
     drawGlyph( GLYPHS.dot, dot_x, yOfStep( top, 5 ), parent );
   }
@@ -1146,11 +1575,16 @@ function drawBeam( beam, top, parent ) {
   const beamYAt = x => start_y + slope * ( x - first.stemX );
 
   drawBeamStems( notes, top, innerStepOf, beamYAt );
-  drawBeamLevels( notes, beam_count, first, last, going_up, beamYAt, parent );
+  drawBeamLevels(
+    notes, beam_count,
+    first, last,
+    going_up, beamYAt,
+    parent
+  );
 }
 
 function drawBeamStems( notes, top, innerStepOf, beamYAt ) {
-  for ( let i = 0; i < notes.length; i++ ) {
+  for ( let i = 0; i < notes.length; ++i ) {
     const placed = notes[ i ];
     placed.stemTipY = beamYAt( placed.stemX );
     const inner_y = yOfStep( top, innerStepOf( placed ) );
@@ -1160,8 +1594,7 @@ function drawBeamStems( notes, top, innerStepOf, beamYAt ) {
 }
 
 function drawBeamLevels(
-  notes,
-  beam_count,
+  notes, beam_count,
   first, last,
   going_up,
   beamYAt,
@@ -1187,18 +1620,18 @@ function drawBeamLevels(
 
   drawSegment( first.stemX - half, last.stemX + half, 0 );
 
-  for ( let level = 1; level < beam_count; level++ ) {
+  for ( let level = 1; level < beam_count; ++level ) {
     let run_start = null;
-    notes.forEach( ( placed, index ) => {
+    notes.forEach( ( placed, idx ) => {
       const reaches = placed.beamCount > level;
       if ( reaches && run_start === null )
-        run_start = index;
+        run_start = idx;
       const run_ends = run_start !== null && (
-        !reaches || index === notes.length - 1
+        !reaches || idx === notes.length - 1
       );
       if ( !run_ends )
         return;
-      const run_end = reaches ? index : index - 1;
+      const run_end = reaches ? idx : idx - 1;
       const from = notes[ run_start ];
       const to = notes[ run_end ];
       if ( run_start !== run_end )
@@ -1246,8 +1679,8 @@ function tieDirectionOf( placed, head ) {
 
 function drawTiesOfStaff( measures ) {
   const notes = measures.flat().filter( placed => !placed.rest );
-  notes.forEach( ( placed, index ) => {
-    const next = notes[ index + 1 ];
+  notes.forEach( ( placed, idx ) => {
+    const next = notes[ idx + 1 ];
     if ( !placed.tied || !next || !placed.drawn || !next.drawn )
       return;
     const from_x = placed.drawn.x + (
@@ -1270,7 +1703,8 @@ function drawTiesOfStaff( measures ) {
         drawTie( from_x, to_x, from_y, direction, placed.group );
         return;
       }
-      const system_end = PAGE_MARGIN + placed.drawn.system.width * SPACE;
+      const system_left = leftOf( placed.drawn.system );
+      const system_end = system_left + placed.drawn.system.width * SPACE;
       drawTie( from_x, system_end + SPACE, from_y, direction, placed.group );
       const next_y = yOfStep(
         next.drawn.top,
@@ -1322,7 +1756,8 @@ function drawFermata( placed, top, measure_layout, parent ) {
   const measure_middle = measure_layout.x + measure_layout.width / 2;
   const head_middle = placed.rest ? 0.6 : headWidthOf( placed ) / 2;
   const center_x = placed.wholeMeasure
-    ? PAGE_MARGIN + measure_middle * SPACE
+    ? leftOf( placed.drawn.system )
+      + measure_middle * SPACE
     : placed.drawn.x + head_middle * SPACE;
   const highest_head = placed.rest
     ? top
@@ -1362,11 +1797,12 @@ function drawTuplets( measure, top, clef, parent ) {
   const tuplets = new Map();
   measure.filter( placed => placed.event.tuplet )
          .forEach( placed => {
-           const members = tuplets.get( placed.event.tuplet ) || [];
-           tuplets.set( placed.event.tuplet, [ ...members, placed ] );
+           if ( !tuplets.has( placed.event.tuplet ) )
+             tuplets.set( placed.event.tuplet, [] );
+           tuplets.get( placed.event.tuplet ).push( placed );
          });
   tuplets.forEach( ( members, tuplet ) => {
-    const above = clef === "treble";
+    const above = clef !== "bass";
     const direction = above ? -1 : 1;
     const left_x = members[ 0 ].drawn.x;
     const last_member = members.at( -1 );
@@ -1519,16 +1955,18 @@ function drawSlursOfStaff( staff ) {
         : part[ 0 ].drawn.x - 2 * SPACE;
       const to_x = ends_here
         ? centerOf( last )
-        : PAGE_MARGIN + system.width * SPACE + 0.5 * SPACE;
+        : leftOf( system )
+            + system.width * SPACE + 0.5 * SPACE;
       drawSlurPart( part, from_x, to_x, above, part[ 0 ].group );
     });
   });
 }
 
 function drawMeasure( layout, system, staves, parent ) {
-  staves.forEach( ( staff, staff_index ) => {
-    const top = system.y + system.staffTops[ staff_index ];
-    const measure = layout.measureOnEachStaff[ staff_index ];
+  const left = leftOf( system );
+  staves.forEach( ( staff, staff_idx ) => {
+    const top = system.y + system.staffTops[ staff_idx ];
+    const measure = layout.measureOnEachStaff[ staff_idx ];
     measure.forEach( placed => {
       let column = null;
       for ( const c of layout.columns ) {
@@ -1537,7 +1975,7 @@ function drawMeasure( layout, system, staves, parent ) {
           break;
         }
       }
-      const x = PAGE_MARGIN + column.x * SPACE;
+      const x = left + column.x * SPACE;
       const group = document.createElementNS( SVG_NS, "g" );
       placed.event.marks.push( group );
       placed.group = group;
@@ -1554,14 +1992,13 @@ function drawMeasure( layout, system, staves, parent ) {
       parent.appendChild( group );
     });
     measure.forEach( placed => {
+      drawDynamic( placed, top );
       drawArticulations( placed, top, placed.group );
       drawFermata( placed, top, layout, placed.group );
       if ( !placed.rest )
         drawSlide( placed, top, placed.group );
     });
-    const tuplet_group = document.createElementNS( SVG_NS, "g" );
-    drawTuplets( measure, top, staff.clef, tuplet_group );
-    parent.appendChild( tuplet_group );
+    drawTuplets( measure, top, staff.clef, parent );
   });
 }
 
@@ -1577,7 +2014,7 @@ function drawTitleBlock( sheet, parent ) {
         "title",
         parent
       ),
-      room
+      room, "bold", 26
     );
   }
   if ( sheet.author ) {
@@ -1590,40 +2027,27 @@ function drawTitleBlock( sheet, parent ) {
         "author",
         parent
       ),
-      room
+      room, "", 14
     );
   }
 }
 
 function drawTempo( sheet, system, parent ) {
-  const x = PAGE_MARGIN + ( system.header + 0.5 ) * SPACE;
+  const left = leftOf( system );
+  const mark = system.measures[ 0 ].rehearsalMark;
+  const shift = mark ? rehearsalWidthOf( mark ) + 1 : 0;
+  const x = left + ( system.header + 0.5 + shift ) * SPACE;
   const y = system.y - 3 * SPACE;
   drawGlyph( GLYPHS.metronomeQuarter, x, y, parent );
   drawText( `= ${ sheet.bpm }`, x + 1.8 * SPACE, y, "tempo", parent );
 }
 
-function drawPage( page, page_index, staves, sheet, is_last_page ) {
-  const svg = document.createElementNS( SVG_NS, "svg" );
-  svg.setAttribute( "viewBox", `0 0 ${ PAGE_WIDTH } ${ PAGE_HEIGHT }` );
-  svg.setAttribute( "class", "page" );
-  if ( !page_index )
-    drawTitleBlock( sheet, svg );
-  page.systems.forEach( ( system, system_index ) => {
-    system.page = svg;
-    const is_first_system = !page_index && !system_index;
-    const is_last_system = is_last_page
-      && system_index === page.systems.length - 1;
-    const right = PAGE_MARGIN + system.width * SPACE;
-    staves.forEach( ( _, index ) => {
-      const top = system.y + system.staffTops[ index ];
-      drawStaffLines( PAGE_MARGIN, right, top, svg );
-    });
-    drawSystemHeader( system, staves, sheet, is_first_system, svg );
-    if ( is_first_system )
-      drawTempo( sheet, system, svg );
-    system.measures.forEach( ( layout, index ) => {
-      const previous = system.measures[ index - 1 ];
-      let x = PAGE_MARGIN + layout.x * SPACE;
+function drawSystemMeasures( system, staves, sheet, is_last_system, svg ) {
+  const left = leftOf( system );
+  system.measures.forEach(
+    ( layout, idx ) => {
+      const previous = system.measures[ idx - 1 ];
+      let x = left + layout.x * SPACE;
       if ( layout.keyChange ) {
         drawKeyChange( layout.keyChange, x, system, staves, svg );
         x += layout.keyChange.width * SPACE;
@@ -1632,38 +2056,76 @@ function drawPage( page, page_index, staves, sheet, is_last_page ) {
         const joins_end = !layout.keyChange && Boolean( previous?.repeatEnd );
         drawRepeatStart( x, system, joins_end, svg );
       }
+      drawMeasureLabels( layout, system, sheet, svg );
       drawMeasure( layout, system, staves, svg );
-      const is_final = is_last_system && index === system.measures.length - 1;
-      const end_x = PAGE_MARGIN + ( layout.x + layout.width ) * SPACE;
+      const is_final = is_last_system && idx === system.measures.length - 1;
+      const end_x = left + ( layout.x + layout.width ) * SPACE;
       if ( layout.repeatEnd )
         drawRepeatEnd( end_x, system, svg );
       if ( layout.loopEnd ) {
         const y = system.y + system.staffTops[ 0 ] - 1.4 * SPACE;
         drawText( "∞", end_x, y, "loopMark", svg );
+        return;
       }
-      else
-        drawBarline( end_x, system, is_final, svg );
-    });
-  });
+      const style = layout.repeatEnd ? "single" : layout.endStyle;
+      drawBarline( end_x, system, is_final ? "final" : style, svg );
+    }
+  );
+}
+
+function drawPage( page, page_idx, staves, sheet, is_last_page ) {
+  const svg = document.createElementNS( SVG_NS, "svg" );
+  svg.setAttribute( "viewBox", `0 0 ${ PAGE_WIDTH } ${ PAGE_HEIGHT }` );
+  svg.setAttribute( "class", "page" );
+  if ( !page_idx )
+    drawTitleBlock( sheet, svg );
+  page.systems.forEach(
+    ( system, system_idx ) => {
+      system.page = svg;
+      const is_first_system = !page_idx
+                           && !system_idx;
+      const is_last_system = is_last_page
+                          && system_idx === page.systems.length - 1;
+      const left = leftOf( system );
+      const right = left + system.width * SPACE;
+      staves.forEach(
+        ( _, idx ) => {
+          const top = system.y + system.staffTops[ idx ];
+          drawStaffLines( left, right, top, svg );
+        }
+      );
+      drawSystemHeader(
+        system, staves, sheet,
+        is_first_system, svg
+      );
+      if ( is_first_system )
+        drawTempo( sheet, system, svg );
+      drawSystemMeasures(
+        system, staves, sheet,
+        is_last_system, svg
+      );
+    }
+  );
   return svg;
 }
 
 function playheadStopsOf( systems, measure_length ) {
   return systems.flatMap( system => {
+    const left = leftOf( system );
     const stops = system.measures.flatMap(
       layout => layout.columns.map(
         column => {
-          const time = layout.index * measure_length + column.onset;
-          const x = PAGE_MARGIN + ( column.x + 0.6 ) * SPACE;
+          const time = layout.idx * measure_length + column.onset;
+          const x = left + ( column.x + 0.6 ) * SPACE;
           return { time, x, system };
         }
       )
     );
     const last_measure = system.measures.at( -1 );
-    const last_time = ( last_measure.index + 1 ) * measure_length;
+    const last_time = ( last_measure.idx + 1 ) * measure_length;
     stops.push({
       time: last_time,
-      x: PAGE_MARGIN + system.width * SPACE,
+      x: left + system.width * SPACE,
       system
     });
     return stops;
@@ -1683,7 +2145,7 @@ function repeatSignsOf( sheet ) {
 function withRepeatSigns( layout, repeats, measure_length ) {
   const isAt = ( sign, position ) =>
     Math.abs( sign.position - position ) < EPSILON;
-  const end_time = ( layout.index + 1 ) * measure_length;
+  const end_time = ( layout.idx + 1 ) * measure_length;
   layout.loopEnd = repeats.some(
     sign => sign.loop
          && sign.kind === "end"
@@ -1691,7 +2153,7 @@ function withRepeatSigns( layout, repeats, measure_length ) {
   );
   layout.repeatStart = repeats.some(
     sign => sign.kind === "start"
-         && isAt( sign, layout.index * measure_length )
+         && isAt( sign, layout.idx * measure_length )
   );
   layout.repeatEnd = repeats.some(
     sign => sign.kind === "end"
@@ -1717,28 +2179,30 @@ function scrollToNewPage( pages_before ) {
 
 function renderScore( sheet ) {
   const pages_before = SCORE.children.length;
-  const scrolled_to = SCORE.scrollTop;
-  SCORE.replaceChildren();
   const staves = prepareStaves( sheet );
   const measure_length = measureLengthOf( sheet.meter );
-  const layouts = staves[ 0 ].measures.map( ( _, index ) => {
-    const staff_measures = staves.map( staff => staff.measures[ index ] );
+  const layouts = staves[ 0 ].measures.map( ( _, idx ) => {
+    const staff_measures = staves.map( staff => staff.measures[ idx ] );
     const raw_layout = layoutMeasure( staff_measures, measure_length );
-    const layout = { ...raw_layout, index };
+    const layout = { ...raw_layout, idx };
     withKeyChange( layout, sheet );
+    withBarlineSettings( layout, sheet, measure_length );
     return withRepeatSigns( layout, repeatSignsOf( sheet ), measure_length );
   });
-  const systems = breakIntoSystems( layouts, sheet );
+  const systems = breakIntoSystems( layouts, sheet, staves );
   systems.forEach( system => stackStaves( system, staves ) );
   const pages = arrangeOnPages( systems, sheet );
-  const page_svgs = pages.map( ( page, index ) => {
-    const is_last = index === pages.length - 1;
-    return drawPage( page, index, staves, sheet, is_last );
+  const page_svgs = pages.map( ( page, idx ) => {
+    const is_last = idx === pages.length - 1;
+    return drawPage( page, idx, staves, sheet, is_last );
   });
-  page_svgs.forEach( svg => SCORE.appendChild( svg ) );
   staves.forEach( staff => drawTiesOfStaff( staff.measures ) );
   staves.forEach( staff => drawSlursOfStaff( staff ) );
+  sheet.staves.forEach(
+    ( staff, idx ) =>
+      drawHairpins( staff.hairpins, idx, systems, measure_length )
+  );
   PLAYHEAD_STOPS = playheadStopsOf( systems, measure_length );
-  SCORE.scrollTop = scrolled_to;
+  SCORE.replaceChildren( ...page_svgs );
   scrollToNewPage( pages_before );
 }

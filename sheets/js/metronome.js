@@ -98,7 +98,7 @@ function metronomeOf( start_time, output, from, until ) {
          && audioTimeOf( beat * beat_length ) <= horizon
     ) {
       clickBeat();
-      beat++;
+      ++beat;
     }
   };
 }

@@ -134,7 +134,10 @@ function strudelPiecesOf( step ) {
   }
 
   const articulations = step.event.articulations || [];
-  const velocity = articulations.includes( "accent" ) ? 1 : PLAIN_VELOCITY;
+  const base_velocity = articulations.includes( "accent" )
+    ? 1
+    : PLAIN_VELOCITY;
+  const velocity = Math.min( base_velocity * ( step.event.loudness ?? 1 ), 1 );
   const graces = step.event.graces || [];
   const grace_length = Math.min( GRACE_LENGTH, length / ( graces.length + 2 ) );
   const grace_piece = pitch => ({
